@@ -7,10 +7,9 @@ import cors from 'cors';
 import { verifyJWT } from './app/middlewares/jwtVerify.js';
 import { userInfo } from './app/middlewares/userInfoCookie.js';
 import methodeOverride from 'method-override';
-import serverless from 'serverless-http'; // <-- IMPORTANT
 
 const app = express();
-app.use(methodeOverride('_method'));
+app.use(methodeOverride('_method')); // Middleware pour gérer les requêtes PUT et DELETE via des formulaires
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
@@ -25,19 +24,21 @@ app.set('views', './views/pages');
 
 app.use(express.static('./public'));
 
-app.use(userInfo);
+app.use(userInfo); // Middleware pour récupérer l'utilisateur depuis le cookie et le rendre accessible dans les vues EJS  
 
-app.use('/protected', verifyJWT, router);
+// Middleware pour vérifier le jwt token et le CSRF token
+app.use('/protected',verifyJWT, router);
 app.use(router);
 
+// app.use('404')
 app.use((req, res) => {
-  const title = 'Page not found';
-  const cssFile = "404";
+  const title= 'Page not found';
+  const cssFile="404";
   res.render('404', { title, cssFile });
 });
 
-// PLUS de app.listen ici !!!
-
-// Exporte la fonction handler compatible serverless pour Vercel
-export const handler = serverless(app);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`🚀 Skillswap app started at http://localhost:${PORT}`);
+});
 
