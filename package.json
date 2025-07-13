@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start":"node index.js",
     "dev": "node --watch index.js",
     "db:create": "psql -U skillswap -d skillswap -f ./data/create_db.sql",
     "db:seed": "psql -U skillswap -d skillswap -f ./data/seeding_tables.sql",
