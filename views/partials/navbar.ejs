@@ -1,0 +1,34 @@
+<!-- ✅ Navbar -->
+<nav class="navbar has-background has-text-light" style="background-color: #30293d;">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item has-text-light" href="/">SkillSwap</a>
+
+            <a role="button" class="navbar-burger has-background is-pulled-right" id="burger" style="background-color: #f3e8f3;">
+                <span aria-hidden="true" style="background-color: #30293d;"></span>
+                <span aria-hidden="true" style="background-color: #30293d;"></span>
+                <span aria-hidden="true" style="background-color: #30293d;"></span>
+                <span aria-hidden="true" style="background-color: #30293d;"></span>
+            </a>
+        </div>
+
+        <div class="navbar-menu"  style="background-color: #30293d;" id="navbarMenu">
+            <div class="navbar-end">
+                <a class="navbar-item has-text-light" style="background-color: #30293d;" href="/">Accueil</a>
+                <a class="navbar-item has-text-light" style="background-color: #30293d;" href="/talents">Talents</a>
+                <a class="navbar-item has-text-light" style="background-color: #30293d;" href="/skills">Compétences</a>
+                <a class="navbar-item has-text-light" style="background-color: #30293d;" href="/review">Avis</a>
+                <a class="navbar-item has-text-light" style="background-color: #30293d;" href="/help">Aide</a>
+
+                <% if (user) { %>
+                    <p class="navbar-item has-text-light" style="background-color: #30293d;">Bonjour, <%= user.firstname %> </p>
+                    <a class="navbar-item has-text-light" style="background-color: #30293d;" href="/user/<%= user.id %>/profil">Mon profil</a>
+                    <a class="navbar-item has-text-light" style="background-color: #30293d;" href="/logout">Déconnexion</a>
+                <% } else { %>
+                    <a class="navbar-item has-text-light" style="background-color: #30293d;" href="/login">Connexion</a>
+                    <a class="navbar-item has-text-light"style="background-color: #30293d;" href="/register">Inscription</a>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</nav>

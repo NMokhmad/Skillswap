@@ -1,0 +1,94 @@
+<!-- header -->
+<%- include('../partials/header.ejs') %>
+    <script src="https://kit.fontawesome.com/626daf36fc.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <!-- ✅ Navbar -->
+    <%- include('../partials/navbar.ejs') %>
+    
+    <!-- ✅ Hero (Bannière) -->
+    <section class="hero is-large has-background" style="background-color: #f3e8f3;">
+        <div class="hero-body has-text-centered">
+            <div class="container">
+                <section class="section py-4">
+                    <div class="container">
+                        <!-- Barre de recherche -->
+
+                        <h1 class="title has-text-black">Bienvenue sur SkillSwap</h1>
+                        <p class="subtitle has-text-black">Votre aventure d'apprentissage commence ici.</p>
+                        
+
+                        <!-- Icônes défilantes cliquables -->
+                        <div class="icon-slider mt-4">
+                            <div class="icon-track">
+                                <% skills.forEach(skill => { %>
+                                    <a href="/skills/<%= skill.slug %>" class="icon-link"><span class="icon is-large "><i class="fa-solid <%= skill.icon %>"></i></span></a>
+                                <% }) %>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </section>
+
+    <!-- ✅ Section "À propos" -->
+    <section id="about" class="section has-background" style="background-color: #30293d;">
+        <div class="container">
+            <div class="columns is-vcentered">
+                <div class="column is-half">
+                    <h2 class="title">Qui sommes-nous ?</h2>
+                    <p> <strong>Skill Swap</strong>  est une plateforme innovante conçue pour permettre l'échange de compétences et de connaissances au sein d'une communauté. Elle repose sur l'idée que chacun possède quelque chose d'unique à offrir, que ce soit des compétences professionnelles, des talents artistiques, des connaissances linguistiques ou des passe-temps. Skill Swap vise à encourager l'apprentissage mutuel, la collaboration et l'établissement de relations dans un environnement convivial et enrichissant.</p>
+                </div>
+                <div class="column is-half">
+                    <figure class="image is-4by3">
+                        <img src="./img/diaporama-1-groupe-damis-hotel-les-goelands-st-jean-de-luz.jpg.webp" alt="À propos">
+                    </figure>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ✅ Section "Services" -->
+    <section id="profiles" class="section has-background" style="background-color: #f3e8f3;">
+        <div class="container ">
+            <h2 class="title has-text-centered has-text-black">Nos Profils</h2>
+            <div class="columns is-multiline">
+                <!-- Profil 1 -->
+                 <% topUsers.forEach(user => { %>
+                    <div class="column is-4">
+                        <div class="card">
+                            <div class="card-image">
+                                <figure class="image is-4by3">
+                                    <img class="profiles profile1" src="./img/<%= user.image %>" alt="Profil 1">
+                                </figure>
+                            </div>
+                            <div class="card-content adjust" style="background-color: white;">
+                                <h3><a href="/" class="title is-5 user-name"><%= user.firstname %> <%= user.lastname %></a></h3>
+                                <h4 class="subtitle is-6"><%= user.interest %></h4>
+                                <div class="rating">
+                                        <% if (user.avg_reviews > 0) { %>
+                                            <% for (let i = 0; i < 5; i++) { %>
+                                                <% if (i < user.avg_reviews) { %>
+                                                    <i class="fas fa-star has-text-warning"></i>
+                                                <% } else { %>
+                                                    <i class="fas fa-star"></i>
+                                                <% } %>
+                                            <% } %>
+                                        <% } else { %>
+                                            <p>Pas encore de note pour ce profil !</p>
+                                        <% } %> <!-- Étoiles dynamiques -->
+                                </div>
+                                <p><%= user.bio %>.</p>
+                                <a href="/talents/<%= user.id %>" class="button is-link is-flex profil-button">Voir le Profil</a>
+                            </div>
+                        </div>
+                    </div>
+                 <% }) %>
+            </div>
+        </div>
+    </section>
+    <!-- ✅ Footer -->
+    <%- include('../partials/footer.ejs') %>
+</body>
+</html>

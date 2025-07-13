@@ -1,0 +1,61 @@
+<%- include('../partials/header.ejs') %>
+</head>
+<body>
+    <%- include('../partials/navbar.ejs') %>
+
+    <!-- ✅ Conteneur principal -->
+    <section class="section">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column is-5">
+                    <div class="card">
+                        <div class="card-content mt-6 has-background" style="background-color: #30293d;">
+                            
+                            <!-- ✅ Titre -->
+                            <h1 class="title has-text-centered">Connexion</h1>
+                            <% if (typeof error !== 'undefined' && error) { %>
+                                <div class="notification is-danger">
+                                  <p><%= error %></p>
+                                </div>
+                              <% } %>                              
+
+                            <!-- ✅ Formulaire -->
+                            <form action="/login" method="POST">
+                                
+                                <!-- Email -->
+                                <div class="field">
+                                    <label class="label">Email</label>
+                                    <div class="control">
+                                        <input class="input background" type="email" name="email" placeholder="Votre email" required>
+                                    </div>
+                                </div>
+
+                                <!-- Mot de passe -->
+                                <div class="field">
+                                    <label class="label">Mot de passe</label>
+                                    <div class="control">
+                                        <input class="input background" type="password" name="password" placeholder="Votre mot de passe" required>
+                                    </div>
+                                </div>
+                                
+                                <!-- ✅ Bouton de connexion -->
+                                <div class="field has-text-centered">
+                                    <button class="button is-link is-fullwidth">Se connecter</button>
+                                </div>
+                            </form>
+                            
+
+                            <!-- ✅ Lien vers l'inscription -->
+                            <p class="has-text-centered mt-3">
+                                Pas encore de compte ? <a href="/register" class="has-text-link">Inscrivez-vous</a>
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <%- include('../partials/footer.ejs') %>
+</body>
+</html>

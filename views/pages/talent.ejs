@@ -1,0 +1,41 @@
+<%- include('../partials/header.ejs') %>
+</header>
+
+<%- include('../partials/navbar.ejs') %>
+
+<main class="container mt-4 mb-4">
+
+        <div class="profiles">
+            
+                <div class="profile-card">
+                    <div class="avatar"></div>
+                    <p><%= profils.firstname %> <%= profils.lastname %></p>
+                    <p>Note</p>
+                    <ul>
+                        <% profils.skills.forEach(skill => { %>
+                            <a href="/skills/<%= skill.slug %>"><%= skill.label %></a> 
+                        <% }) %>
+                    </ul>
+                    <!-- if ok to share son email -->
+                    <p>Contact : <%= profils.email %></p>
+                    <!-- Afficher la liste des avis sur la personne -->
+                     <!-- dans un premier temps limiter aux 5 derniers avis -->
+                      <!-- avec un bouton voir plus d'avis -->
+                       <!-- et un bouton pour poster un avis -->
+
+
+                    <!-- <input class="form_button_submit" type="submit" value="Suivre"></input>
+
+                    <input class="form_button_submit" type="submit" value="Message"></input> -->
+                    <button class="button" type="submit" value="Suivre">Suivre</button>
+                    <button class="button" type="submit" value="Message">Message</button>
+                </div>
+            
+        </div>
+    </section>
+</main>
+
+<%- include('../partials/footer.ejs') %>
+
+</body>
+</html>

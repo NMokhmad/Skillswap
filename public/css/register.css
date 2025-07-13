@@ -1,0 +1,23 @@
+.card-content{
+    background-color:#30293d !important;
+}
+
+.placeholder{
+    background-color: white !important;
+    color: black !important;
+}
+.placeholder::placeholder{
+    color: rgba(0, 0, 0, 0.400) !important;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+footer {
+    width: 100%;
+    margin-top: auto;
+}

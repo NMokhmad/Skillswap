@@ -1,0 +1,94 @@
+<%- include('../partials/header.ejs') %>
+</head>
+<body class="">
+    <%- include('../partials/navbar.ejs') %>
+    <!-- ✅ Conteneur principal -->
+    <section class="section">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column is-5">
+                    <div class="card">
+                        <div class="card-content background">
+                            
+                            <!-- ✅ Titre -->
+                            <h1 class="title has-text-centered">Inscription</h1>
+                            <!-- ✅ Messages d'erreur -->
+                                                       
+
+                            <!-- ✅ Formulaire -->
+                            <form action="/register" method="POST">
+                                
+                                <!-- Nom -->
+                                <div class="field">
+                                    <label class="label">Nom</label>
+                                    <div class="control">
+                                        <input class="input placeholder" type="text" name="lastname" placeholder="Votre nom" value="<%= formData.lastname || '' %>">
+                                        <% if (errors && errors.lastname) { %>
+                                            <p class="error notification is-danger p-2"><%= errors.lastname %></p>
+                                        <% } %>
+                                    </div>
+                                </div>
+
+                                <!-- Prenom -->
+                                <div class="field">
+                                    <label class="label">Prenom</label>
+                                    <div class="control">
+                                        <input class="input placeholder" type="text" name="firstname" placeholder="Votre prénom" value="<%= formData.firstname || '' %>">
+                                        <% if (errors && errors.firstname) { %>
+                                            <p class="error notification is-danger p-2"><%= errors.firstname %></p>
+                                        <% } %>
+                                    </div>
+                                </div>
+
+                                <!-- Email -->
+                                <div class="field">
+                                    <label class="label">Email</label>
+                                    <div class="control">
+                                        <input class="input placeholder" type="email" name="email" placeholder="Votre email" value="<%= formData.email || '' %>">
+                                        <% if (errors && errors.email) { %>
+                                            <p class="error notification is-danger p-2"><%= errors.email %></p>
+                                        <% } %>
+                                    </div>
+                                </div>
+
+                                <!-- Mot de passe -->
+                                <div class="field">
+                                    <label class="label">Mot de passe</label>
+                                    <div class="control">
+                                        <input class="input placeholder" type="password" name="password" placeholder="Choisissez un mot de passe">
+                                        <% if (errors && errors.password) { %>
+                                            <p class="error notification is-danger p-2"><%= errors.password %></p>
+                                        <% } %>
+                                    </div>
+                                </div>
+
+                                <!-- Confirmation du mot de passe -->
+                                <div class="field">
+                                    <label class="label">Confirmer le mot de passe</label>
+                                    <div class="control">
+                                        <input class="input placeholder" type="password" name="confirmPassword" placeholder="Confirmez votre mot de passe">
+                                        <% if (errors && errors.confirmPassword) { %>
+                                            <p class="error notification is-danger p-2"><%= errors.confirmPassword %></p>
+                                        <% } %>
+                                    </div>
+                                </div>
+
+                                <!-- ✅ Bouton d'inscription -->
+                                <div class="field has-text-centered">
+                                    <button class="button is-link is-fullwidth">S'inscrire</button>
+                                </div>
+                            </form>
+
+                            <!-- ✅ Lien vers la connexion -->
+                            <p class="has-text-centered mt-3">
+                                Déjà un compte ? <a href="/login" class="has-text-link">Connectez-vous</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <%- include('../partials/footer.ejs') %>
+</body>
+</html>

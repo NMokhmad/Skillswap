@@ -1,0 +1,41 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+footer {
+    width: 100%;
+    margin-top: auto;
+}
+
+.main-question-contact{
+    background-color: #30293d !important;
+    flex: 1; /* Permet d'étirer le contenu principal */
+    text-align: left;
+}
+body {
+    background-color: #f3e8f3 !important;
+}
+.question{
+    background-color: white !important;
+    color:  black !important;
+    display: block !important;
+    width: 100% !important;
+}
+
+.question p {
+    flex: 1; /* permet au texte de prendre toute la largeur disponible */
+  }
+.button{
+    background-color: #30293d !important;
+    color: white !important;
+}
+.notification{
+    color: black !important;
+    background-color: white !important;
+}
+
+  

@@ -1,0 +1,36 @@
+<%- include('../partials/header.ejs') %>
+
+
+
+<main>
+    <div class="container_informations">
+
+        <section class="section_profil">
+
+            <img src="../public/img/pexels-3motional-studio-407102-1081685.jpg" alt="photo de profil" class="pp">
+            <h2 class="name_profil"><%= profil.firstname %> <%= profil.lastname %></h2>
+            <p>Note</p>
+            <div class="container_buttons">
+                <button  class="button button_follow">Suivre</button>
+                <button class="button button_contact">Contacter</button>
+            </div>
+    
+        </section>
+
+        <div class="container_skills">
+            <h2 class="title_skills">Compétences et intérêts</h2>
+            <ul>
+                <li class="tag"><%= profil.interest %></li>  
+            </ul>
+        </div>
+
+
+    </div>
+    
+
+</main>
+
+<%- include('../partials/footer.ejs') %>
+
+</body>
+</html>

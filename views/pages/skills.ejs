@@ -1,0 +1,21 @@
+<%- include('../partials/header.ejs') %>
+</head>
+<%- include('../partials/navbar.ejs') %>
+
+<main class="container mt-4 mb-4">
+        <section class="container skils">
+            <% skills.forEach(skill => { %>
+                <a href="/skills/<%= skill.slug %>">
+                    <article class="skill-card card">
+                        <i class="fa-solid <%= skill.icon %>"></i>
+                        <h2 class="card-header"><%= skill.label %></h2>
+                    </article>
+                </a>
+            <% }) %>
+        </section>
+</main>
+
+<%- include('../partials/footer.ejs') %>
+
+</body>
+</html>

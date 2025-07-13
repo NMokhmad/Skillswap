@@ -1,0 +1,114 @@
+<%- include('../partials/header') %>
+<script src="/js/editProfil.js" defer></script>
+<script src="/js/deleteProfil.js" defer></script>
+</head>
+<!-- ✅ Navbar -->
+<nav class="navbar has-background has-text-light" style="background-color: #30293d;">
+  <div class="container">
+      <div class="navbar-brand">
+          <a class="navbar-item has-text-light" href="/">SkillSwap</a>
+
+          <a role="button" class="navbar-burger has-background is-pulled-right" id="burger" style="background-color: #f3e8f3;">
+              <span aria-hidden="true" style="background-color: #30293d;"></span>
+              <span aria-hidden="true" style="background-color: #30293d;"></span>
+              <span aria-hidden="true" style="background-color: #30293d;"></span>
+              <span aria-hidden="true" style="background-color: #30293d;"></span>
+          </a>
+      </div>
+
+      <div class="navbar-menu"  style="background-color: #30293d;" id="navbarMenu">
+          <div class="navbar-end">
+              <a class="navbar-item has-text-light" style="background-color: #30293d;" href="/">Accueil</a>
+              <a class="navbar-item has-text-light" style="background-color: #30293d;" href="/talents">Talents</a>
+              <a class="navbar-item has-text-light" style="background-color: #30293d;" href="/skills">Compétences</a>
+              <a class="navbar-item has-text-light" style="background-color: #30293d;" href="/review">Avis</a>
+              <a class="navbar-item has-text-light" style="background-color: #30293d;" href="/help">Aide</a>
+
+              <% if (user) { %>
+                  <p class="navbar-item has-text-light" style="background-color: #30293d;">Bonjour, <%= user.firstname %> </p>
+                  <a class="navbar-item has-text-light" style="background-color: #30293d;" href="/user/<%= user.id %>/profil">Mon profil</a>
+                  <a class="navbar-item has-text-light" style="background-color: #30293d;" href="/logout">Déconnexion</a>
+              <% } else { %>
+                  <a class="navbar-item has-text-light" style="background-color: #30293d;" href="/login">Connexion</a>
+                  <a class="navbar-item has-text-light" style="background-color: #30293d;" href="/register">Inscription</a>
+              <% } %>
+          </div>
+      </div>
+  </div>
+</nav>
+
+    <body>
+        <main>
+            <section class="section">
+                <div class="container">
+                  <h1 class="title has-text-centered">Mon Profil</h1>
+              
+                  <!-- Bloc d'affichage -->
+                  <div id="profil-view" class="box">
+                    <p><strong>Prénom :</strong> <%= user.firstname %></p>
+                    <p><strong>Nom :</strong> <%= user.lastname %></p>
+                    <p><strong>Email :</strong> <%= user.email %></p>
+              
+                    <div class="buttons mt-4">
+                      <button id="editBtn" class="button is-info">Modifier mon profil</button>
+                    </div>
+                    <div class="buttons mt-4">
+                          <button id="deleteBtn" class="button is-danger">Supprimer mon profil</button>
+                    </div>
+                  </div>
+
+                  <!-- Bloc de confirmation de suppression (caché par défaut) -->
+                  <dialog id="delete-confirmation" class="box is-hidden">
+                    <p>Êtes-vous sûr de vouloir supprimer votre profil ?</p>
+                    <div class="buttons mt-4">
+                      <form action="/user/<%= user.id %>/profil?_method=DELETE" method="post">
+                        <button type="submit" class="button is-danger">Oui, supprimer</button>
+                      </form>
+                      <button id="cancelDelete" class="button is-light">Annuler</button>
+                    </dialog>
+              
+                  <!-- Bloc de formulaire d'édition (caché par défaut) -->
+                  <div id="profil-edit" class="box is-hidden">
+                    <form action="/user/<%= user.id %>/profil" method="POST">
+                      <!-- 📷 Photo de profil -->
+                      <!-- <div class="field">
+                          <label class="label">Photo de profil</label>
+                          <div class="control">
+                              <input class="file-input" type="file" name="avatar" accept="image/*">
+                          </div>
+                      </div> -->
+
+                      <div class="field">
+                        <label class="label">Prénom</label>
+                        <div class="control">
+                          <input class="input" type="text" name="firstname" value="<%= user.firstname %>" required>
+                        </div>
+                      </div>
+              
+                      <div class="field">
+                        <label class="label">Nom</label>
+                        <div class="control">
+                          <input class="input" type="text" name="lastname" value="<%= user.lastname %>" required>
+                        </div>
+                      </div>
+              
+                      <div class="field">
+                        <label class="label">Email</label>
+                        <div class="control">
+                          <input class="input" type="email" name="email" value="<%= user.email %>" required>
+                        </div>
+                      </div>
+              
+                      <div class="buttons mt-4">
+                        <button type="submit" class="button is-primary">Enregistrer</button>
+                        <button type="button" id="cancelEdit" class="button is-light">Annuler</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </section>
+                
+        </main>
+        <%- include('../partials/footer.ejs') %>
+    </body>
+</html>

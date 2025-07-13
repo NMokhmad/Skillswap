@@ -1,0 +1,81 @@
+<%- include('../partials/header.ejs') %>
+<script src="/js/faqToggle.js" defer ></script>
+    </head>
+<%- include('../partials/navbar.ejs') %>
+<body>
+    <section class="section">
+      <div class="container">
+        <main class="main-question-contact box">
+  
+          <h1 class="title has-text-centered">Besoin d'aide ?</h1>
+  
+          <!-- FAQ -->
+          <section class="faq mb-6">
+            <h2 class="subtitle">Questions fréquentes</h2>
+            <div class="content">
+              
+                <div class="box question">
+                    <div class="is-flex is-justify-content-space-between is-align-items-center">
+                      <p class="mb-0 has-text-weight-bold">Comment puis-je créer un compte ?</p>
+                      <button class="button is-small is-light" data-target="answer-1">+</button>
+                    </div>
+                    
+                    <div class="answer is-hidden mt-3" id="answer-1">
+                      <p>Pour créer un compte sur SkillSwap, clique simplement sur le bouton “S’inscrire” en haut à droite de la page d’accueil. Tu peux t’inscrire avec ton adresse e-mail. Une fois ton compte créé, tu pourras compléter ton profil, proposer des compétences, et commencer à échanger avec la communauté !</p>
+                    </div>
+
+                  </div>
+                  <div class="box question">
+                    <div class="is-flex is-justify-content-space-between is-align-items-center">
+                      <p class="mb-0 has-text-weight-bold">Comment modifier mes informations personnelles ?
+                    </p>
+                      <button class="button is-small is-light" data-target="answer-2">+</button>
+                    </div>
+                    
+                    <div class="answer is-hidden mt-3" id="answer-2">
+                      <p>Pour modifier tes informations personnelles, connecte-toi à ton compte, puis rends-toi dans la section “Profil” depuis le menu utilisateur. Tu pourras y mettre à jour ton nom, ta bio, tes disponibilités, tes compétences proposées et toutes les autres informations visibles par la communauté. N’oublie pas d’enregistrer les modifications !</p>
+                    </div>
+                  </div>
+
+                  <div class="box question">
+                    <div class="is-flex is-justify-content-space-between is-align-items-center">
+                      <p class="mb-0 has-text-weight-bold">Est-ce que tout est vraiment gratuit ?
+                    </p>
+                      <button class="button is-small is-light" data-target="answer-3">+</button>
+                    </div>
+                    
+                    <div class="answer is-hidden mt-3" id="answer-3">
+                      <p>Oui, SkillSwap est entièrement gratuit ! Notre objectif est de permettre aux utilisateurs de partager leurs compétences et d’en apprendre d’autres, sans échange d’argent. Il suffit de proposer une compétence pour en apprendre une autre en retour — tout est basé sur l’échange et l’entraide, sans frais.</p>
+                    </div>
+                  </div>
+              
+            </div>
+          </section>
+          
+  
+          <!-- Contact -->
+          <section class="contact">
+            <h2 class="subtitle">Contactez-nous</h2>
+            <div class="columns is-centered">
+              <div class="column is-half">
+                <div class="notification is-light">
+                  <strong>Par mail :</strong><br>
+                  <a href="mailto:contact@skillswap.fr">contact@skillswap.fr</a>
+                </div>
+              </div>
+              <div class="column is-half">
+                <div class="notification is-light">
+                  <strong>Par téléphone :</strong><br> 
+                  <a href="tel:+33123456789">01 23 45 67 89</a>
+                </div>
+              </div>
+            </div>
+          </section>
+  
+        </main>
+      </div>
+    </section>
+  
+    <%- include('../partials/footer.ejs') %>
+  </body>
+</html>

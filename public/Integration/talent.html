@@ -1,0 +1,125 @@
+<!DOCTYPE html> 
+<html lang="fr"> 
+    <head> 
+        <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        <title>SkillSwap</title> 
+        <link rel="stylesheet" href="../public/css/reset.css">
+        <link rel="stylesheet" href="../public/css/help_page.css"> 
+        <link rel="stylesheet" href="../public/css/homepage.css">
+        <link rel="stylesheet" href="../public/css/inscription.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Nanum+Myeongjo&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+        <script defer src="./js/script_help_page.js"></script>
+    </head>
+    <body> 
+       <header>
+        <nav class="navbar"> 
+            <p class="logo-name"> SkillSwap </p> 
+            <p class="slogan"> Votre aventure d'apprentissage <br>Commence ici</p>
+
+            <button class="button_theme">Thème</button>
+
+            <ul class="nav-links">
+                <li><a href="/">Accueil</a></li>
+                <li><a href="/talent">Talent</a></li> 
+                <li><a href="/review">Avis</a></li> 
+                <li><a href="/help">Aide</a></li>
+                <% if (user) { %>
+                    <li>Bienvenue, <%= user.firstname %></li>
+                    <li><a href="/logout" class="link">Deconnexion</a></li> 
+                <% } %>
+                <li><a href="/login" class="link">Connexion</a></li>
+                <li><a href="/register" class="link">Inscription</a></li>
+            </ul> 
+            <div class="burger-menu">&#9776;</div> </nav> 
+        </header>
+
+        <main>
+    
+            <section class="container">
+                <h2>Votre aventure d’apprentissage commence ici</h2>
+        
+                <div class="search-bar">
+                    <input type="text" placeholder="Recherche...">
+                </div>
+        
+                <div class="filters">
+                    <button>Coiffure</button>
+                    <button>Sport</button>
+                    <button>Coach love</button>
+                    <button>Musique</button>
+                    <button>Informatique</button>
+                </div>
+        
+                <div class="profiles">
+                    <div class="profile-card">
+                        <div class="avatar"></div>
+                        <p>Nom Prénom</p>
+                        <p>Note</p>
+                        <p>Compétences</p>
+                        <button class="follow">Suivre</button>
+                        <button class="message">Message</button>
+                    </div>
+        
+                    <div class="profile-card">
+                        <div class="avatar"></div>
+                        <p>Nom Prénom</p>
+                        <p>Note</p>
+                        <p>Compétences</p>
+                        <button class="follow">Suivre</button>
+                        <button class="message">Message</button>
+                    </div>
+        
+                    <div class="profile-card">
+                        <div class="avatar"></div>
+                        <p>Nom Prénom</p>
+                        <p>Note</p>
+                        <p>Compétences</p>
+                        <button class="follow">Suivre</button>
+                        <button class="message">Message</button>
+                    </div>
+        
+                    <div class="profile-card">
+                        <div class="avatar"></div>
+                        <p>Nom Prénom</p>
+                        <p>Note</p>
+                        <p>Compétences</p>
+                        <button class="follow">Suivre</button>
+                        <button class="message">Message</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>  
+            <p class="follow">Suivez-nous </p>
+        
+            <div class="social-links">
+              
+                <a href="#"><img src="./img/icons/facebook.png" alt="Facebook"></a>
+                <a href="#"><img src="./img/icons/instagram.png" alt="Instagram"></a>
+                <a href="#"><img src="./img/icons/twitter.png" alt="Twitter"></a>
+                <a href="#"><img src="./img/icons/linkedin.png" alt="LinkedIn"></a>
+            </div>
+            <div class="footer-links">
+                <div class="assistance">
+                    <h3>Assistance</h3> 
+                    <a href="#">Centre d'aide</a>
+                </div>
+                <div class="recherches">
+                    <h3>Recherches</h3>
+                    <a href="#">Talents</a>
+                    <a href="#">Avis</a>
+                </div>
+                <div class="ressources">
+                    <h3>Ressources</h3>
+                    <a href="#">Mentions légales</a>
+                </div>
+            </div>
+        
+            <p class="copyright">Copyright &copy; SkillSwap 2025</p>
+            
+        </footer>
+ 

@@ -1,0 +1,69 @@
+<%- include('../partials/header.ejs') %>
+<script src="https://kit.fontawesome.com/626daf36fc.js" crossorigin="anonymous"></script>
+</head>
+<%- include('../partials/navbar.ejs') %>
+<main class="container ">
+    <section class="section">
+        <div class="container">
+          <h1 class="title is-3 has-text-black">Tous les talents</h1>
+      
+          <!-- Boucle sur chaque talent -->
+          <div class="columns is-multiline">
+            <% users.forEach(user => { %>
+                <div class="column is-12-mobile is-6-tablet is-4-desktop">
+                  <div class="box talent-card">
+                    <div class="media">
+                      <div class="media-content">
+                        <a href="/talents/<%= user.id %>" class="user-name title is-5"><%= user.firstname %> <%= user.lastname %></a>
+              
+                        <!-- Affichage des étoiles avec FontAwesome -->
+                        <p class="subtitle is-6">
+                          <% const fullStars = Math.floor(user.averageRating || 0); %>
+                          <% const hasHalf = (user.averageRating || 0) % 1 >= 0.5; %>
+                          
+                          <!-- Étoiles pleines -->
+                          <% for (let i = 0; i < fullStars; i++) { %>
+                            <i class="fas fa-star has-text-warning"></i> 
+                          <% } %>
+              
+                          <!-- Étoile partielle (si nécessaire) -->
+                          <% if (hasHalf) { %>
+                            <i class="fas fa-star-half-alt has-text-warning"></i> 
+                          <% } %>
+              
+                          <!-- Étoiles vides -->
+                          <% for (let i = fullStars + (hasHalf ? 1 : 0); i < 5; i++) { %>
+                            <i class="far fa-star"></i> 
+                          <% } %>
+              
+                          <span class="has-text-grey is-size-7 ml-2">(<%= (user.averageRating || 0).toFixed(1) %>/5)</span>
+                        </p>
+              
+                        <!-- Compétences -->
+                        <p>
+                          Compétence partagée :
+                          <% user.skills.forEach(skill => { %>
+                            <a href="/skills/<%= skill.slug %>" class="skill-link has-text-weight-semibold">
+                              <%= skill.label %>
+                            </a>
+                          <% }) %>
+                        </p>
+                      </div>
+                    </div>
+              
+                    <div class="buttons mt-4">
+                      <button class="follow button is-info is-small">Suivre</button>
+                      <button class="send-message button is-primary is-small">Envoyer un message</button>
+                    </div>
+                  </div>
+                </div>
+              <% }) %>              
+          </div>
+          
+        </div>
+      </section>
+      
+</main>
+<%- include('../partials/footer.ejs') %>
+</body>
+</html>

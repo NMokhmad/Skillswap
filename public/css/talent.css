@@ -1,0 +1,21 @@
+
+html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+footer {
+    width: 100%;
+    margin-top: auto;
+}
+.section {
+    background-color: #f3e8f3;
+    flex: 1; /* Permet d'étirer le contenu principal */
+    text-align: center;
+}
+
+
+  

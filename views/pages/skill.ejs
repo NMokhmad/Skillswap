@@ -1,0 +1,23 @@
+<%- include('../partials/header.ejs') %>
+</head>
+<%- include('../partials/navbar.ejs') %>
+<main class="container">
+
+
+        <section class="skill">
+                <h1><%= skill.label %></h1>
+
+                <section class="profiles">
+                    <% skill.users.forEach(user => { %>
+                        <article class="card">
+                            <h2 class="card-hearder"><a href="/talents/<%= user.id %>"><%= user.firstname %></a></h2>
+                        </article>
+                    <% }) %>
+                </section>
+        </section>
+</main>
+
+<%- include('../partials/footer.ejs') %>
+
+</body>
+</html>
