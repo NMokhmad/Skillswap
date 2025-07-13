@@ -41,6 +41,7 @@
     "jsonwebtoken": "^9.0.2",
     "method-override": "^3.0.0",
     "pg": "^8.13.1",
-    "sequelize": "^6.37.5"
+    "sequelize": "^6.37.5",
+    "serverless-http": "^3.2.0"
   }
 }
