@@ -7,6 +7,20 @@ import cors from 'cors';
 import { verifyJWT } from './app/middlewares/jwtVerify.js';
 import { userInfo } from './app/middlewares/userInfoCookie.js';
 import methodeOverride from 'method-override';
+import { sequelize } from './database.js';
+
+// Testez la connexion
+try {
+  await sequelize.authenticate();
+  console.log('✅ Connexion à la base de données établie');
+  
+  // Synchroniser les modèles (DEV uniquement !)
+  if (process.env.NODE_ENV !== 'production') {
+    await sequelize.sync({ alter: true });
+  }
+} catch (error) {
+  console.error('❌ Erreur de connexion à la base:', error);
+}
 
 const app = express();
 app.use(methodeOverride('_method')); // Middleware pour gérer les requêtes PUT et DELETE via des formulaires
