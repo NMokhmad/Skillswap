@@ -7,7 +7,7 @@ import cors from 'cors';
 import { verifyJWT } from './app/middlewares/jwtVerify.js';
 import { userInfo } from './app/middlewares/userInfoCookie.js';
 import methodeOverride from 'method-override';
-import { sequelize } from './database.js';
+import { sequelize } from './app/database.js';
 
 // Testez la connexion
 try {
