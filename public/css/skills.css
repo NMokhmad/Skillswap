@@ -10,3 +10,112 @@ footer {
     width: 100%;
     margin-top: auto;
 }
+
+    /* Animation des cartes de compétences */
+    .skill-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        cursor: pointer;
+    }
+
+    .skill-card:hover {
+        transform: translateY(-12px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(48, 41, 61, 0.2) !important;
+    }
+    
+    .skill-card:hover .card-gradient-bg {
+        opacity: 0.15;
+    }
+    
+    .skill-card:hover .skill-title {
+        color: white !important;
+    }
+
+    /* Animation de l'icône */
+    .skill-icon > div {
+        transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+    
+    .skill-card:hover .skill-icon > div {
+        transform: scale(1.15) rotate(10deg);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2) !important;
+    }
+
+    /* Apparition du CTA au hover */
+    .skill-card:hover .skill-cta {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Animation des tags */
+    .skill-tag {
+        transition: all 0.3s ease;
+    }
+    
+    .skill-card:hover .skill-tag {
+        transform: scale(1.1);
+    }
+
+    /* Animation du bouton de recherche */
+    .field .button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(224, 123, 145, 0.3);
+        background-color: #ff6b9d !important;
+    }
+
+    /* Animation du bouton CTA en bas */
+    .box button.is-large:hover {
+        transform: translateY(-4px) scale(1.05);
+        box-shadow: 0 12px 28px rgba(224, 123, 145, 0.3);
+        background-color: #ff6b9d !important;
+    }
+
+    /* Animation de pulsation pour les badges populaires */
+    @keyframes pulse-glow {
+        0%, 100% {
+            box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+        }
+        50% {
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+        }
+    }
+    
+    .tag[style*="background-color: #ffd700"] {
+        animation: pulse-glow 2s ease-in-out infinite;
+    }
+
+    /* Animation de l'icône principale de l'en-tête */
+    @keyframes float-header {
+        0%, 100% {
+            transform: translateY(0px);
+        }
+        50% {
+            transform: translateY(-15px);
+        }
+    }
+    
+    .box .icon.is-large {
+        animation: float-header 3s ease-in-out infinite;
+    }
+
+    /* Responsive - ajustements pour mobile */
+    @media screen and (max-width: 768px) {
+        .skill-card {
+            min-height: 220px !important;
+        }
+        
+        .skill-icon > div {
+            width: 80px !important;
+            height: 80px !important;
+        }
+        
+        .skill-icon .icon.is-large {
+            font-size: 2rem !important;
+        }
+    }
+
+    /* Transition fluide universelle */
+    * {
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    }

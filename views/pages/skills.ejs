@@ -2,17 +2,215 @@
 </head>
 <%- include('../partials/navbar.ejs') %>
 
-<main class="container mt-4 mb-4">
-        <section class="container skils">
-            <% skills.forEach(skill => { %>
-                <a href="/skills/<%= skill.slug %>">
-                    <article class="skill-card card">
-                        <i class="fa-solid <%= skill.icon %>"></i>
-                        <h2 class="card-header"><%= skill.label %></h2>
-                    </article>
-                </a>
+<main class="section" style="background: linear-gradient(135deg, #f3e8f3 0%, #ffeef8 100%);">
+    <div class="container">
+        
+        <!-- En-tête de la page avec style moderne -->
+        <div class="box has-text-centered mb-6 p-6" style="background: linear-gradient(135deg, #30293d 0%, #5a4a6f 50%, #7d6b93 100%); border-radius: 16px; position: relative; overflow: hidden; box-shadow: 0 12px 32px rgba(48, 41, 61, 0.25);">
+            
+            <!-- Effet de brillance -->
+            <div style="position: absolute; top: -50%; right: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%); pointer-events: none;"></div>
+            
+            <!-- Contenu de l'en-tête -->
+            <div style="position: relative; z-index: 1;">
+                <div class="mb-4">
+                    <span class="icon is-large has-text-light" style="font-size: 4rem; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.3));">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </span>
+                </div>
+                
+                <h1 class="title is-1 has-text-light has-text-weight-bold mb-3">
+                    Nos Compétences
+                </h1>
+                
+                <p class="subtitle is-4 has-text-light mb-4" style="opacity: 0.95;">
+                    Découvrez toutes les compétences disponibles sur SkillSwap
+                </p>
+                
+                <!-- Statistiques rapides -->
+                <div class="is-flex is-justify-content-center is-flex-wrap-wrap" style="gap: 1.5rem;">
+                    <div style="background-color: rgba(255, 255, 255, 0.2); padding: 1rem 2rem; border-radius: 20px; backdrop-filter: blur(10px); border: 2px solid rgba(255, 255, 255, 0.3);">
+                        <p class="title is-3 has-text-light mb-1"><%= skills.length %></p>
+                        <p class="subtitle is-6 has-text-light mb-0" style="opacity: 0.9;">Compétences</p>
+                    </div>
+                    <div style="background-color: rgba(255, 255, 255, 0.2); padding: 1rem 2rem; border-radius: 20px; backdrop-filter: blur(10px); border: 2px solid rgba(255, 255, 255, 0.3);">
+                        <p class="title is-3 has-text-light mb-1">500+</p>
+                        <p class="subtitle is-6 has-text-light mb-0" style="opacity: 0.9;">Talents</p>
+                    </div>
+                    <div style="background-color: rgba(255, 255, 255, 0.2); padding: 1rem 2rem; border-radius: 20px; backdrop-filter: blur(10px); border: 2px solid rgba(255, 255, 255, 0.3);">
+                        <p class="title is-3 has-text-light mb-1">1200+</p>
+                        <p class="subtitle is-6 has-text-light mb-0" style="opacity: 0.9;">Échanges</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Barre de recherche/filtres (optionnel) -->
+        <div class="box mb-5 p-4" style="background-color: white; border-radius: 12px; border: 2px solid #e8dce8; box-shadow: 0 4px 12px rgba(48, 41, 61, 0.08);">
+            <div class="field has-addons">
+                <div class="control is-expanded">
+                    <input class="input is-medium" type="text" placeholder="Rechercher une compétence..." style="border-radius: 10px; border: 2px solid #e8dce8; font-weight: 500;">
+                </div>
+                <div class="control">
+                    <button class="button is-medium" style="background-color: #e07b91; color: white; border: none; border-radius: 10px; font-weight: 600; padding: 0 2rem;">
+                        <span class="icon">
+                            <i class="fa-solid fa-search"></i>
+                        </span>
+                        <span>Rechercher</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grille de compétences avec couleurs variées -->
+        <div class="columns is-multiline">
+            <% skills.forEach((skill, index) => { 
+                // Palette de couleurs pour les cartes
+                const cardStyles = [
+                    { 
+                        gradient: 'linear-gradient(135deg, #ff6b9d 0%, #ffa8c5 100%)',
+                        border: '#ff6b9d',
+                        iconBg: '#ffa8c5',
+                        iconColor: '#8d1450'
+                    },
+                    { 
+                        gradient: 'linear-gradient(135deg, #6b7db3 0%, #a8b7e5 100%)',
+                        border: '#6b7db3',
+                        iconBg: '#a8b7e5',
+                        iconColor: '#1a2f5f'
+                    },
+                    { 
+                        gradient: 'linear-gradient(135deg, #7d6b93 0%, #5a4a6f 100%)',
+                        border: '#7d6b93',
+                        iconBg: '#7d6b93',
+                        iconColor: '#f3e8f3'
+                    },
+                    { 
+                        gradient: 'linear-gradient(135deg, #e07b91 0%, #ff6b9d 100%)',
+                        border: '#e07b91',
+                        iconBg: '#e07b91',
+                        iconColor: 'white'
+                    },
+                    { 
+                        gradient: 'linear-gradient(135deg, #a8b7e5 0%, #6b7db3 100%)',
+                        border: '#a8b7e5',
+                        iconBg: '#6b7db3',
+                        iconColor: 'white'
+                    },
+                    { 
+                        gradient: 'linear-gradient(135deg, #ffa8c5 0%, #ff6b9d 100%)',
+                        border: '#ffa8c5',
+                        iconBg: '#ff6b9d',
+                        iconColor: 'white'
+                    }
+                ];
+                const style = cardStyles[index % cardStyles.length];
+            %>
+                <div class="column is-one-third-desktop is-half-tablet is-full-mobile">
+                    <a href="/skills/<%= skill.slug %>" style="text-decoration: none;">
+                        <div class="box skill-card has-text-centered p-5" style="background-color: white; border-radius: 16px; transition: all 0.3s ease; border: 3px solid <%= style.border %>; height: 100%; min-height: 240px; position: relative; overflow: hidden; box-shadow: 0 4px 12px rgba(48, 41, 61, 0.1);">
+                            
+                            <!-- Effet de fond gradient au hover -->
+                            <div class="card-gradient-bg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: <%= style.gradient %>; opacity: 0; transition: opacity 0.3s ease; z-index: 0;"></div>
+                            
+                            <!-- Badge compteur (optionnel) -->
+                            <div style="position: absolute; top: 1rem; right: 1rem; z-index: 2;">
+                                <span class="tag is-medium" style="background-color: <%= style.iconBg %>; color: <%= style.iconColor %>; border-radius: 20px; font-weight: bold; padding: 0.5rem 1rem;">
+                                    <span class="icon is-small">
+                                        <i class="fa-solid fa-users"></i>
+                                    </span>
+                                    <span>24</span> <!-- Nombre de talents, à dynamiser -->
+                                </span>
+                            </div>
+                            
+                            <!-- Contenu de la carte -->
+                            <div style="position: relative; z-index: 1;">
+                                <!-- Icône circulaire -->
+                                <div class="skill-icon mb-4">
+                                    <div style="width: 100px; height: 100px; margin: 0 auto; border-radius: 50%; background-color: <%= style.iconBg %>; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                                        <span class="icon is-large" style="font-size: 2.5rem; color: <%= style.iconColor %>;">
+                                            <i class="fa-solid <%= skill.icon %>"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                
+                                <!-- Titre de la compétence -->
+                                <h2 class="title is-5 has-text-weight-bold mb-3 skill-title" style="color: #30293d; transition: color 0.3s ease;">
+                                    <%= skill.label %>
+                                </h2>
+                                
+                                <!-- Note moyenne et popularité -->
+                                <div class="mb-3">
+                                    <span class="icon-text is-justify-content-center">
+                                        <span class="icon" style="color: #ffd700; font-size: 0.9rem;">
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star-half-stroke"></i>
+                                        </span>
+                                        <span class="has-text-weight-semibold" style="color: #7d6b93; font-size: 0.9rem; margin-left: 0.5rem;">4.5</span>
+                                    </span>
+                                </div>
+                                
+                                <!-- Tags de catégorie -->
+                                <div class="tags are-small is-justify-content-center">
+                                    <% if (index % 3 === 0) { %>
+                                        <span class="tag skill-tag" style="background-color: #ffd700; color: #8d4a00; border-radius: 8px; font-weight: 600;">
+                                            <span class="icon is-small">
+                                                <i class="fa-solid fa-fire"></i>
+                                            </span>
+                                            <span>Populaire</span>
+                                        </span>
+                                    <% } %>
+                                    <% if (index % 4 === 0) { %>
+                                        <span class="tag skill-tag" style="background-color: #a8b7e5; color: #1a2f5f; border-radius: 8px; font-weight: 600;">
+                                            <span class="icon is-small">
+                                                <i class="fa-solid fa-rocket"></i>
+                                            </span>
+                                            <span>Tendance</span>
+                                        </span>
+                                    <% } %>
+                                </div>
+                                
+                                <!-- CTA au hover -->
+                                <div class="skill-cta mt-4" style="opacity: 0; transform: translateY(10px); transition: all 0.3s ease;">
+                                    <button class="button is-small is-rounded" style="background-color: white; color: #30293d; border: 2px solid white; font-weight: 600;">
+                                        Voir les talents
+                                        <span class="icon is-small ml-1">
+                                            <i class="fa-solid fa-arrow-right"></i>
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
             <% }) %>
-        </section>
+        </div>
+
+        <!-- Section CTA en bas de page -->
+        <div class="box has-text-centered mt-6 p-6" style="background: linear-gradient(135deg, #ffeef8 0%, #f9f5f9 100%); border-radius: 16px; border: 3px dashed #e07b91;">
+            <div class="mb-4">
+                <span class="icon is-large" style="font-size: 3rem; color: #e07b91;">
+                    <i class="fa-solid fa-lightbulb"></i>
+                </span>
+            </div>
+            
+            <h3 class="title is-4 has-text-weight-bold" style="color: #30293d;">Vous ne trouvez pas la compétence que vous cherchez ?</h3>
+            <p class="subtitle is-5 mb-5" style="color: #7d6b93;">
+                Proposez-nous de nouvelles compétences à ajouter à notre catalogue !
+            </p>
+            
+            <button class="button is-large" style="background-color: #e07b91; color: white; border: none; border-radius: 12px; font-weight: 600; transition: all 0.3s ease; padding: 1.5rem 3rem;">
+                <span class="icon">
+                    <i class="fa-solid fa-plus"></i>
+                </span>
+                <span>Proposer une compétence</span>
+            </button>
+        </div>
+        
+    </div>
 </main>
 
 <%- include('../partials/footer.ejs') %>

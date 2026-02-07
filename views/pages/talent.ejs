@@ -1,39 +1,471 @@
 <%- include('../partials/header.ejs') %>
-</header>
+</head>
 
 <%- include('../partials/navbar.ejs') %>
 
-<main class="container mt-4 mb-4">
-
-        <div class="profiles">
-            
-                <div class="profile-card">
-                    <div class="avatar"></div>
-                    <p><%= profils.firstname %> <%= profils.lastname %></p>
-                    <p>Note</p>
-                    <ul>
-                        <% profils.skills.forEach(skill => { %>
-                            <a href="/skills/<%= skill.slug %>"><%= skill.label %></a> 
-                        <% }) %>
-                    </ul>
-                    <!-- if ok to share son email -->
-                    <p>Contact : <%= profils.email %></p>
-                    <!-- Afficher la liste des avis sur la personne -->
-                     <!-- dans un premier temps limiter aux 5 derniers avis -->
-                      <!-- avec un bouton voir plus d'avis -->
-                       <!-- et un bouton pour poster un avis -->
-
-
-                    <!-- <input class="form_button_submit" type="submit" value="Suivre"></input>
-
-                    <input class="form_button_submit" type="submit" value="Message"></input> -->
-                    <button class="button" type="submit" value="Suivre">Suivre</button>
-                    <button class="button" type="submit" value="Message">Message</button>
+<main class="section" style="background: linear-gradient(135deg, #f3e8f3 0%, #ffeef8 100%);">
+    <div class="container">
+        
+        <div class="columns">
+            <!-- Colonne principale - Profil -->
+            <div class="column is-8">
+                
+                <!-- Carte profil principale -->
+                <div class="box" style="background-color: white; border-radius: 16px; border: 3px solid #30293d; box-shadow: 0 8px 24px rgba(48, 41, 61, 0.12);">
+                    
+                    <!-- En-tête du profil avec gradient -->
+                    <div class="has-text-centered mb-5 pb-5" style="background: linear-gradient(135deg, #7d6b93 0%, #5a4a6f 100%); margin: -1.25rem -1.25rem 2rem -1.25rem; padding: 3rem 1.25rem 2rem 1.25rem; border-radius: 13px 13px 0 0; position: relative;">
+                        
+                        <!-- Badge vérifié en haut à droite -->
+                        <div style="position: absolute; top: 1rem; right: 1rem;">
+                            <span class="tag is-medium" style="background-color: #e07b91; color: white; border-radius: 20px; padding: 0.5rem 1rem; font-weight: bold;">
+                                <span class="icon">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                </span>
+                                <span>Vérifié</span>
+                            </span>
+                        </div>
+                        
+                        <!-- Avatar -->
+                        <figure class="image is-128x128 is-inline-block mb-4">
+                            <div style="width: 128px; height: 128px; border-radius: 50%; background: linear-gradient(135deg, #ff6b9d, #ffa8c5); display: flex; align-items: center; justify-content: center; border: 5px solid white; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+                                <span class="icon is-large has-text-light" style="font-size: 3rem;">
+                                    <i class="fa-solid fa-user"></i>
+                                </span>
+                            </div>
+                        </figure>
+                        
+                        <!-- Nom et prénom -->
+                        <h1 class="title is-3 has-text-weight-bold mb-2 has-text-white">
+                            <%= profils.firstname %> <%= profils.lastname %>
+                        </h1>
+                        
+                        <!-- Note avec fond semi-transparent -->
+                        <div class="mb-4" style="background-color: rgba(255, 255, 255, 0.2); display: inline-block; padding: 0.5rem 1.5rem; border-radius: 20px; backdrop-filter: blur(10px);">
+                            <span class="icon-text">
+                                <span class="icon" style="color: #ffd700; font-size: 1.2rem;">
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star-half-stroke"></i>
+                                </span>
+                                <span class="has-text-weight-bold has-text-white" style="font-size: 1.1rem; margin-left: 0.5rem;">4.5/5</span>
+                                <span class="has-text-white" style="opacity: 0.9; margin-left: 0.5rem;">(24 avis)</span>
+                            </span>
+                        </div>
+                        
+                        <!-- Boutons d'action -->
+                        <div class="buttons is-centered mt-4">
+                            <button class="button is-medium profile-button-primary" style="background-color: #e07b91; color: white; border: none; border-radius: 10px; font-weight: 600; padding: 1.5rem 2rem; transition: all 0.3s ease;">
+                                <span class="icon">
+                                    <i class="fa-solid fa-user-plus"></i>
+                                </span>
+                                <span>Suivre</span>
+                            </button>
+                            <button class="button is-medium profile-button-secondary" style="background-color: white; color: #30293d; border: 2px solid white; border-radius: 10px; font-weight: 600; padding: 1.5rem 2rem; transition: all 0.3s ease;">
+                                <span class="icon">
+                                    <i class="fa-solid fa-message"></i>
+                                </span>
+                                <span>Message</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Compétences -->
+                    <div class="content mb-5">
+                        <h2 class="title is-5 has-text-weight-semibold mb-4" style="color: #30293d;">
+                            <span class="icon-text">
+                                <span class="icon" style="color: #6b7db3;">
+                                    <i class="fa-solid fa-certificate"></i>
+                                </span>
+                                <span>Compétences</span>
+                            </span>
+                        </h2>
+                        <div class="tags are-medium">
+                            <% profils.skills.forEach((skill, index) => { 
+                                const colors = [
+                                    { bg: '#ffa8c5', border: '#ff6b9d', text: '#8d1450' },
+                                    { bg: '#a8b7e5', border: '#6b7db3', text: '#1a2f5f' },
+                                    { bg: '#e8dce8', border: '#7d6b93', text: '#30293d' },
+                                    { bg: '#ffd7a8', border: '#ffb366', text: '#8d4a00' }
+                                ];
+                                const color = colors[index % colors.length];
+                            %>
+                                <a href="/skills/<%= skill.slug %>" class="tag skill-tag" style="background-color: <%= color.bg %>; color: <%= color.text %>; border: 2px solid <%= color.border %>; border-radius: 10px; padding: 0.75rem 1.25rem; font-weight: 600; transition: all 0.3s ease;">
+                                    <span class="icon">
+                                        <i class="fa-solid fa-star"></i>
+                                    </span>
+                                    <span><%= skill.label %></span>
+                                </a>
+                            <% }) %>
+                        </div>
+                    </div>
+                    
+                    <!-- Contact -->
+                    <div class="content">
+                        <h2 class="title is-5 has-text-weight-semibold mb-4" style="color: #30293d;">
+                            <span class="icon-text">
+                                <span class="icon" style="color: #e07b91;">
+                                    <i class="fa-solid fa-envelope"></i>
+                                </span>
+                                <span>Contact</span>
+                            </span>
+                        </h2>
+                        <div class="box" style="background: linear-gradient(135deg, #f9f5f9 0%, #ffeef8 100%); border-radius: 12px; border: 2px solid #ffa8c5;">
+                            <p class="has-text-weight-semibold" style="color: #30293d;">
+                                <span class="icon-text">
+                                    <span class="icon" style="color: #ff6b9d;">
+                                        <i class="fa-solid fa-at"></i>
+                                    </span>
+                                    <span><%= profils.email %></span>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                    
                 </div>
+                
+                <!-- Section Avis -->
+                <div class="box mt-5" style="background-color: white; border-radius: 16px; box-shadow: 0 8px 24px rgba(48, 41, 61, 0.12);">
+                    <div class="is-flex is-justify-content-space-between is-align-items-center mb-5 pb-4" style="border-bottom: 3px solid #f3e8f3;">
+                        <h2 class="title is-4 has-text-weight-semibold mb-0" style="color: #30293d;">
+                            <span class="icon-text">
+                                <span class="icon" style="color: #6b7db3;">
+                                    <i class="fa-solid fa-comments"></i>
+                                </span>
+                                <span>Avis des utilisateurs</span>
+                            </span>
+                        </h2>
+                        <button class="button is-medium" style="background-color: #e07b91; color: white; border: none; border-radius: 10px; font-weight: 600;">
+                            <span class="icon">
+                                <i class="fa-solid fa-plus"></i>
+                            </span>
+                            <span>Laisser un avis</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Liste des avis -->
+                    <div class="review-list">
+                        <!-- Avis 1 -->
+                        <div class="box mb-4" style="background: linear-gradient(135deg, #ffeef8 0%, #f9f5f9 100%); border-radius: 12px; border: 2px solid #ffa8c5; transition: all 0.3s ease;">
+                            <div class="is-flex is-justify-content-space-between is-align-items-start mb-3">
+                                <div class="is-flex is-align-items-center">
+                                    <figure class="image is-48x48 mr-3">
+                                        <div style="width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #6b7db3, #a8b7e5); display: flex; align-items: center; justify-content: center;">
+                                            <span class="icon has-text-light">
+                                                <i class="fa-solid fa-user"></i>
+                                            </span>
+                                        </div>
+                                    </figure>
+                                    <div>
+                                        <p class="has-text-weight-bold" style="color: #30293d;">Marie Dupont</p>
+                                        <p class="is-size-7" style="color: #7d6b93;">Il y a 2 jours</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <span class="icon-text">
+                                        <span class="icon" style="color: #ffd700;">
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                            <p style="color: #30293d; line-height: 1.6;">Excellente expérience ! Très professionnel et à l'écoute. Je recommande vivement.</p>
+                        </div>
+                        
+                        <!-- Avis 2 -->
+                        <div class="box mb-4" style="background: linear-gradient(135deg, #f0f4ff 0%, #f9f5f9 100%); border-radius: 12px; border: 2px solid #a8b7e5; transition: all 0.3s ease;">
+                            <div class="is-flex is-justify-content-space-between is-align-items-start mb-3">
+                                <div class="is-flex is-align-items-center">
+                                    <figure class="image is-48x48 mr-3">
+                                        <div style="width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #e07b91, #ff6b9d); display: flex; align-items: center; justify-content: center;">
+                                            <span class="icon has-text-light">
+                                                <i class="fa-solid fa-user"></i>
+                                            </span>
+                                        </div>
+                                    </figure>
+                                    <div>
+                                        <p class="has-text-weight-bold" style="color: #30293d;">Pierre Martin</p>
+                                        <p class="is-size-7" style="color: #7d6b93;">Il y a 1 semaine</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <span class="icon-text">
+                                        <span class="icon" style="color: #ffd700;">
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                            <p style="color: #30293d; line-height: 1.6;">Très bonne collaboration. Compétent et ponctuel.</p>
+                        </div>
+                        
+                        <!-- Avis 3 -->
+                        <div class="box mb-4" style="background: linear-gradient(135deg, #f9f5f9 0%, #ffeef8 100%); border-radius: 12px; border: 2px solid #e8dce8; transition: all 0.3s ease;">
+                            <div class="is-flex is-justify-content-space-between is-align-items-start mb-3">
+                                <div class="is-flex is-align-items-center">
+                                    <figure class="image is-48x48 mr-3">
+                                        <div style="width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #7d6b93, #5a4a6f); display: flex; align-items: center; justify-content: center;">
+                                            <span class="icon has-text-light">
+                                                <i class="fa-solid fa-user"></i>
+                                            </span>
+                                        </div>
+                                    </figure>
+                                    <div>
+                                        <p class="has-text-weight-bold" style="color: #30293d;">Sophie Leroux</p>
+                                        <p class="is-size-7" style="color: #7d6b93;">Il y a 2 semaines</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <span class="icon-text">
+                                        <span class="icon" style="color: #ffd700;">
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                            <p style="color: #30293d; line-height: 1.6;">Parfait ! Exactement ce que je recherchais. Merci !</p>
+                        </div>
+                        
+                        <!-- Bouton voir plus -->
+                        <div class="has-text-centered mt-5">
+                            <button class="button is-medium" style="background-color: white; border: 2px solid #6b7db3; color: #6b7db3; border-radius: 10px; font-weight: 600; transition: all 0.3s ease;">
+                                <span>Voir tous les avis (24)</span>
+                                <span class="icon">
+                                    <i class="fa-solid fa-chevron-down"></i>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
             
+            <!-- Colonne latérale - Statistiques -->
+            <div class="column is-4">
+                <div class="box" style="background-color: white; border-radius: 16px; position: sticky; top: 20px; box-shadow: 0 8px 24px rgba(48, 41, 61, 0.12);">
+                    <h3 class="title is-5 has-text-weight-semibold mb-5 pb-3" style="color: #30293d; border-bottom: 3px solid #f3e8f3;">
+                        <span class="icon-text">
+                            <span class="icon" style="color: #e07b91;">
+                                <i class="fa-solid fa-chart-line"></i>
+                            </span>
+                            <span>Statistiques</span>
+                        </span>
+                    </h3>
+                    
+                    <!-- Stats -->
+                    <div class="content">
+                        <div class="box mb-3" style="background: linear-gradient(135deg, #a8b7e5 0%, #6b7db3 100%); border-radius: 12px; border: none; transition: all 0.3s ease;">
+                            <div class="is-flex is-justify-content-space-between is-align-items-center">
+                                <span class="has-text-white has-text-weight-semibold">
+                                    <span class="icon">
+                                        <i class="fa-solid fa-certificate"></i>
+                                    </span>
+                                    Compétences
+                                </span>
+                                <span class="tag is-large" style="background-color: white; color: #6b7db3; font-weight: bold; font-size: 1.2rem; border-radius: 8px;">
+                                    <%= profils.skills.length %>
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="box mb-3" style="background: linear-gradient(135deg, #ff6b9d 0%, #e07b91 100%); border-radius: 12px; border: none; transition: all 0.3s ease;">
+                            <div class="is-flex is-justify-content-space-between is-align-items-center">
+                                <span class="has-text-white has-text-weight-semibold">
+                                    <span class="icon">
+                                        <i class="fa-solid fa-comments"></i>
+                                    </span>
+                                    Avis reçus
+                                </span>
+                                <span class="tag is-large" style="background-color: white; color: #e07b91; font-weight: bold; font-size: 1.2rem; border-radius: 8px;">
+                                    24
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="box" style="background: linear-gradient(135deg, #7d6b93 0%, #5a4a6f 100%); border-radius: 12px; border: none; transition: all 0.3s ease;">
+                            <div class="is-flex is-justify-content-space-between is-align-items-center">
+                                <span class="has-text-white has-text-weight-semibold">
+                                    <span class="icon">
+                                        <i class="fa-solid fa-users"></i>
+                                    </span>
+                                    Abonnés
+                                </span>
+                                <span class="tag is-large" style="background-color: white; color: #5a4a6f; font-weight: bold; font-size: 1.2rem; border-radius: 8px;">
+                                    156
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Badge membre avec effet glassmorphism -->
+                    <div class="box mt-5" style="background: linear-gradient(135deg, #30293d 0%, #5a4a6f 50%, #7d6b93 100%); border-radius: 12px; text-align: center; padding: 2rem; position: relative; overflow: hidden;">
+                        <!-- Effet de brillance -->
+                        <div style="position: absolute; top: -50%; right: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%); pointer-events: none;"></div>
+                        
+                        <span class="icon is-large has-text-light mb-3" style="font-size: 3rem; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));">
+                            <i class="fa-solid fa-award"></i>
+                        </span>
+                        <p class="has-text-light has-text-weight-bold is-size-5 mb-2">Membre Vérifié</p>
+                        <p class="has-text-light is-size-6" style="opacity: 0.9;">
+                            <span class="icon-text">
+                                <span class="icon">
+                                    <i class="fa-solid fa-calendar-check"></i>
+                                </span>
+                                <span>Depuis janvier 2024</span>
+                            </span>
+                        </p>
+                        
+                        <!-- Barre de progression -->
+                        <div class="mt-4">
+                            <p class="has-text-light is-size-7 mb-2">Niveau de confiance</p>
+                            <progress class="progress is-small" value="95" max="100" style="height: 8px; border-radius: 10px; background-color: rgba(255,255,255,0.2);">95%</progress>
+                        </div>
+                    </div>
+                    
+                    <!-- Badges de réalisations -->
+                    <div class="mt-4">
+                        <p class="has-text-weight-semibold mb-3" style="color: #30293d;">
+                            <span class="icon-text">
+                                <span class="icon" style="color: #ffd700;">
+                                    <i class="fa-solid fa-trophy"></i>
+                                </span>
+                                <span>Badges</span>
+                            </span>
+                        </p>
+                        <div class="is-flex is-flex-wrap-wrap" style="gap: 0.5rem;">
+                            <span class="tag is-medium" style="background-color: #ffd700; color: #8d4a00; border-radius: 8px; font-weight: 600;">
+                                <span class="icon">
+                                    <i class="fa-solid fa-star"></i>
+                                </span>
+                                <span>Top Talent</span>
+                            </span>
+                            <span class="tag is-medium" style="background-color: #a8b7e5; color: #1a2f5f; border-radius: 8px; font-weight: 600;">
+                                <span class="icon">
+                                    <i class="fa-solid fa-fire"></i>
+                                </span>
+                                <span>Actif</span>
+                            </span>
+                            <span class="tag is-medium" style="background-color: #ffa8c5; color: #8d1450; border-radius: 8px; font-weight: 600;">
+                                <span class="icon">
+                                    <i class="fa-solid fa-heart"></i>
+                                </span>
+                                <span>Populaire</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </section>
+        
+    </div>
 </main>
+
+<style>
+    /* Animations des tags de compétences */
+    .skill-tag {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .skill-tag::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        transform: translate(-50%, -50%);
+        transition: width 0.4s, height 0.4s;
+    }
+    
+    .skill-tag:hover::before {
+        width: 300px;
+        height: 300px;
+    }
+    
+    .skill-tag:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    }
+    
+    /* Boutons profil */
+    .profile-button-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(224, 123, 145, 0.4);
+        background-color: #ff6b9d !important;
+    }
+    
+    .profile-button-secondary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(255, 255, 255, 0.5);
+        background-color: rgba(255, 255, 255, 0.9) !important;
+    }
+    
+    /* Cartes de stats avec effet hover */
+    .content .box {
+        cursor: pointer;
+    }
+    
+    .content .box:hover {
+        transform: translateX(5px) scale(1.02);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    }
+    
+    /* Animation des avis */
+    .review-list .box:hover {
+        transform: translateX(8px) scale(1.02);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    }
+    
+    /* Bouton voir plus d'avis */
+    .review-list button:hover {
+        background-color: #6b7db3 !important;
+        color: white !important;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(107, 125, 179, 0.3);
+    }
+    
+    /* Progress bar personnalisée */
+    .progress::-webkit-progress-value {
+        background: linear-gradient(90deg, #e07b91 0%, #ff6b9d 50%, #ffd700 100%);
+        border-radius: 10px;
+    }
+    
+    .progress::-moz-progress-bar {
+        background: linear-gradient(90deg, #e07b91 0%, #ff6b9d 50%, #ffd700 100%);
+        border-radius: 10px;
+    }
+    
+    /* Animation de flottement pour le badge */
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(0px);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+    
+    .box .icon.is-large {
+        animation: float 3s ease-in-out infinite;
+    }
+</style>
 
 <%- include('../partials/footer.ejs') %>
 

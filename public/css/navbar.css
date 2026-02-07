@@ -1,0 +1,47 @@
+    /* Effets hover pour les liens de navigation */
+    .nav-link:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateY(-2px);
+    }
+
+    /* Logo hover */
+    .navbar-brand .navbar-item:hover {
+        background: rgba(255, 255, 255, 0.15) !important;
+        transform: scale(1.05);
+    }
+
+    /* Boutons connexion/inscription hover */
+    a[href="/login"]:hover {
+        background: rgba(255, 255, 255, 0.2) !important;
+        border-color: rgba(255, 255, 255, 0.4) !important;
+        transform: translateY(-2px);
+    }
+
+    a[href="/register"]:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(255, 107, 157, 0.4) !important;
+    }
+
+    a[href="/logout"]:hover {
+        background: rgba(224, 123, 145, 0.3) !important;
+        border-color: #e07b91 !important;
+        transform: translateY(-2px);
+    }
+
+    /* Menu mobile */
+    @media screen and (max-width: 1023px) {
+        .navbar-menu {
+            background: linear-gradient(135deg, #30293d, #5a4a6f) !important;
+            border-radius: 0 0 16px 16px;
+            box-shadow: 0 8px 16px rgba(48, 41, 61, 0.2);
+        }
+
+        .navbar-item {
+            margin: 0.25rem 0.5rem !important;
+        }
+    }
+
+    /* Burger menu hover */
+    .navbar-burger:hover {
+        background: rgba(255, 168, 197, 0.2);
+    }

@@ -17,5 +17,27 @@ footer {
     text-align: center;
 }
 
-
-  
+.skill-tag:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(48, 41, 61, 0.2);
+        background-color: #30293d !important;
+        color: white !important;
+    }
+    
+    .button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(48, 41, 61, 0.2);
+    }
+    
+    .button.is-light:hover {
+        background-color: #30293d !important;
+        color: white !important;
+    }
+    
+    .review-list .box {
+        transition: all 0.3s ease;
+    }
+    
+    .review-list .box:hover {
+        transform: translateX(5px);
+    }

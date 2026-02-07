@@ -1,34 +1,163 @@
-<!-- ✅ Navbar -->
-<nav class="navbar has-background has-text-light" style="background-color: #30293d;">
+<!-- 🎨 Navbar SkillSwap - Design amélioré -->
+<nav class="navbar" style="background: linear-gradient(135deg, #30293d, #5a4a6f); box-shadow: 0 4px 12px rgba(48, 41, 61, 0.15);">
     <div class="container">
         <div class="navbar-brand">
-            <a class="navbar-item has-text-light" href="/">SkillSwap</a>
+            <!-- Logo avec effet glassmorphism -->
+            <a class="navbar-item has-text-light" href="/" style="font-weight: 700; font-size: 1.4rem; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 12px; margin: 0.5rem; padding: 0.5rem 1.2rem; transition: all 0.3s ease;">
+                <span style="background: linear-gradient(135deg, #ff6b9d, #ffd700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">SkillSwap</span>
+            </a>
 
-            <a role="button" class="navbar-burger has-background is-pulled-right" id="burger" style="background-color: #f3e8f3;">
-                <span aria-hidden="true" style="background-color: #30293d;"></span>
-                <span aria-hidden="true" style="background-color: #30293d;"></span>
-                <span aria-hidden="true" style="background-color: #30293d;"></span>
-                <span aria-hidden="true" style="background-color: #30293d;"></span>
+            <a role="button" class="navbar-burger" id="burger" style="color: #ffa8c5; border-radius: 8px; margin: 0.5rem;">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
             </a>
         </div>
 
-        <div class="navbar-menu"  style="background-color: #30293d;" id="navbarMenu">
+        <div class="navbar-menu" style="background: transparent;" id="navbarMenu">
             <div class="navbar-end">
-                <a class="navbar-item has-text-light" style="background-color: #30293d;" href="/">Accueil</a>
-                <a class="navbar-item has-text-light" style="background-color: #30293d;" href="/talents">Talents</a>
-                <a class="navbar-item has-text-light" style="background-color: #30293d;" href="/skills">Compétences</a>
-                <a class="navbar-item has-text-light" style="background-color: #30293d;" href="/review">Avis</a>
-                <a class="navbar-item has-text-light" style="background-color: #30293d;" href="/help">Aide</a>
+                <!-- Liens de navigation avec effets hover -->
+                <a class="navbar-item has-text-light nav-link" href="/" style="transition: all 0.3s ease; border-radius: 8px; margin: 0 0.25rem;">
+                    <span class="icon" style="color: #ffa8c5;">
+                        <i class="fas fa-home"></i>
+                    </span>
+                    <span>Accueil</span>
+                </a>
+                
+                <a class="navbar-item has-text-light nav-link" href="/talents" style="transition: all 0.3s ease; border-radius: 8px; margin: 0 0.25rem;">
+                    <span class="icon" style="color: #a8b7e5;">
+                        <i class="fas fa-users"></i>
+                    </span>
+                    <span>Talents</span>
+                </a>
+                
+                <a class="navbar-item has-text-light nav-link" href="/skills" style="transition: all 0.3s ease; border-radius: 8px; margin: 0 0.25rem;">
+                    <span class="icon" style="color: #ffd700;">
+                        <i class="fas fa-star"></i>
+                    </span>
+                    <span>Compétences</span>
+                </a>
+                
+                <a class="navbar-item has-text-light nav-link" href="/review" style="transition: all 0.3s ease; border-radius: 8px; margin: 0 0.25rem;">
+                    <span class="icon" style="color: #e07b91;">
+                        <i class="fas fa-comments"></i>
+                    </span>
+                    <span>Avis</span>
+                </a>
+                
+                <a class="navbar-item has-text-light nav-link" href="/help" style="transition: all 0.3s ease; border-radius: 8px; margin: 0 0.25rem;">
+                    <span class="icon" style="color: #6b7db3;">
+                        <i class="fas fa-question-circle"></i>
+                    </span>
+                    <span>Aide</span>
+                </a>
 
                 <% if (user) { %>
-                    <p class="navbar-item has-text-light" style="background-color: #30293d;">Bonjour, <%= user.firstname %> </p>
-                    <a class="navbar-item has-text-light" style="background-color: #30293d;" href="/user/<%= user.id %>/profil">Mon profil</a>
-                    <a class="navbar-item has-text-light" style="background-color: #30293d;" href="/logout">Déconnexion</a>
+                    <!-- Badge utilisateur avec glassmorphism -->
+                    <div class="navbar-item" style="padding: 0.5rem 1rem;">
+                        <span style="background: rgba(255, 168, 197, 0.2); backdrop-filter: blur(10px); padding: 0.5rem 1rem; border-radius: 20px; color: #ffa8c5; font-weight: 600; border: 2px solid rgba(255, 168, 197, 0.3);">
+                            <span class="icon">
+                                <i class="fas fa-user-circle"></i>
+                            </span>
+                            <%= user.firstname %>
+                        </span>
+                    </div>
+                    
+                    <a class="navbar-item has-text-light nav-link" href="/user/<%= user.id %>/profil" style="transition: all 0.3s ease; border-radius: 8px; margin: 0 0.25rem;">
+                        <span class="icon" style="color: #ffd700;">
+                            <i class="fas fa-user"></i>
+                        </span>
+                        <span>Mon profil</span>
+                    </a>
+                    
+                    <a class="navbar-item" href="/logout" style="background: rgba(224, 123, 145, 0.2); color: #ff6b9d; border-radius: 12px; margin: 0.5rem; padding: 0.5rem 1.2rem; font-weight: 600; transition: all 0.3s ease; border: 2px solid transparent;">
+                        <span class="icon">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </span>
+                        <span>Déconnexion</span>
+                    </a>
                 <% } else { %>
-                    <a class="navbar-item has-text-light" style="background-color: #30293d;" href="/login">Connexion</a>
-                    <a class="navbar-item has-text-light"style="background-color: #30293d;" href="/register">Inscription</a>
+                    <a class="navbar-item" href="/login" style="background: rgba(255, 255, 255, 0.1); color: white; border-radius: 12px; margin: 0.5rem 0.25rem; padding: 0.5rem 1.2rem; font-weight: 600; transition: all 0.3s ease; border: 2px solid rgba(255, 255, 255, 0.2);">
+                        <span class="icon">
+                            <i class="fas fa-sign-in-alt"></i>
+                        </span>
+                        <span>Connexion</span>
+                    </a>
+                    
+                    <a class="navbar-item" href="/register" style="background: linear-gradient(135deg, #ff6b9d, #ffd700); color: white; border-radius: 12px; margin: 0.5rem 0.5rem 0.5rem 0.25rem; padding: 0.5rem 1.2rem; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(255, 107, 157, 0.3);">
+                        <span class="icon">
+                            <i class="fas fa-user-plus"></i>
+                        </span>
+                        <span>Inscription</span>
+                    </a>
                 <% } %>
             </div>
         </div>
     </div>
 </nav>
+
+<style>
+    /* Effets hover pour les liens de navigation */
+    .nav-link:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateY(-2px);
+    }
+
+    /* Logo hover */
+    .navbar-brand .navbar-item:hover {
+        background: rgba(255, 255, 255, 0.15) !important;
+        transform: scale(1.05);
+    }
+
+    /* Boutons connexion/inscription hover */
+    a[href="/login"]:hover {
+        background: rgba(255, 255, 255, 0.2) !important;
+        border-color: rgba(255, 255, 255, 0.4) !important;
+        transform: translateY(-2px);
+    }
+
+    a[href="/register"]:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(255, 107, 157, 0.4) !important;
+    }
+
+    a[href="/logout"]:hover {
+        background: rgba(224, 123, 145, 0.3) !important;
+        border-color: #e07b91 !important;
+        transform: translateY(-2px);
+    }
+
+    /* Menu mobile */
+    @media screen and (max-width: 1023px) {
+        .navbar-menu {
+            background: linear-gradient(135deg, #30293d, #5a4a6f) !important;
+            border-radius: 0 0 16px 16px;
+            box-shadow: 0 8px 16px rgba(48, 41, 61, 0.2);
+        }
+
+        .navbar-item {
+            margin: 0.25rem 0.5rem !important;
+        }
+    }
+
+    /* Burger menu hover */
+    .navbar-burger:hover {
+        background: rgba(255, 168, 197, 0.2);
+    }
+</style>
+
+<script>
+    // Toggle menu mobile
+    document.addEventListener('DOMContentLoaded', () => {
+        const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+        
+        $navbarBurgers.forEach( el => {
+            el.addEventListener('click', () => {
+                const target = el.dataset.target || 'navbarMenu';
+                const $target = document.getElementById(target);
+                el.classList.toggle('is-active');
+                $target.classList.toggle('is-active');
+            });
+        });
+    });
+</script>
