@@ -3,112 +3,263 @@
 <script src="/js/deleteProfil.js" defer></script>
 </head>
 <!-- ✅ Navbar -->
-<nav class="navbar has-background has-text-light" style="background-color: #30293d;">
-  <div class="container">
-      <div class="navbar-brand">
-          <a class="navbar-item has-text-light" href="/">SkillSwap</a>
+<%- include('../partials/navbar.ejs') %>
 
-          <a role="button" class="navbar-burger has-background is-pulled-right" id="burger" style="background-color: #f3e8f3;">
-              <span aria-hidden="true" style="background-color: #30293d;"></span>
-              <span aria-hidden="true" style="background-color: #30293d;"></span>
-              <span aria-hidden="true" style="background-color: #30293d;"></span>
-              <span aria-hidden="true" style="background-color: #30293d;"></span>
-          </a>
-      </div>
-
-      <div class="navbar-menu"  style="background-color: #30293d;" id="navbarMenu">
-          <div class="navbar-end">
-              <a class="navbar-item has-text-light" style="background-color: #30293d;" href="/">Accueil</a>
-              <a class="navbar-item has-text-light" style="background-color: #30293d;" href="/talents">Talents</a>
-              <a class="navbar-item has-text-light" style="background-color: #30293d;" href="/skills">Compétences</a>
-              <a class="navbar-item has-text-light" style="background-color: #30293d;" href="/review">Avis</a>
-              <a class="navbar-item has-text-light" style="background-color: #30293d;" href="/help">Aide</a>
-
-              <% if (user) { %>
-                  <p class="navbar-item has-text-light" style="background-color: #30293d;">Bonjour, <%= user.firstname %> </p>
-                  <a class="navbar-item has-text-light" style="background-color: #30293d;" href="/user/<%= user.id %>/profil">Mon profil</a>
-                  <a class="navbar-item has-text-light" style="background-color: #30293d;" href="/logout">Déconnexion</a>
-              <% } else { %>
-                  <a class="navbar-item has-text-light" style="background-color: #30293d;" href="/login">Connexion</a>
-                  <a class="navbar-item has-text-light" style="background-color: #30293d;" href="/register">Inscription</a>
-              <% } %>
-          </div>
-      </div>
-  </div>
-</nav>
-
-    <body>
-        <main>
-            <section class="section">
-                <div class="container">
-                  <h1 class="title has-text-centered">Mon Profil</h1>
-              
-                  <!-- Bloc d'affichage -->
-                  <div id="profil-view" class="box">
-                    <p><strong>Prénom :</strong> <%= user.firstname %></p>
-                    <p><strong>Nom :</strong> <%= user.lastname %></p>
-                    <p><strong>Email :</strong> <%= user.email %></p>
-              
-                    <div class="buttons mt-4">
-                      <button id="editBtn" class="button is-info">Modifier mon profil</button>
-                    </div>
-                    <div class="buttons mt-4">
-                          <button id="deleteBtn" class="button is-danger">Supprimer mon profil</button>
-                    </div>
-                  </div>
-
-                  <!-- Bloc de confirmation de suppression (caché par défaut) -->
-                  <dialog id="delete-confirmation" class="box is-hidden">
-                    <p>Êtes-vous sûr de vouloir supprimer votre profil ?</p>
-                    <div class="buttons mt-4">
-                      <form action="/user/<%= user.id %>/profil?_method=DELETE" method="post">
-                        <button type="submit" class="button is-danger">Oui, supprimer</button>
-                      </form>
-                      <button id="cancelDelete" class="button is-light">Annuler</button>
-                    </dialog>
-              
-                  <!-- Bloc de formulaire d'édition (caché par défaut) -->
-                  <div id="profil-edit" class="box is-hidden">
-                    <form action="/user/<%= user.id %>/profil" method="POST">
-                      <!-- 📷 Photo de profil -->
-                      <!-- <div class="field">
-                          <label class="label">Photo de profil</label>
-                          <div class="control">
-                              <input class="file-input" type="file" name="avatar" accept="image/*">
-                          </div>
-                      </div> -->
-
-                      <div class="field">
-                        <label class="label">Prénom</label>
-                        <div class="control">
-                          <input class="input" type="text" name="firstname" value="<%= user.firstname %>" required>
-                        </div>
-                      </div>
-              
-                      <div class="field">
-                        <label class="label">Nom</label>
-                        <div class="control">
-                          <input class="input" type="text" name="lastname" value="<%= user.lastname %>" required>
-                        </div>
-                      </div>
-              
-                      <div class="field">
-                        <label class="label">Email</label>
-                        <div class="control">
-                          <input class="input" type="email" name="email" value="<%= user.email %>" required>
-                        </div>
-                      </div>
-              
-                      <div class="buttons mt-4">
-                        <button type="submit" class="button is-primary">Enregistrer</button>
-                        <button type="button" id="cancelEdit" class="button is-light">Annuler</button>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </section>
+<body>
+    <main class="section" style="background: linear-gradient(135deg, #f3e8f3 0%, #ffeef8 100%); min-height: calc(100vh - 200px);">
+        <div class="container">
+            
+            <!-- En-tête de page -->
+            <div class="box has-text-centered mb-6 p-6" style="background: linear-gradient(135deg, #30293d 0%, #5a4a6f 50%, #7d6b93 100%); border-radius: 16px; position: relative; overflow: hidden; box-shadow: 0 12px 32px rgba(48, 41, 61, 0.25);">
                 
-        </main>
-        <%- include('../partials/footer.ejs') %>
-    </body>
+                <!-- Effet de brillance -->
+                <div style="position: absolute; top: -50%; right: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%); pointer-events: none;"></div>
+                
+                <div style="position: relative; z-index: 1;">
+                    <div class="mb-4">
+                        <span class="icon is-large has-text-light" style="font-size: 4rem; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.3));">
+                            <i class="fa-solid fa-user-gear"></i>
+                        </span>
+                    </div>
+                    <h1 class="title is-1 has-text-light has-text-weight-bold mb-2">Mon Profil</h1>
+                    <p class="subtitle is-5 has-text-light" style="opacity: 0.95;">Gérez vos informations personnelles</p>
+                </div>
+            </div>
+
+            <div class="columns is-centered">
+                <div class="column is-8-desktop is-10-tablet">
+                    
+                    <!-- Bloc d'affichage du profil -->
+                    <div id="profil-view" class="box" style="background-color: white; border-radius: 16px; border: 3px solid #30293d; box-shadow: 0 8px 24px rgba(48, 41, 61, 0.12); position: relative; overflow: hidden;">
+                        
+                        <!-- Avatar circulaire en haut -->
+                        <div class="has-text-centered mb-5 pb-4" style="border-bottom: 3px solid #f3e8f3;">
+                            <figure class="image is-128x128 is-inline-block mb-4">
+                                <div style="width: 128px; height: 128px; border-radius: 50%; background: linear-gradient(135deg, #e07b91, #ff6b9d); display: flex; align-items: center; justify-content: center; border: 5px solid white; box-shadow: 0 8px 20px rgba(224, 123, 145, 0.3);">
+                                    <span class="icon is-large has-text-light" style="font-size: 3.5rem;">
+                                        <i class="fa-solid fa-user"></i>
+                                    </span>
+                                </div>
+                            </figure>
+                            
+                            <!-- Badge membre -->
+                            <div style="display: inline-block;">
+                                <span class="tag is-medium" style="background-color: #6b7db3; color: white; border-radius: 20px; padding: 0.5rem 1.5rem; font-weight: bold;">
+                                    <span class="icon">
+                                        <i class="fa-solid fa-circle-check"></i>
+                                    </span>
+                                    <span>Membre actif</span>
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <!-- Informations du profil -->
+                        <div class="content px-5 pb-4">
+                            <div class="box mb-4" style="background: linear-gradient(135deg, #ffeef8 0%, #f9f5f9 100%); border-radius: 12px; border-left: 5px solid #e07b91;">
+                                <div class="is-flex is-align-items-center">
+                                    <span class="icon is-medium mr-3" style="color: #e07b91; font-size: 1.5rem;">
+                                        <i class="fa-solid fa-id-card"></i>
+                                    </span>
+                                    <div style="flex: 1;">
+                                        <p class="has-text-weight-semibold" style="color: #7d6b93; font-size: 0.9rem; margin-bottom: 0.25rem;">Prénom</p>
+                                        <p class="title is-5 mb-0" style="color: #30293d;"><%= user.firstname %></p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="box mb-4" style="background: linear-gradient(135deg, #f0f4ff 0%, #f9f5f9 100%); border-radius: 12px; border-left: 5px solid #6b7db3;">
+                                <div class="is-flex is-align-items-center">
+                                    <span class="icon is-medium mr-3" style="color: #6b7db3; font-size: 1.5rem;">
+                                        <i class="fa-solid fa-user"></i>
+                                    </span>
+                                    <div style="flex: 1;">
+                                        <p class="has-text-weight-semibold" style="color: #7d6b93; font-size: 0.9rem; margin-bottom: 0.25rem;">Nom</p>
+                                        <p class="title is-5 mb-0" style="color: #30293d;"><%= user.lastname %></p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="box mb-4" style="background: linear-gradient(135deg, #f9f5f9 0%, #ffeef8 100%); border-radius: 12px; border-left: 5px solid #7d6b93;">
+                                <div class="is-flex is-align-items-center">
+                                    <span class="icon is-medium mr-3" style="color: #7d6b93; font-size: 1.5rem;">
+                                        <i class="fa-solid fa-envelope"></i>
+                                    </span>
+                                    <div style="flex: 1;">
+                                        <p class="has-text-weight-semibold" style="color: #7d6b93; font-size: 0.9rem; margin-bottom: 0.25rem;">Email</p>
+                                        <p class="title is-6 mb-0" style="color: #30293d; word-break: break-all;"><%= user.email %></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Boutons d'action -->
+                        <div class="px-5 pb-5">
+                            <div class="buttons is-centered">
+                                <button id="editBtn" class="button is-large profile-edit-btn" style="background-color: #6b7db3; color: white; border: none; border-radius: 12px; font-weight: 600; padding: 1.5rem 2.5rem; transition: all 0.3s ease;">
+                                    <span class="icon">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </span>
+                                    <span>Modifier mon profil</span>
+                                </button>
+                                <button id="deleteBtn" class="button is-large profile-delete-btn" style="background-color: white; color: #ff6b9d; border: 3px solid #ff6b9d; border-radius: 12px; font-weight: 600; padding: 1.5rem 2.5rem; transition: all 0.3s ease;">
+                                    <span class="icon">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </span>
+                                    <span>Supprimer mon compte</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bloc de confirmation de suppression -->
+                    <!-- Remplace le <dialog> par ceci : -->
+                      <div id="delete-confirmation" class="modal">
+                          <div class="modal-background"></div>
+                          <div class="modal-content">
+                              <div class="box" style="background-color: white; border-radius: 16px; border: 3px solid #ff6b9d; box-shadow: 0 12px 32px rgba(255, 107, 157, 0.25); padding: 3rem; max-width: 600px; margin: 0 auto;">
+                                  <div class="has-text-centered">
+                                      <div class="mb-4">
+                                          <span class="icon" style="font-size: 5rem; color: #ff6b9d;">
+                                              <i class="fa-solid fa-triangle-exclamation"></i>
+                                          </span>
+                                      </div>
+                                      
+                                      <h3 class="title is-4 has-text-weight-bold mb-3" style="color: #30293d;">Confirmer la suppression</h3>
+                                      <p class="subtitle is-5 mb-5" style="color: #7d6b93;">Êtes-vous vraiment sûr de vouloir supprimer votre profil ? Cette action est irréversible.</p>
+                                      
+                                      <div class="box mb-4" style="background-color: #fff5f7; border-radius: 12px; border: 2px solid #ff6b9d;">
+                                          <p class="has-text-weight-semibold" style="color: #ff6b9d;">
+                                              <span class="icon">
+                                                  <i class="fa-solid fa-exclamation-circle"></i>
+                                              </span>
+                                              Toutes vos données seront définitivement perdues
+                                          </p>
+                                      </div>
+                                      
+                                      <div class="buttons is-centered">
+                                          <form action="/user/<%= user.id %>/profil?_method=DELETE" method="post" style="display: inline;">
+                                              <button type="submit" class="button is-large" style="background-color: #ff6b9d; color: white; border: none; border-radius: 12px; font-weight: 600; padding: 1.5rem 2.5rem;">
+                                                  <span class="icon">
+                                                      <i class="fa-solid fa-trash-can"></i>
+                                                  </span>
+                                                  <span>Oui, supprimer définitivement</span>
+                                              </button>
+                                          </form>
+                                          <button id="cancelDelete" class="button is-large" style="background-color: white; color: #30293d; border: 3px solid #30293d; border-radius: 12px; font-weight: 600; padding: 1.5rem 2.5rem;">
+                                              <span class="icon">
+                                                  <i class="fa-solid fa-xmark"></i>
+                                              </span>
+                                              <span>Annuler</span>
+                                          </button>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <button class="modal-close is-large" aria-label="close" id="closeModal"></button>
+                      </div>
+
+                    <!-- Bloc de formulaire d'édition -->
+                    <div id="profil-edit" class="box is-hidden" style="background-color: white; border-radius: 16px; border: 3px solid #6b7db3; box-shadow: 0 8px 24px rgba(107, 125, 179, 0.15);">
+                        
+                        <!-- En-tête du formulaire -->
+                        <div class="has-text-centered mb-5 pb-4" style="border-bottom: 3px solid #f3e8f3;">
+                            <span class="icon is-large mb-3" style="font-size: 3rem; color: #6b7db3;">
+                                <i class="fa-solid fa-user-pen"></i>
+                            </span>
+                            <h2 class="title is-4 has-text-weight-bold" style="color: #30293d;">Modifier mes informations</h2>
+                            <p class="subtitle is-6" style="color: #7d6b93;">Mettez à jour vos informations personnelles</p>
+                        </div>
+                        
+                        <form action="/user/<%= user.id %>/profil" method="POST" class="px-4 pb-4">
+                            
+                            <!-- Champ Prénom -->
+                            <div class="field mb-5">
+                                <label class="label" style="color: #30293d; font-weight: 600; font-size: 1rem;">
+                                    <span class="icon-text">
+                                        <span class="icon" style="color: #e07b91;">
+                                            <i class="fa-solid fa-id-card"></i>
+                                        </span>
+                                        <span>Prénom</span>
+                                    </span>
+                                </label>
+                                <div class="control has-icons-left">
+                                    <input class="input is-medium" type="text" name="firstname" value="<%= user.firstname %>" required style="border: 2px solid #e8dce8; border-radius: 10px; font-weight: 500;">
+                                    <span class="icon is-left" style="color: #e07b91;">
+                                        <i class="fa-solid fa-id-card"></i>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Champ Nom -->
+                            <div class="field mb-5">
+                                <label class="label" style="color: #30293d; font-weight: 600; font-size: 1rem;">
+                                    <span class="icon-text">
+                                        <span class="icon" style="color: #6b7db3;">
+                                            <i class="fa-solid fa-user"></i>
+                                        </span>
+                                        <span>Nom</span>
+                                    </span>
+                                </label>
+                                <div class="control has-icons-left">
+                                    <input class="input is-medium" type="text" name="lastname" value="<%= user.lastname %>" required style="border: 2px solid #e8dce8; border-radius: 10px; font-weight: 500;">
+                                    <span class="icon is-left" style="color: #6b7db3;">
+                                        <i class="fa-solid fa-user"></i>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Champ Email -->
+                            <div class="field mb-5">
+                                <label class="label" style="color: #30293d; font-weight: 600; font-size: 1rem;">
+                                    <span class="icon-text">
+                                        <span class="icon" style="color: #7d6b93;">
+                                            <i class="fa-solid fa-envelope"></i>
+                                        </span>
+                                        <span>Email</span>
+                                    </span>
+                                </label>
+                                <div class="control has-icons-left">
+                                    <input class="input is-medium" type="email" name="email" value="<%= user.email %>" required style="border: 2px solid #e8dce8; border-radius: 10px; font-weight: 500;">
+                                    <span class="icon is-left" style="color: #7d6b93;">
+                                        <i class="fa-solid fa-envelope"></i>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Message d'info -->
+                            <div class="box mb-5" style="background-color: #f0f4ff; border-radius: 12px; border: 2px solid #a8b7e5;">
+                                <p class="has-text-weight-semibold" style="color: #6b7db3; font-size: 0.9rem;">
+                                    <span class="icon">
+                                        <i class="fa-solid fa-info-circle"></i>
+                                    </span>
+                                    Vos modifications seront prises en compte immédiatement
+                                </p>
+                            </div>
+
+                            <!-- Boutons -->
+                            <div class="buttons is-centered mt-5">
+                                <button type="submit" class="button is-large" style="background-color: #6b7db3; color: white; border: none; border-radius: 12px; font-weight: 600; padding: 1.5rem 2.5rem; transition: all 0.3s ease;">
+                                    <span class="icon">
+                                        <i class="fa-solid fa-floppy-disk"></i>
+                                    </span>
+                                    <span>Enregistrer les modifications</span>
+                                </button>
+                                <button type="button" id="cancelEdit" class="button is-large" style="background-color: white; color: #30293d; border: 3px solid #30293d; border-radius: 12px; font-weight: 600; padding: 1.5rem 2.5rem; transition: all 0.3s ease;">
+                                    <span class="icon">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </span>
+                                    <span>Annuler</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+            
+        </div>
+    </main>
+
+    <%- include('../partials/footer.ejs') %>
+</body>
 </html>

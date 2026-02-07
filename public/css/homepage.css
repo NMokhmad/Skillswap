@@ -1,93 +1,102 @@
-.profiles{
-    object-fit: cover;   /* Remplir l'espace sans déformation, avec potentielle coupure */
-    width: 100%;          /* Remplir toute la largeur du conteneur */
-    height: auto;
-    object-position: 50% 20%;
-}
-.profile1{
-    object-position: 50% 10%;
-}
-.primaryColor{
-    background-color: #30293d !important; /* Couleur principale Bulma */
-}
-.primaryColor1{
-    color: #30293d; /* Couleur principale Bulma */
-}
-/* Conteneur du slider */
-.icon-slider {
-    display: flex;
-    justify-content: center; /* Centre horizontalement */
-    align-items: center; /* Centre verticalement */
-    overflow: hidden;
-    white-space: nowrap;
-    position: relative;
-    width: 100%;
-    padding: 20px 0;
-    background-color: transparent;
-}
-
-/* Track des icônes */
-.icon-track {
-    display: flex;
-    gap: 40px;
-    animation: scrollIcons 10s linear infinite;
-}
-
-/* Icônes clickables */
-.icon-link {
-    font-size: 1.5rem;
-    text-decoration: none;
-    transition: transform 0.2s, color 0.3s;
-    display: flex;
-    align-items: center; /* Centre le contenu */
-}
-
-/* Style des icônes */
-.icon-link .icon {
-    font-size: 3rem;
-    color: #30293d; /* Couleur principale Bulma */
-}
-
-
-/* Effet au survol */
-.icon-link:hover {
-    transform: scale(1.2);
-}
-
-.icon-link:hover .icon {
-    color: #ffdd57; /* Changement de couleur au survol */
-}
-
-/* Animation */
-@keyframes scrollIcons {
-    from {
-        transform: translateX(100%);
-    }
-    to {
-        transform: translateX(-100%);
-    }
-}
-.profil-button{
-    background-color: #d58bf3 !important;
-    color: #30293d !important;
-    border: none !important;
-    transition: background-color 0.3s ease !important;
-}
-.profil-button:hover{
-    background-color: #c06ae5 !important;
-    color: white !important;
-}
-a.user-name{
-    color: #30293d !important;
-    font-weight: 700 !important;
-    font-size: 1.25rem !important;
-    text-decoration: none !important;
-    transition: color 0.2s ease !important;
-}
-a.user-name:hover {
-    color: #a64ac9 !important; /* ou un peu plus clair si tu préfères */
-    text-decoration: underline !important;
-  }
+/* Animation du badge pulsant */
+        @keyframes pulse-badge {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+        
+        /* Boutons Hero */
+        .hero-cta-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(48, 41, 61, 0.35) !important;
+            background-color: #5a4a6f !important;
+        }
+        
+        .hero-cta-secondary:hover {
+            transform: translateY(-4px);
+            background-color: #30293d !important;
+            color: white !important;
+            box-shadow: 0 8px 20px rgba(48, 41, 61, 0.25);
+        }
+        
+        /* Icônes défilantes */
+        .icon-slider {
+            overflow: hidden;
+            padding: 1rem 0;
+        }
+        
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+        
+        .icon-link div:hover {
+            transform: translateY(-8px) scale(1.1) rotate(5deg);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2) !important;
+        }
+        
+        /* Image À propos avec effet 3D */
+        #about figure:hover {
+            transform: perspective(1000px) rotateY(0deg) scale(1.02) !important;
+        }
+        
+        /* Cartes de profil */
+        .profile-card {
+            cursor: pointer;
+        }
+        
+        .profile-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 20px 40px rgba(48, 41, 61, 0.2) !important;
+        }
+        
+        .profile-card:hover .profiles {
+            transform: scale(1.1);
+        }
+        
+        .profile-card:hover .profile-overlay {
+            opacity: 1;
+        }
+        
+        .profile-card:hover .user-name {
+            color: #e07b91 !important;
+        }
+        
+        .profil-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+            filter: brightness(1.1);
+        }
+        
+        /* Bouton voir tous */
+        section .button.is-large:hover {
+            transform: translateY(-4px);
+            background-color: #30293d !important;
+            color: white !important;
+        }
+        
+        /* Responsive */
+        @media screen and (max-width: 768px) {
+            .hero .title.is-1 {
+                font-size: 2rem !important;
+            }
+            
+            .icon-link div {
+                width: 60px !important;
+                height: 60px !important;
+            }
+            
+            .icon-link .icon.is-large {
+                font-size: 1.5rem !important;
+            }
+        }
 
  
   

@@ -1,13 +1,29 @@
-const deleteButton = document.querySelector("#deleteBtn"); 
-const deleteModal = document.querySelector("#delete-confirmation");
-const cancelDeleteButton = document.querySelector("#cancelDelete");
+const deleteBtn = document.getElementById('deleteBtn');
+const deleteConfirmation = document.getElementById('delete-confirmation');
+const cancelDelete = document.getElementById('cancelDelete');
+const closeModal = document.getElementById('closeModal');
 
-// Afficher le modal lorsque le bouton "Supprimer mon profil" est cliqué
-deleteButton.addEventListener("click", function() {
-  deleteModal.classList.toggle("is-hidden");
+// Ouvrir la modale
+deleteBtn.addEventListener('click', () => {
+    deleteConfirmation.classList.add('is-active');
 });
 
-// Fermer le modal si l'utilisateur clique sur "Annuler"
-cancelDeleteButton.addEventListener("click", function() {
-  deleteModal.classList.add("is-hidden");
+// Fermer la modale - bouton annuler
+cancelDelete.addEventListener('click', () => {
+    deleteConfirmation.classList.remove('is-active');
 });
+
+// Fermer la modale - croix
+if (closeModal) {
+    closeModal.addEventListener('click', () => {
+        deleteConfirmation.classList.remove('is-active');
+    });
+}
+
+// Fermer la modale - clic sur le fond
+const modalBackground = deleteConfirmation.querySelector('.modal-background');
+if (modalBackground) {
+    modalBackground.addEventListener('click', () => {
+        deleteConfirmation.classList.remove('is-active');
+    });
+}

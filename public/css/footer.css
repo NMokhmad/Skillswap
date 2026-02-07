@@ -1,0 +1,35 @@
+    /* Effets hover pour les icônes sociales */
+    .social-icon:hover {
+        transform: translateY(-8px) scale(1.05);
+        background: rgba(255, 168, 197, 0.2) !important;
+        border-color: #ffa8c5 !important;
+        box-shadow: 0 8px 16px rgba(255, 107, 157, 0.3);
+    }
+
+    .social-icon:hover img {
+        filter: brightness(0) invert(1) sepia(1) saturate(5) hue-rotate(290deg) !important;
+    }
+
+    /* Effets hover pour les liens du footer */
+    .footer-link:hover {
+        background: rgba(255, 255, 255, 0.1) !important;
+        color: white !important;
+        transform: translateX(5px);
+    }
+
+    /* Animation des sections du footer */
+    .footer-section:hover > div {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(48, 41, 61, 0.3);
+    }
+
+    /* Responsive */
+    @media screen and (max-width: 768px) {
+        .footer .columns {
+            margin-bottom: 2rem !important;
+        }
+        
+        .footer-section {
+            margin-bottom: 1rem;
+        }
+    }

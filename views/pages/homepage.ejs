@@ -14,15 +14,7 @@
         
         <div class="hero-body has-text-centered" style="position: relative; z-index: 1;">
             <div class="container">
-                <div class="mb-6">
-                    <!-- Badge "Nouveau" ou slogan -->
-                    <span class="tag is-large is-rounded" style="background: linear-gradient(135deg, #e07b91, #ff6b9d); color: white; padding: 0.75rem 2rem; font-weight: bold; box-shadow: 0 4px 12px rgba(224, 123, 145, 0.3); animation: pulse-badge 2s ease-in-out infinite;">
-                        <span class="icon">
-                            <i class="fa-solid fa-sparkles"></i>
-                        </span>
-                        <span>Rejoignez notre communauté !</span>
-                    </span>
-                </div>
+                
                 
                 <h1 class="title is-1 has-text-weight-bold mb-4" style="color: #30293d; font-size: 3.5rem; line-height: 1.2;">
                     Bienvenue sur <span style="background: linear-gradient(135deg, #e07b91, #ff6b9d, #7d6b93); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">SkillSwap</span>
@@ -35,9 +27,6 @@
                 <!-- Boutons CTA -->
                 <div class="buttons is-centered mb-6">
                     <a href="/skills" class="button is-large hero-cta-primary" style="background-color: #30293d; color: white; border: none; border-radius: 12px; font-weight: 600; padding: 1.75rem 3rem; transition: all 0.3s ease; box-shadow: 0 8px 20px rgba(48, 41, 61, 0.25);">
-                        <span class="icon">
-                            <i class="fa-solid fa-rocket"></i>
-                        </span>
                         <span>Explorer les compétences</span>
                     </a>
                     
@@ -253,9 +242,7 @@
                                     </div>
                                     
                                     <!-- Bio -->
-                                    <p class="mb-4" style="color: #30293d; line-height: 1.6; font-size: 0.95rem;">
-                                        <%= user.bio.length > 80 ? user.bio.substring(0, 80) + '...' : user.bio %>
-                                    </p>
+                                    
                                     
                                     <!-- Bouton -->
                                     <a href="/talents/<%= user.id %>" class="button is-fullwidth profil-button" style="background-color: <%= borderColor %>; color: white; border: none; border-radius: 10px; font-weight: 600; transition: all 0.3s ease;">
@@ -282,109 +269,6 @@
             </div>
         </div>
     </section>
-
-    <style>
-        /* Animation du badge pulsant */
-        @keyframes pulse-badge {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.05);
-            }
-        }
-        
-        /* Boutons Hero */
-        .hero-cta-primary:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 28px rgba(48, 41, 61, 0.35) !important;
-            background-color: #5a4a6f !important;
-        }
-        
-        .hero-cta-secondary:hover {
-            transform: translateY(-4px);
-            background-color: #30293d !important;
-            color: white !important;
-            box-shadow: 0 8px 20px rgba(48, 41, 61, 0.25);
-        }
-        
-        /* Icônes défilantes */
-        .icon-slider {
-            overflow: hidden;
-            padding: 1rem 0;
-        }
-        
-        @keyframes scroll {
-            0% {
-                transform: translateX(0);
-            }
-            100% {
-                transform: translateX(-50%);
-            }
-        }
-        
-        .icon-link div:hover {
-            transform: translateY(-8px) scale(1.1) rotate(5deg);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2) !important;
-        }
-        
-        /* Image À propos avec effet 3D */
-        #about figure:hover {
-            transform: perspective(1000px) rotateY(0deg) scale(1.02) !important;
-        }
-        
-        /* Cartes de profil */
-        .profile-card {
-            cursor: pointer;
-        }
-        
-        .profile-card:hover {
-            transform: translateY(-12px);
-            box-shadow: 0 20px 40px rgba(48, 41, 61, 0.2) !important;
-        }
-        
-        .profile-card:hover .profiles {
-            transform: scale(1.1);
-        }
-        
-        .profile-card:hover .profile-overlay {
-            opacity: 1;
-        }
-        
-        .profile-card:hover .user-name {
-            color: #e07b91 !important;
-        }
-        
-        .profil-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-            filter: brightness(1.1);
-        }
-        
-        /* Bouton voir tous */
-        section .button.is-large:hover {
-            transform: translateY(-4px);
-            background-color: #30293d !important;
-            color: white !important;
-        }
-        
-        /* Responsive */
-        @media screen and (max-width: 768px) {
-            .hero .title.is-1 {
-                font-size: 2rem !important;
-            }
-            
-            .icon-link div {
-                width: 60px !important;
-                height: 60px !important;
-            }
-            
-            .icon-link .icon.is-large {
-                font-size: 1.5rem !important;
-            }
-        }
-    </style>
-    
     <!-- ✅ Footer -->
     <%- include('../partials/footer.ejs') %>
 </body>

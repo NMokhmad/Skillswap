@@ -1,0 +1,292 @@
+/* ============================================
+   SKILLSWAP - STYLES GLOBAUX
+   Chargé sur toutes les pages
+   ============================================ */
+
+/* ─── Variables CSS ─── */
+:root {
+    --color-primary: #30293d;
+    --color-primary-light: #5a4a6f;
+    --color-primary-lighter: #7d6b93;
+    --color-rose: #e07b91;
+    --color-pink: #ff6b9d;
+    --color-pink-light: #ffa8c5;
+    --color-blue: #6b7db3;
+    --color-blue-light: #a8b7e5;
+    --color-gold: #ffd700;
+    --color-gold-light: #ffed4e;
+    --bg-main: #f3e8f3;
+    --shadow-sm: 0 4px 12px rgba(48, 41, 61, 0.1);
+    --shadow-md: 0 8px 24px rgba(48, 41, 61, 0.15);
+    --shadow-lg: 0 12px 32px rgba(48, 41, 61, 0.2);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --transition: all 0.3s ease;
+}
+
+/* ─── Base ─── */
+body {
+    background-color: var(--bg-main);
+}
+
+/* ─── Gradients réutilisables ─── */
+.gradient-violet {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light), var(--color-primary-lighter));
+}
+
+.gradient-rose {
+    background: linear-gradient(135deg, var(--color-pink), var(--color-pink-light));
+}
+
+.gradient-bleu {
+    background: linear-gradient(135deg, var(--color-blue), var(--color-blue-light));
+}
+
+.gradient-gold {
+    background: linear-gradient(135deg, var(--color-gold), var(--color-gold-light));
+}
+
+.gradient-rose-gold {
+    background: linear-gradient(135deg, var(--color-pink), var(--color-gold));
+}
+
+/* ─── En-têtes de pages ─── */
+.page-header {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light), var(--color-primary-lighter));
+    padding: 3rem 1.5rem;
+    margin-bottom: 3rem;
+    border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+    box-shadow: var(--shadow-md);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.page-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 168, 197, 0.1) 0%, transparent 70%);
+    animation: pulse 8s ease-in-out infinite;
+}
+
+.page-header .icon-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 1;
+}
+
+.page-header .title {
+    color: white;
+    font-weight: 700;
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.page-header .subtitle {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    position: relative;
+    z-index: 1;
+}
+
+/* ─── Cartes avec border ─── */
+.card-bordered {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    border: 3px solid;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.card-bordered::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+}
+
+.card-bordered:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Variants de couleurs */
+.variant-rose { border-color: var(--color-pink); }
+.variant-rose::before { background: linear-gradient(90deg, var(--color-pink), var(--color-pink-light)); }
+
+.variant-blue { border-color: var(--color-blue); }
+.variant-blue::before { background: linear-gradient(90deg, var(--color-blue), var(--color-blue-light)); }
+
+.variant-gold { border-color: var(--color-gold); }
+.variant-gold::before { background: linear-gradient(90deg, var(--color-gold), var(--color-gold-light)); }
+
+.variant-violet { border-color: var(--color-primary-lighter); }
+.variant-violet::before { background: linear-gradient(90deg, var(--color-primary-light), var(--color-primary-lighter)); }
+
+.variant-coral { border-color: var(--color-rose); }
+.variant-coral::before { background: linear-gradient(90deg, var(--color-rose), var(--color-pink)); }
+
+.variant-blue-light { border-color: var(--color-blue-light); }
+.variant-blue-light::before { background: linear-gradient(90deg, var(--color-blue-light), var(--color-blue)); }
+
+/* ─── Boutons ─── */
+.btn-primary {
+    background: linear-gradient(135deg, var(--color-pink), var(--color-gold));
+    border: none;
+    border-radius: var(--radius-md);
+    color: white;
+    font-weight: 700;
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: 0 6px 20px rgba(255, 107, 157, 0.3);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(255, 107, 157, 0.4);
+    color: white;
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, var(--color-blue), var(--color-blue-light));
+    border: none;
+    border-radius: var(--radius-md);
+    color: white;
+    font-weight: 700;
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: 0 6px 20px rgba(107, 125, 179, 0.3);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+}
+
+.btn-secondary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(107, 125, 179, 0.4);
+    color: white;
+}
+
+/* ─── Inputs ─── */
+.input-styled {
+    border: 2px solid #e0e0e0;
+    border-radius: var(--radius-md);
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    transition: var(--transition);
+    background-color: #fafafa;
+}
+
+.input-styled:focus {
+    border-color: var(--color-pink);
+    background-color: white;
+    box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.1);
+    outline: none;
+}
+
+.control.has-icons-left .input-styled {
+    padding-left: 2.75rem;
+}
+
+.control.has-icons-left .icon {
+    height: 100%;
+    width: 2.75rem;
+}
+
+/* ─── Messages d'erreur ─── */
+.error-message {
+    background: linear-gradient(135deg, var(--color-pink), var(--color-rose));
+    color: white;
+    border-radius: var(--radius-sm);
+    padding: 0.5rem 1rem;
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    box-shadow: 0 4px 12px rgba(255, 107, 157, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* ─── Badge glassmorphism ─── */
+.badge-glass {
+    background: rgba(255, 168, 197, 0.2);
+    backdrop-filter: blur(10px);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    border: 2px solid rgba(255, 168, 197, 0.3);
+    font-weight: 600;
+}
+
+/* ─── Avatar ─── */
+.avatar-circle {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* ─── Séparateur ─── */
+.separator-gradient {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(255, 168, 197, 0.3), transparent);
+    margin: 2rem 0;
+}
+
+/* ─── Animations ─── */
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Responsive ─── */
+@media screen and (max-width: 768px) {
+    .page-header .title {
+        font-size: 2rem;
+    }
+    .page-header {
+        padding: 2rem 1.5rem;
+    }
+}
