@@ -18,7 +18,6 @@ const authController={
   },
 
   async register(req,res){
-    
     try {
       const value  = await userCreateSchema.validateAsync(req.body, { abortEarly: false });
   
@@ -30,7 +29,7 @@ const authController={
         firstname,
         lastname,
         email,
-        password: hashedPassword
+        password: hashedPassword,
       });
 
       const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES });
@@ -55,7 +54,7 @@ const authController={
         sameSite: 'Strict'
       });
   
-      res.redirect('/protected');
+      res.redirect('/onboarding');
   
     } catch (error) {
       if (error.isJoi) {

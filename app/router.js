@@ -4,6 +4,7 @@ import authController from "./controllers/authController.js";
 import talentController from "./controllers/talentController.js";
 import profilController from "./controllers/profilController.js";
 import skillController from "./controllers/skillController.js";
+import { userInfo } from "./middlewares/userInfoCookie.js";
 
 const router = Router();
 
@@ -18,6 +19,9 @@ router.get("/skills/:slug", skillController.renderSkillPage);
 
 router.get("/register", authController.renderRegisterPage);
 router.post("/register", authController.register);
+
+router.get("/onboarding", mainController.renderOnboardingPage);
+router.post("/onboarding", mainController.handleOnboarding);
 
 router.get("/login", authController.renderloginPage);
 router.post("/login", authController.login);

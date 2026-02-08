@@ -75,7 +75,94 @@ const mainController={
     console.log(userInfo);
 
     res.render("myProfil", { user:userInfo, title, cssFile ,scriptFile });
-  }
+  },
+  
+  async renderOnboardingPage(req, res) {
+    const cssFile = "onboarding";
+    const title = "Onboarding";
+
+    try {
+        // Récupérer toutes les compétences disponibles
+        const skills = await Skill.findAll();
+        
+        // Récupérer l'utilisateur (soit depuis req.user du middleware, soit depuis le cookie)
+        let user;
+        if (req.user) {
+            // Si tu as un middleware qui met l'user complet dans req.user
+            user = req.user;
+        } else {
+            // Sinon, récupérer depuis le cookie userInfo
+            const userInfo = req.cookies.userInfo ? JSON.parse(req.cookies.userInfo) : null;
+            console.log("User info from cookie:", userInfo);
+            if (userInfo) {
+                user = await User.findByPk(userInfo.id);
+            }
+        }
+        
+        if (!user) {
+            return res.redirect('/register'); // Redirige vers la page d'inscription si l'utilisateur n'est pas trouvé
+        }
+        
+        // Render avec tous les paramètres nécessaires
+        res.render('onboarding', { 
+            user, 
+            skills, 
+            title, 
+            cssFile 
+        });
+        
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Erreur lors du chargement de la page');
+    }
+},
+
+async completeOnboarding(req, res) {
+    try {
+        const { bio, skills, new_skill } = req.body;
+        const userId = req.user.id;
+        
+        // Mettre à jour la bio si fournie
+        if (bio) {
+            await User.update({ bio }, { where: { id: userId } });
+        }
+        
+        // Gérer l'upload de l'avatar
+        if (req.file) {
+            const avatarPath = `/uploads/avatars/${req.file.filename}`;
+            await User.update({ avatar: avatarPath }, { where: { id: userId } });
+        }
+        
+        // Associer les compétences sélectionnées
+        if (skills && skills.length > 0) {
+            // Si skills est un string, le convertir en tableau
+            const skillsArray = Array.isArray(skills) ? skills : [skills];
+            
+            for (const skillId of skillsArray) {
+                await UserSkill.create({
+                    user_id: userId,
+                    skill_id: skillId
+                });
+            }
+        }
+        
+        // Créer une nouvelle compétence si proposée
+        if (new_skill && new_skill.trim()) {
+            await Skill.create({
+                label: new_skill.trim(),
+                slug: new_skill.trim().toLowerCase().replace(/\s+/g, '-'),
+                icon: 'fa-lightbulb', // Icône par défaut
+                pending: true // Pour validation admin
+            });
+        }
+        
+        res.redirect('/skills');
+        
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Erreur lors de la mise à jour du profil');
+    }
+}
   
 };
 

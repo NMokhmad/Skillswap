@@ -1,0 +1,95 @@
+        /* Progress bar personnalisée */
+        #profile-progress::-webkit-progress-value {
+            background: linear-gradient(90deg, #e07b91 0%, #6b7db3 50%, #7d6b93 100%);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+        
+        #profile-progress::-moz-progress-bar {
+            background: linear-gradient(90deg, #e07b91 0%, #6b7db3 50%, #7d6b93 100%);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+        
+        #profile-progress::-webkit-progress-bar {
+            background-color: #e8dce8;
+            border-radius: 10px;
+        }
+
+        /* Effet hover sur les cartes */
+        .step-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(48, 41, 61, 0.2) !important;
+        }
+
+        /* Checkbox de compétences */
+        .skill-checkbox:checked + .skill-tag {
+            border-color: currentColor !important;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .skill-checkbox:checked + .skill-tag .checkmark-icon {
+            display: inline-block !important;
+        }
+        
+        .skill-tag:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Upload d'image */
+        .file-cta:hover {
+            background-color: #ff6b9d !important;
+        }
+
+        /* Textarea avec compteur */
+        #bio:focus {
+            border-color: #6b7db3 !important;
+            box-shadow: 0 0 0 3px rgba(107, 125, 179, 0.1) !important;
+        }
+
+        /* Bouton terminer */
+        #complete-btn:not(:disabled):hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(48, 41, 61, 0.35);
+            background-color: #5a4a6f !important;
+        }
+        
+        #complete-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Animation de l'icône principale */
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-15px) rotate(10deg);
+            }
+        }
+        
+        .icon.is-large i {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Scroll personnalisé pour la grille de compétences */
+        #skills-grid::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        #skills-grid::-webkit-scrollbar-track {
+            background: #e8dce8;
+            border-radius: 10px;
+        }
+        
+        #skills-grid::-webkit-scrollbar-thumb {
+            background: #7d6b93;
+            border-radius: 10px;
+        }
+        
+        #skills-grid::-webkit-scrollbar-thumb:hover {
+            background: #5a4a6f;
+        }
