@@ -21,7 +21,7 @@ router.get("/register", authController.renderRegisterPage);
 router.post("/register", authController.register);
 
 router.get("/onboarding", mainController.renderOnboardingPage);
-router.post("/onboarding", mainController.handleOnboarding);
+router.post("/onboarding", mainController.completeOnboarding);
 
 router.get("/login", authController.renderloginPage);
 router.post("/login", authController.login);

@@ -7,6 +7,11 @@ import cors from 'cors';
 import { verifyJWT } from './app/middlewares/jwtVerify.js';
 import { userInfo } from './app/middlewares/userInfoCookie.js';
 import methodeOverride from 'method-override';
+import { sequelize } from './app/database.js';
+
+sequelize.sync({ alter: true })
+  .then(() => console.log('✅ Base de données synchronisée'))
+  .catch((err) => console.error('❌ Erreur sync DB :', err));
 
 const app = express();
 app.use(methodeOverride('_method')); // Middleware pour gérer les requêtes PUT et DELETE via des formulaires

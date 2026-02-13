@@ -119,47 +119,70 @@ const mainController={
 
 async completeOnboarding(req, res) {
     try {
+        console.log("Données reçues:", req.body);
+        console.log("Fichier reçu:", req.file);
+        
+        // ✅ Récupérer userInfo depuis le cookie
+        const userInfo = req.cookies.userInfo ? JSON.parse(req.cookies.userInfo) : null;
+        
+        if (!userInfo || !userInfo.id) {
+            return res.redirect('/login');
+        }
+        
+        const userId = userInfo.id;
+        console.log("ID utilisateur:", userId);
+        
         const { bio, skills, new_skill } = req.body;
-        const userId = req.user.id;
         
         // Mettre à jour la bio si fournie
-        if (bio) {
-            await User.update({ bio }, { where: { id: userId } });
+        if (bio && bio.trim()) {
+            await User.update({ bio: bio.trim() }, { where: { id: userId } });
+            console.log("Bio mise à jour");
         }
         
         // Gérer l'upload de l'avatar
         if (req.file) {
             const avatarPath = `/uploads/avatars/${req.file.filename}`;
             await User.update({ avatar: avatarPath }, { where: { id: userId } });
+            console.log("Avatar mis à jour:", avatarPath);
         }
         
         // Associer les compétences sélectionnées
-        if (skills && skills.length > 0) {
-            // Si skills est un string, le convertir en tableau
+        if (skills) {
             const skillsArray = Array.isArray(skills) ? skills : [skills];
+            console.log("Compétences à ajouter:", skillsArray);
             
             for (const skillId of skillsArray) {
                 await UserSkill.create({
                     user_id: userId,
-                    skill_id: skillId
+                    skill_id: parseInt(skillId)
                 });
             }
+            console.log("Compétences associées");
         }
         
         // Créer une nouvelle compétence si proposée
         if (new_skill && new_skill.trim()) {
+            const slug = new_skill.trim()
+                .toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-+|-+$/g, '');
+                
             await Skill.create({
                 label: new_skill.trim(),
-                slug: new_skill.trim().toLowerCase().replace(/\s+/g, '-'),
-                icon: 'fa-lightbulb', // Icône par défaut
-                pending: true // Pour validation admin
+                slug: slug,
+                icon: 'fa-lightbulb',
+                pending: true
             });
+            console.log("Nouvelle compétence créée:", new_skill.trim());
         }
         
-        res.redirect('/skills');
+        res.redirect('/');
         
     } catch (error) {
-        console.error(error);
+        console.error("Erreur completeOnboarding:", error);
         res.status(500).send('Erreur lors de la mise à jour du profil');
     }
 }

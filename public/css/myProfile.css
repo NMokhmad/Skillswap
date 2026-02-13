@@ -1,4 +1,4 @@
-/* Animations des boutons profil */
+        /* Animations des boutons profil */
         .profile-edit-btn:hover {
             transform: translateY(-4px);
             box-shadow: 0 12px 28px rgba(107, 125, 179, 0.35);
@@ -23,7 +23,7 @@
         }
         
         /* Inputs focus */
-        .input:focus {
+        .input:focus, .textarea:focus {
             border-color: #6b7db3 !important;
             box-shadow: 0 0 0 3px rgba(107, 125, 179, 0.1) !important;
         }
@@ -56,6 +56,11 @@
         #cancelDelete:hover {
             background-color: #30293d !important;
             color: white !important;
+        }
+        
+        /* Upload d'avatar */
+        .file-cta:hover {
+            background-color: #ff6b9d !important;
         }
         
         /* Animation de l'icône principale */

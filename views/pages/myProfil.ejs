@@ -1,6 +1,7 @@
 <%- include('../partials/header') %>
 <script src="/js/editProfil.js" defer></script>
 <script src="/js/deleteProfil.js" defer></script>
+<script src="/js/previsualition.js" defer></script>
 </head>
 <!-- ✅ Navbar -->
 <%- include('../partials/navbar.ejs') %>
@@ -35,11 +36,17 @@
                         <!-- Avatar circulaire en haut -->
                         <div class="has-text-centered mb-5 pb-4" style="border-bottom: 3px solid #f3e8f3;">
                             <figure class="image is-128x128 is-inline-block mb-4">
-                                <div style="width: 128px; height: 128px; border-radius: 50%; background: linear-gradient(135deg, #e07b91, #ff6b9d); display: flex; align-items: center; justify-content: center; border: 5px solid white; box-shadow: 0 8px 20px rgba(224, 123, 145, 0.3);">
-                                    <span class="icon is-large has-text-light" style="font-size: 3.5rem;">
-                                        <i class="fa-solid fa-user"></i>
-                                    </span>
-                                </div>
+                                <% if (user.avatar) { %>
+                                    <!-- Photo de profil uploadée -->
+                                    <img src="<%= user.avatar %>" alt="Avatar de <%= user.firstname %>" style="width: 128px; height: 128px; border-radius: 50%; object-fit: cover; border: 5px solid white; box-shadow: 0 8px 20px rgba(224, 123, 145, 0.3);">
+                                <% } else { %>
+                                    <!-- Avatar par défaut -->
+                                    <div style="width: 128px; height: 128px; border-radius: 50%; background: linear-gradient(135deg, #e07b91, #ff6b9d); display: flex; align-items: center; justify-content: center; border: 5px solid white; box-shadow: 0 8px 20px rgba(224, 123, 145, 0.3);">
+                                        <span class="icon is-large has-text-light" style="font-size: 3.5rem;">
+                                            <i class="fa-solid fa-user"></i>
+                                        </span>
+                                    </div>
+                                <% } %>
                             </figure>
                             
                             <!-- Badge membre -->
@@ -90,6 +97,55 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- Bio -->
+                            <% if (user.bio) { %>
+                                <div class="box mb-4" style="background: linear-gradient(135deg, #fff5f7 0%, #ffeef8 100%); border-radius: 12px; border-left: 5px solid #ff6b9d;">
+                                    <div class="is-flex is-align-items-start">
+                                        <span class="icon is-medium mr-3" style="color: #ff6b9d; font-size: 1.5rem;">
+                                            <i class="fa-solid fa-pen-fancy"></i>
+                                        </span>
+                                        <div style="flex: 1;">
+                                            <p class="has-text-weight-semibold" style="color: #7d6b93; font-size: 0.9rem; margin-bottom: 0.5rem;">À propos de moi</p>
+                                            <p style="color: #30293d; line-height: 1.6;"><%= user.bio %></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% } %>
+
+                            <!-- Compétences -->
+                            <% if (user.skills && user.skills.length > 0) { %>
+                                <div class="box mb-4" style="background: linear-gradient(135deg, #f0f4ff 0%, #f9f5f9 100%); border-radius: 12px; border-left: 5px solid #a8b7e5;">
+                                    <div>
+                                        <p class="has-text-weight-semibold mb-3" style="color: #30293d; font-size: 1rem;">
+                                            <span class="icon-text">
+                                                <span class="icon" style="color: #6b7db3;">
+                                                    <i class="fa-solid fa-certificate"></i>
+                                                </span>
+                                                <span>Mes compétences</span>
+                                            </span>
+                                        </p>
+                                        <div class="tags">
+                                            <% user.skills.forEach((skill, index) => { 
+                                                const colors = [
+                                                    { bg: '#ffa8c5', text: '#8d1450' },
+                                                    { bg: '#a8b7e5', text: '#1a2f5f' },
+                                                    { bg: '#e8dce8', text: '#30293d' },
+                                                    { bg: '#ffd7a8', text: '#8d4a00' }
+                                                ];
+                                                const color = colors[index % colors.length];
+                                            %>
+                                                <span class="tag is-medium" style="background-color: <%= color.bg %>; color: <%= color.text %>; border-radius: 10px; font-weight: 600; padding: 0.75rem 1rem;">
+                                                    <span class="icon is-small">
+                                                        <i class="fa-solid <%= skill.icon || 'fa-star' %>"></i>
+                                                    </span>
+                                                    <span><%= skill.label %></span>
+                                                </span>
+                                            <% }) %>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% } %>
                         </div>
                         
                         <!-- Boutons d'action -->
@@ -112,51 +168,50 @@
                     </div>
 
                     <!-- Bloc de confirmation de suppression -->
-                    <!-- Remplace le <dialog> par ceci : -->
-                      <div id="delete-confirmation" class="modal">
-                          <div class="modal-background"></div>
-                          <div class="modal-content">
-                              <div class="box" style="background-color: white; border-radius: 16px; border: 3px solid #ff6b9d; box-shadow: 0 12px 32px rgba(255, 107, 157, 0.25); padding: 3rem; max-width: 600px; margin: 0 auto;">
-                                  <div class="has-text-centered">
-                                      <div class="mb-4">
-                                          <span class="icon" style="font-size: 5rem; color: #ff6b9d;">
-                                              <i class="fa-solid fa-triangle-exclamation"></i>
-                                          </span>
-                                      </div>
-                                      
-                                      <h3 class="title is-4 has-text-weight-bold mb-3" style="color: #30293d;">Confirmer la suppression</h3>
-                                      <p class="subtitle is-5 mb-5" style="color: #7d6b93;">Êtes-vous vraiment sûr de vouloir supprimer votre profil ? Cette action est irréversible.</p>
-                                      
-                                      <div class="box mb-4" style="background-color: #fff5f7; border-radius: 12px; border: 2px solid #ff6b9d;">
-                                          <p class="has-text-weight-semibold" style="color: #ff6b9d;">
-                                              <span class="icon">
-                                                  <i class="fa-solid fa-exclamation-circle"></i>
-                                              </span>
-                                              Toutes vos données seront définitivement perdues
-                                          </p>
-                                      </div>
-                                      
-                                      <div class="buttons is-centered">
-                                          <form action="/user/<%= user.id %>/profil?_method=DELETE" method="post" style="display: inline;">
-                                              <button type="submit" class="button is-large" style="background-color: #ff6b9d; color: white; border: none; border-radius: 12px; font-weight: 600; padding: 1.5rem 2.5rem;">
-                                                  <span class="icon">
-                                                      <i class="fa-solid fa-trash-can"></i>
-                                                  </span>
-                                                  <span>Oui, supprimer définitivement</span>
-                                              </button>
-                                          </form>
-                                          <button id="cancelDelete" class="button is-large" style="background-color: white; color: #30293d; border: 3px solid #30293d; border-radius: 12px; font-weight: 600; padding: 1.5rem 2.5rem;">
-                                              <span class="icon">
-                                                  <i class="fa-solid fa-xmark"></i>
-                                              </span>
-                                              <span>Annuler</span>
-                                          </button>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                          <button class="modal-close is-large" aria-label="close" id="closeModal"></button>
-                      </div>
+                    <div id="delete-confirmation" class="modal">
+                        <div class="modal-background"></div>
+                        <div class="modal-content">
+                            <div class="box" style="background-color: white; border-radius: 16px; border: 3px solid #ff6b9d; box-shadow: 0 12px 32px rgba(255, 107, 157, 0.25); padding: 3rem; max-width: 600px; margin: 0 auto;">
+                                <div class="has-text-centered">
+                                    <div class="mb-4">
+                                        <span class="icon" style="font-size: 5rem; color: #ff6b9d;">
+                                            <i class="fa-solid fa-triangle-exclamation"></i>
+                                        </span>
+                                    </div>
+                                    
+                                    <h3 class="title is-4 has-text-weight-bold mb-3" style="color: #30293d;">Confirmer la suppression</h3>
+                                    <p class="subtitle is-5 mb-5" style="color: #7d6b93;">Êtes-vous vraiment sûr de vouloir supprimer votre profil ? Cette action est irréversible.</p>
+                                    
+                                    <div class="box mb-4" style="background-color: #fff5f7; border-radius: 12px; border: 2px solid #ff6b9d;">
+                                        <p class="has-text-weight-semibold" style="color: #ff6b9d;">
+                                            <span class="icon">
+                                                <i class="fa-solid fa-exclamation-circle"></i>
+                                            </span>
+                                            Toutes vos données seront définitivement perdues
+                                        </p>
+                                    </div>
+                                    
+                                    <div class="buttons is-centered">
+                                        <form action="/user/<%= user.id %>/profil?_method=DELETE" method="post" style="display: inline;">
+                                            <button type="submit" class="button is-large" style="background-color: #ff6b9d; color: white; border: none; border-radius: 12px; font-weight: 600; padding: 1.5rem 2.5rem;">
+                                                <span class="icon">
+                                                    <i class="fa-solid fa-trash-can"></i>
+                                                </span>
+                                                <span>Oui, supprimer définitivement</span>
+                                            </button>
+                                        </form>
+                                        <button id="cancelDelete" class="button is-large" style="background-color: white; color: #30293d; border: 3px solid #30293d; border-radius: 12px; font-weight: 600; padding: 1.5rem 2.5rem;">
+                                            <span class="icon">
+                                                <i class="fa-solid fa-xmark"></i>
+                                            </span>
+                                            <span>Annuler</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="modal-close is-large" aria-label="close" id="closeModal"></button>
+                    </div>
 
                     <!-- Bloc de formulaire d'édition -->
                     <div id="profil-edit" class="box is-hidden" style="background-color: white; border-radius: 16px; border: 3px solid #6b7db3; box-shadow: 0 8px 24px rgba(107, 125, 179, 0.15);">
@@ -170,8 +225,49 @@
                             <p class="subtitle is-6" style="color: #7d6b93;">Mettez à jour vos informations personnelles</p>
                         </div>
                         
-                        <form action="/user/<%= user.id %>/profil" method="POST" class="px-4 pb-4">
+                        <form action="/user/<%= user.id %>/profil" method="POST" enctype="multipart/form-data" class="px-4 pb-4">
                             
+                            <!-- Champ Photo de profil -->
+                            <div class="field mb-5">
+                                <label class="label" style="color: #30293d; font-weight: 600; font-size: 1rem;">
+                                    <span class="icon-text">
+                                        <span class="icon" style="color: #e07b91;">
+                                            <i class="fa-solid fa-camera"></i>
+                                        </span>
+                                        <span>Photo de profil</span>
+                                    </span>
+                                </label>
+                                <div class="has-text-centered mb-3">
+                                    <figure class="image is-96x96 is-inline-block">
+                                        <% if (user.avatar) { %>
+                                            <img id="avatar-preview-edit" src="<%= user.avatar %>" alt="Avatar" style="width: 96px; height: 96px; border-radius: 50%; object-fit: cover; border: 3px solid #e8dce8;">
+                                        <% } else { %>
+                                            <div id="avatar-preview-edit" style="width: 96px; height: 96px; border-radius: 50%; background: linear-gradient(135deg, #e07b91, #ff6b9d); display: flex; align-items: center; justify-content: center; border: 3px solid #e8dce8;">
+                                                <span class="icon is-large has-text-light">
+                                                    <i class="fa-solid fa-user"></i>
+                                                </span>
+                                            </div>
+                                        <% } %>
+                                    </figure>
+                                </div>
+                                <div class="file has-name is-fullwidth">
+                                    <label class="file-label">
+                                        <input class="file-input" type="file" name="avatar" id="avatar-edit" accept="image/*">
+                                        <span class="file-cta" style="background-color: #e07b91; color: white; border: none; border-radius: 10px 0 0 10px;">
+                                            <span class="file-icon">
+                                                <i class="fa-solid fa-upload"></i>
+                                            </span>
+                                            <span class="file-label">
+                                                Changer la photo
+                                            </span>
+                                        </span>
+                                        <span class="file-name" id="file-name-edit" style="border: 2px solid #e8dce8; border-radius: 0 10px 10px 0;">
+                                            <%= user.avatar ? 'Photo actuelle' : 'Aucune photo' %>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+
                             <!-- Champ Prénom -->
                             <div class="field mb-5">
                                 <label class="label" style="color: #30293d; font-weight: 600; font-size: 1rem;">
@@ -224,6 +320,24 @@
                                         <i class="fa-solid fa-envelope"></i>
                                     </span>
                                 </div>
+                            </div>
+
+                            <!-- Champ Bio -->
+                            <div class="field mb-5">
+                                <label class="label" style="color: #30293d; font-weight: 600; font-size: 1rem;">
+                                    <span class="icon-text">
+                                        <span class="icon" style="color: #ff6b9d;">
+                                            <i class="fa-solid fa-pen-fancy"></i>
+                                        </span>
+                                        <span>À propos de moi</span>
+                                    </span>
+                                </label>
+                                <div class="control">
+                                    <textarea class="textarea is-medium" name="bio" id="bio-edit" rows="4" maxlength="500" placeholder="Parlez-nous de vous..." style="border: 2px solid #e8dce8; border-radius: 10px;"><%= user.bio || '' %></textarea>
+                                </div>
+                                <p class="help has-text-right" style="color: #7d6b93;">
+                                    <span id="bio-count-edit"><%= user.bio ? user.bio.length : 0 %></span>/500 caractères
+                                </p>
                             </div>
 
                             <!-- Message d'info -->
