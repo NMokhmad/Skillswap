@@ -1,0 +1,76 @@
+body {
+    background-color: #f3e8f3;
+}
+
+#messages-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+#messages-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#messages-container::-webkit-scrollbar-thumb {
+    background: #e8dce8;
+    border-radius: 3px;
+}
+
+#messages-container::-webkit-scrollbar-thumb:hover {
+    background: #7d6b93;
+}
+
+/* ─── Responsive - Tablette ─── */
+@media screen and (max-width: 768px) {
+    /* Messages list - full width */
+    .column.is-8 {
+        width: 100%;
+    }
+
+    /* Conversation header */
+    .box[style*="border: 2px solid #7d6b93"] {
+        padding: 0.75rem !important;
+    }
+
+    /* Messages bubbles */
+    div[style*="max-width: 70%"] {
+        max-width: 85% !important;
+    }
+
+    /* Message input form */
+    .field.has-addons {
+        flex-direction: row !important;
+    }
+}
+
+/* ─── Responsive - Mobile ─── */
+@media screen and (max-width: 480px) {
+    /* Messages header */
+    div[style*="padding: 2.5rem 1.5rem"] {
+        padding: 1.5rem 1rem !important;
+    }
+
+    div[style*="padding: 2.5rem 1.5rem"] h1 {
+        font-size: 1.5rem !important;
+    }
+
+    /* Conversation bubbles */
+    div[style*="max-width: 70%"] {
+        max-width: 90% !important;
+        padding: 0.6rem 0.8rem !important;
+    }
+
+    /* Avatar dans la liste des conversations */
+    div[style*="width: 56px"][style*="border-radius: 50%"] {
+        width: 44px !important;
+        height: 44px !important;
+    }
+
+    div[style*="width: 56px"] span[style*="font-size: 1.1rem"] {
+        font-size: 0.9rem !important;
+    }
+
+    /* Message container height */
+    #messages-container {
+        max-height: 400px !important;
+    }
+}

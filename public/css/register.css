@@ -245,8 +245,12 @@ body {
         font-weight: 600;
     }
 
-    /* Responsive */
+    /* Responsive - Tablette */
     @media screen and (max-width: 768px) {
+        .register-section {
+            padding: 2rem 1rem;
+        }
+
         .register-header {
             padding: 2rem 1.5rem;
         }
@@ -255,7 +259,45 @@ body {
             font-size: 1.75rem;
         }
 
+        .register-header .icon-circle {
+            width: 64px;
+            height: 64px;
+        }
+
         .register-body {
             padding: 2rem 1.5rem;
+        }
+    }
+
+    /* Responsive - Mobile */
+    @media screen and (max-width: 480px) {
+        .register-section {
+            padding: 1.5rem 0.75rem;
+        }
+
+        .register-header {
+            padding: 1.5rem 1rem;
+        }
+
+        .register-header .title {
+            font-size: 1.5rem;
+        }
+
+        .register-header .subtitle {
+            font-size: 0.9rem;
+        }
+
+        .register-header .icon-circle {
+            width: 56px;
+            height: 56px;
+        }
+
+        .register-body {
+            padding: 1.5rem 1rem;
+        }
+
+        .btn-register {
+            font-size: 1rem;
+            padding: 0.85rem;
         }
     }

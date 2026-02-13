@@ -9,7 +9,8 @@ const skillController={
     // Je récupère les compétences stockées en base de données
     const skills = await Skill.findAll();
 
-    res.render("skills", { user: req.cookies.user, skills, title, cssFile } );
+    const user = req.cookies.userInfo ? JSON.parse(req.cookies.userInfo) : null;
+    res.render("skills", { user, skills, title, cssFile } );
   },
 
   async renderSkillPage(req,res){
@@ -29,7 +30,8 @@ const skillController={
 
     const title = `Skills | ${skill[0].label}`;
 
-    res.render("skill",{ user: req.cookies.user, skills, skill: skill[0], title, cssFile } );
+    const user = req.cookies.userInfo ? JSON.parse(req.cookies.userInfo) : null;
+    res.render("skill",{ user, skills, skill: skill[0], title, cssFile } );
   },
 };
 

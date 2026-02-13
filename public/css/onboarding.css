@@ -93,3 +93,96 @@
         #skills-grid::-webkit-scrollbar-thumb:hover {
             background: #5a4a6f;
         }
+
+        /* Responsive - Tablette */
+        @media screen and (max-width: 768px) {
+            /* Step cards - tag and title flex */
+            .step-card .is-flex.is-justify-content-space-between {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            /* File upload component */
+            .file.has-name.is-large {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .file.has-name.is-large .file-name {
+                max-width: 100%;
+                width: 100%;
+                text-align: center;
+            }
+
+            /* Skills grid */
+            #skills-grid {
+                max-height: 300px !important;
+            }
+
+            /* Submit button */
+            #complete-btn {
+                padding: 1.25rem 2rem !important;
+                font-size: 1rem !important;
+            }
+        }
+
+        /* Responsive - Mobile */
+        @media screen and (max-width: 480px) {
+            /* Onboarding header */
+            .box.has-text-centered.mb-6.p-6 {
+                padding: 1.5rem !important;
+            }
+
+            .box.has-text-centered.mb-6.p-6 .title.is-1 {
+                font-size: 1.5rem !important;
+            }
+
+            .box.has-text-centered.mb-6.p-6 .subtitle.is-4 {
+                font-size: 1rem !important;
+            }
+
+            /* Step cards */
+            .step-card {
+                padding: 1rem !important;
+            }
+
+            .step-card .title.is-4 {
+                font-size: 1.1rem !important;
+            }
+
+            .step-card .subtitle.is-6 {
+                font-size: 0.85rem !important;
+            }
+
+            /* Skills grid - tighter layout */
+            #skills-grid {
+                gap: 0.5rem !important;
+                padding: 0.75rem !important;
+                max-height: 250px !important;
+            }
+
+            .skill-tag {
+                padding: 0.5rem 0.9rem !important;
+                font-size: 0.85rem !important;
+            }
+
+            /* Avatar preview */
+            #avatar-preview {
+                width: 96px !important;
+                height: 96px !important;
+            }
+
+            /* Submit area */
+            .box[style*="border: 3px dashed"] {
+                padding: 1.25rem !important;
+            }
+
+            #complete-btn {
+                padding: 1rem 1.5rem !important;
+                font-size: 0.95rem !important;
+            }
+
+            .button.is-medium.is-text {
+                font-size: 0.85rem !important;
+            }
+        }

@@ -4,6 +4,9 @@ import authController from "./controllers/authController.js";
 import talentController from "./controllers/talentController.js";
 import profilController from "./controllers/profilController.js";
 import skillController from "./controllers/skillController.js";
+import followController from "./controllers/followController.js";
+import reviewController from "./controllers/reviewController.js";
+import messageController from "./controllers/messageController.js";
 import { userInfo } from "./middlewares/userInfoCookie.js";
 
 const router = Router();
@@ -28,7 +31,8 @@ router.post("/login", authController.login);
 
 router.get("/logout", authController.logout);
 
-router.get("/searchPage", mainController.searchPage);
+// Recherche par compétences
+router.get("/search", mainController.searchPage);
 
 router.get("/user/:id", mainController.renderHomePage);
 
@@ -36,9 +40,17 @@ router.route("/user/:id/profil")
   .get(mainController.renderProfilePage)
   .post(profilController.updateProfile)
   .delete(profilController.deleteProfile);
-  
 
+// Follow / Unfollow
+router.post("/follow/:id", followController.follow);
+router.delete("/follow/:id", followController.unfollow);
+
+// Avis
+router.post("/review/:userId", reviewController.createReview);
+
+// Messagerie
+router.get("/messages", messageController.renderMessagesPage);
+router.get("/messages/:userId", messageController.renderConversation);
+router.post("/messages/:userId", messageController.sendMessage);
 
 export default router;
-
-

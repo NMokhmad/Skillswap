@@ -1,47 +1,128 @@
-    /* Effets hover pour les liens de navigation */
-    .nav-link:hover {
-        background: rgba(255, 255, 255, 0.1);
-        transform: translateY(-2px);
+/* Fix overflow horizontal global */
+html, body {
+    overflow-x: hidden;
+    max-width: 100vw;
+}
+
+/* Effets hover pour les liens de navigation */
+.nav-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+/* Logo hover */
+.navbar-brand .navbar-item:hover {
+    background: rgba(255, 255, 255, 0.15) !important;
+    transform: scale(1.05);
+}
+
+/* Boutons connexion/inscription hover */
+a[href="/login"]:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+    border-color: rgba(255, 255, 255, 0.4) !important;
+    transform: translateY(-2px);
+}
+
+a[href="/register"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(255, 107, 157, 0.4) !important;
+}
+
+a[href="/logout"]:hover {
+    background: rgba(224, 123, 145, 0.3) !important;
+    border-color: #e07b91 !important;
+    transform: translateY(-2px);
+}
+
+/* Dropdown utilisateur */
+#userDropdown .navbar-link:hover {
+    background: rgba(255, 168, 197, 0.3) !important;
+    border-color: rgba(255, 168, 197, 0.5) !important;
+}
+
+#userDropdown.is-active .fa-chevron-down {
+    transform: rotate(180deg);
+    transition: transform 0.3s ease;
+}
+
+#userDropdown .fa-chevron-down {
+    transition: transform 0.3s ease;
+}
+
+#userDropdown .navbar-dropdown .navbar-item:hover {
+    background: rgba(255, 168, 197, 0.15) !important;
+    color: white !important;
+}
+
+/* Burger menu hover */
+.navbar-burger:hover {
+    background: rgba(255, 168, 197, 0.2);
+}
+
+/* ─── Menu mobile (Bulma breakpoint 1024px) ─── */
+@media screen and (max-width: 1023px) {
+    .navbar-menu {
+        background: linear-gradient(135deg, #30293d, #5a4a6f) !important;
+        border-radius: 0 0 16px 16px;
+        box-shadow: 0 8px 16px rgba(48, 41, 61, 0.2);
+        padding: 0.5rem 0;
     }
 
-    /* Logo hover */
-    .navbar-brand .navbar-item:hover {
-        background: rgba(255, 255, 255, 0.15) !important;
-        transform: scale(1.05);
+    .navbar-menu .navbar-end {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
     }
 
-    /* Boutons connexion/inscription hover */
-    a[href="/login"]:hover {
-        background: rgba(255, 255, 255, 0.2) !important;
-        border-color: rgba(255, 255, 255, 0.4) !important;
-        transform: translateY(-2px);
+    .navbar-menu .navbar-item {
+        margin: 0.15rem 0.75rem !important;
+        border-radius: 8px;
+        padding: 0.6rem 1rem;
     }
 
-    a[href="/register"]:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(255, 107, 157, 0.4) !important;
+    .navbar-menu .navbar-item span:last-child {
+        font-size: 0.95rem;
     }
 
-    a[href="/logout"]:hover {
-        background: rgba(224, 123, 145, 0.3) !important;
-        border-color: #e07b91 !important;
-        transform: translateY(-2px);
+    /* Boutons auth en colonne sur mobile */
+    .navbar-menu a[href="/login"],
+    .navbar-menu a[href="/register"] {
+        text-align: center;
+        margin: 0.25rem 0.75rem !important;
     }
 
-    /* Menu mobile */
-    @media screen and (max-width: 1023px) {
-        .navbar-menu {
-            background: linear-gradient(135deg, #30293d, #5a4a6f) !important;
-            border-radius: 0 0 16px 16px;
-            box-shadow: 0 8px 16px rgba(48, 41, 61, 0.2);
-        }
-
-        .navbar-item {
-            margin: 0.25rem 0.5rem !important;
-        }
+    /* Dropdown utilisateur en mobile */
+    #userDropdown .navbar-link {
+        border-radius: 12px !important;
     }
 
-    /* Burger menu hover */
-    .navbar-burger:hover {
-        background: rgba(255, 168, 197, 0.2);
+    #userDropdown .navbar-dropdown {
+        background: rgba(255, 168, 197, 0.1) !important;
+        border: none !important;
+        box-shadow: none !important;
+        border-radius: 8px !important;
+        margin: 0.25rem 0 !important;
+        padding: 0.25rem 0 !important;
     }
+
+    #userDropdown .navbar-dropdown .navbar-item {
+        padding: 0.5rem 1rem !important;
+    }
+
+    #userDropdown .navbar-divider {
+        margin: 0.25rem 1rem !important;
+    }
+}
+
+/* ─── Très petit mobile ─── */
+@media screen and (max-width: 480px) {
+    .navbar-brand .navbar-item {
+        font-size: 1.2rem !important;
+        padding: 0.4rem 0.8rem !important;
+    }
+
+    .navbar-menu .navbar-item {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.9rem;
+    }
+}

@@ -1,105 +1,220 @@
 /* Animation du badge pulsant */
-        @keyframes pulse-badge {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.05);
-            }
-        }
-        
-        /* Boutons Hero */
-        .hero-cta-primary:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 28px rgba(48, 41, 61, 0.35) !important;
-            background-color: #5a4a6f !important;
-        }
-        
-        .hero-cta-secondary:hover {
-            transform: translateY(-4px);
-            background-color: #30293d !important;
-            color: white !important;
-            box-shadow: 0 8px 20px rgba(48, 41, 61, 0.25);
-        }
-        
-        /* Icônes défilantes */
-        .icon-slider {
-            overflow: hidden;
-            padding: 1rem 0;
-        }
-        
-        @keyframes scroll {
-            0% {
-                transform: translateX(0);
-            }
-            100% {
-                transform: translateX(-50%);
-            }
-        }
-        
-        .icon-link div:hover {
-            transform: translateY(-8px) scale(1.1) rotate(5deg);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2) !important;
-        }
-        
-        /* Image À propos avec effet 3D */
-        #about figure:hover {
-            transform: perspective(1000px) rotateY(0deg) scale(1.02) !important;
-        }
-        
-        /* Cartes de profil */
-        .profile-card {
-            cursor: pointer;
-        }
-        
-        .profile-card:hover {
-            transform: translateY(-12px);
-            box-shadow: 0 20px 40px rgba(48, 41, 61, 0.2) !important;
-        }
-        
-        .profile-card:hover .profiles {
-            transform: scale(1.1);
-        }
-        
-        .profile-card:hover .profile-overlay {
-            opacity: 1;
-        }
-        
-        .profile-card:hover .user-name {
-            color: #e07b91 !important;
-        }
-        
-        .profil-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-            filter: brightness(1.1);
-        }
-        
-        /* Bouton voir tous */
-        section .button.is-large:hover {
-            transform: translateY(-4px);
-            background-color: #30293d !important;
-            color: white !important;
-        }
-        
-        /* Responsive */
-        @media screen and (max-width: 768px) {
-            .hero .title.is-1 {
-                font-size: 2rem !important;
-            }
-            
-            .icon-link div {
-                width: 60px !important;
-                height: 60px !important;
-            }
-            
-            .icon-link .icon.is-large {
-                font-size: 1.5rem !important;
-            }
-        }
+@keyframes pulse-badge {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
 
- 
-  
- 
-  
+/* Boutons Hero */
+.hero-cta-primary:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(48, 41, 61, 0.35) !important;
+    background-color: #5a4a6f !important;
+}
 
+.hero-cta-secondary:hover {
+    transform: translateY(-4px);
+    background-color: #30293d !important;
+    color: white !important;
+    box-shadow: 0 8px 20px rgba(48, 41, 61, 0.25);
+}
+
+/* Icônes défilantes */
+.icon-slider {
+    overflow: hidden;
+    padding: 1rem 0;
+}
+
+@keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+.icon-link div:hover {
+    transform: translateY(-8px) scale(1.1) rotate(5deg);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Image À propos avec effet 3D */
+#about figure:hover {
+    transform: perspective(1000px) rotateY(0deg) scale(1.02) !important;
+}
+
+/* Cartes de profil */
+.profile-card {
+    cursor: pointer;
+}
+
+.profile-card:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 20px 40px rgba(48, 41, 61, 0.2) !important;
+}
+
+.profile-card:hover .profiles {
+    transform: scale(1.1);
+}
+
+.profile-card:hover .profile-overlay {
+    opacity: 1;
+}
+
+.profile-card:hover .user-name {
+    color: #e07b91 !important;
+}
+
+.profil-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    filter: brightness(1.1);
+}
+
+/* Bouton voir tous */
+section .button.is-large:hover {
+    transform: translateY(-4px);
+    background-color: #30293d !important;
+    color: white !important;
+}
+
+/* ─── Tablette (max 768px) ─── */
+@media screen and (max-width: 768px) {
+    .hero .title.is-1 {
+        font-size: 2rem !important;
+    }
+
+    .hero .subtitle.is-3 {
+        font-size: 1.1rem !important;
+    }
+
+    /* Boutons CTA : empilés et plus compacts */
+    .hero .buttons.is-centered {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .hero .buttons .button.is-large {
+        padding: 1rem 2rem !important;
+        font-size: 0.95rem !important;
+        width: 100%;
+        max-width: 320px;
+    }
+
+    /* Icônes compétences */
+    .icon-link div {
+        width: 60px !important;
+        height: 60px !important;
+        border-radius: 14px !important;
+    }
+
+    .icon-link .icon.is-large {
+        font-size: 1.4rem !important;
+    }
+
+    .icon-track {
+        gap: 1rem !important;
+    }
+
+    /* Section À propos : empiler texte et image */
+    #about .columns.is-vcentered {
+        flex-direction: column;
+    }
+
+    #about .column.is-half {
+        width: 100%;
+    }
+
+    #about .content {
+        font-size: 1rem !important;
+    }
+
+    /* Stats : padding réduit */
+    #about .columns.is-mobile .column > div {
+        padding: 1rem !important;
+    }
+
+    #about .columns.is-mobile .title.is-3 {
+        font-size: 1.3rem !important;
+    }
+
+    /* Profils : 2 colonnes sur tablette */
+    #profiles .column.is-4 {
+        width: 50%;
+    }
+
+    /* Bouton voir tous */
+    #profiles .button.is-large {
+        padding: 1rem 2rem !important;
+        font-size: 0.95rem !important;
+    }
+}
+
+/* ─── Mobile (max 480px) ─── */
+@media screen and (max-width: 480px) {
+    .hero .title.is-1 {
+        font-size: 1.6rem !important;
+    }
+
+    .hero .subtitle.is-3 {
+        font-size: 1rem !important;
+    }
+
+    .hero-body {
+        padding: 2rem 1rem !important;
+    }
+
+    /* Boutons CTA : pleine largeur */
+    .hero .buttons .button.is-large {
+        padding: 0.85rem 1.5rem !important;
+        font-size: 0.9rem !important;
+        max-width: 100%;
+    }
+
+    /* Icônes : plus petites */
+    .icon-link div {
+        width: 50px !important;
+        height: 50px !important;
+        border-radius: 12px !important;
+    }
+
+    .icon-link .icon.is-large {
+        font-size: 1.2rem !important;
+    }
+
+    .icon-track {
+        gap: 0.75rem !important;
+    }
+
+    /* Stats */
+    #about .columns.is-mobile .column > div {
+        padding: 0.75rem !important;
+    }
+
+    #about .columns.is-mobile .title.is-3 {
+        font-size: 1.1rem !important;
+    }
+
+    #about .columns.is-mobile .subtitle.is-6 {
+        font-size: 0.75rem !important;
+    }
+
+    /* Profils : 1 colonne sur mobile */
+    #profiles .column.is-4 {
+        width: 100%;
+    }
+
+    /* Avatar overlay */
+    .profile-card .card-content div[style*="width: 80px"] {
+        width: 64px !important;
+        height: 64px !important;
+    }
+
+    /* Bouton voir tous */
+    #profiles .button.is-large {
+        width: 100%;
+        padding: 0.85rem 1.5rem !important;
+    }
+
+    /* Formes décoratives : cacher sur mobile pour perf */
+    .hero > div[style*="position: absolute"][style*="blur"] {
+        display: none;
+    }
+}

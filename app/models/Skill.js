@@ -22,5 +22,6 @@ Skill.init(
   {
     sequelize,
     tableName: "skill",
+    underscored: true,
   }
 );

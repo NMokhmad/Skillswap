@@ -17,5 +17,6 @@ Notification.init(
   {
     sequelize,
     tableName: "notification",
+    underscored: true,
   }
 );

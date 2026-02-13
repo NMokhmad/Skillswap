@@ -281,8 +281,12 @@ body {
         font-weight: 600;
     }
 
-    /* Responsive */
+    /* Responsive - Tablette */
     @media screen and (max-width: 768px) {
+        .login-section {
+            padding: 2rem 1rem;
+        }
+
         .login-header {
             padding: 2rem 1.5rem;
         }
@@ -291,7 +295,45 @@ body {
             font-size: 1.75rem;
         }
 
+        .login-header .icon-circle {
+            width: 64px;
+            height: 64px;
+        }
+
         .login-body {
             padding: 2rem 1.5rem;
+        }
+    }
+
+    /* Responsive - Mobile */
+    @media screen and (max-width: 480px) {
+        .login-section {
+            padding: 1.5rem 0.75rem;
+        }
+
+        .login-header {
+            padding: 1.5rem 1rem;
+        }
+
+        .login-header .title {
+            font-size: 1.5rem;
+        }
+
+        .login-header .subtitle {
+            font-size: 0.9rem;
+        }
+
+        .login-header .icon-circle {
+            width: 56px;
+            height: 56px;
+        }
+
+        .login-body {
+            padding: 1.5rem 1rem;
+        }
+
+        .btn-login {
+            font-size: 1rem;
+            padding: 0.85rem;
         }
     }

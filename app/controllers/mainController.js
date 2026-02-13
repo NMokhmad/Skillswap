@@ -1,3 +1,4 @@
+import { Op } from 'sequelize';
 import { User, Skill, Review } from '../models/index.js';
 
 const mainController={
@@ -58,8 +59,78 @@ const mainController={
     res.render("help_page", { title , cssFile });
   },
 
-  searchPage(req,res){
-    res.render("searchPage");
+  async searchPage(req, res) {
+    const title = "Recherche";
+    const cssFile = "search";
+
+    try {
+      const { q, skill } = req.query;
+      const allSkills = await Skill.findAll();
+
+      // Construire les conditions de recherche
+      const userWhere = {};
+      const skillInclude = {
+        model: Skill,
+        as: 'skills'
+      };
+
+      // Filtre par compétence
+      if (skill) {
+        skillInclude.where = { id: parseInt(skill) };
+      }
+
+      // Filtre par nom
+      if (q && q.trim()) {
+        const searchTerm = `%${q.trim()}%`;
+        userWhere[Op.or] = [
+          { firstname: { [Op.iLike]: searchTerm } },
+          { lastname: { [Op.iLike]: searchTerm } }
+        ];
+      }
+
+      const users = await User.findAll({
+        where: userWhere,
+        include: [
+          skillInclude,
+          { model: Review, as: 'received_reviews' }
+        ]
+      });
+
+      // Si on filtre par compétence, on doit aussi recharger toutes les compétences de chaque user
+      let usersWithAllSkills = users;
+      if (skill) {
+        const userIds = users.map(u => u.id);
+        usersWithAllSkills = await User.findAll({
+          where: { id: { [Op.in]: userIds } },
+          include: [
+            { model: Skill, as: 'skills' },
+            { model: Review, as: 'received_reviews' }
+          ]
+        });
+      }
+
+      const usersRated = usersWithAllSkills.map(user => {
+        const reviews = user.received_reviews || [];
+        const total = reviews.reduce((sum, r) => sum + r.rate, 0);
+        const average = reviews.length ? total / reviews.length : 0;
+        return {
+          ...user.toJSON(),
+          averageRating: average
+        };
+      });
+
+      res.render("search", {
+        users: usersRated,
+        skills: allSkills,
+        query: q || '',
+        selectedSkill: skill || '',
+        title,
+        cssFile
+      });
+    } catch (error) {
+      console.error("Erreur searchPage:", error);
+      res.status(500).send("Erreur serveur");
+    }
   },
 
   renderProfilePage(req,res){

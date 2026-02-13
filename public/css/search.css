@@ -1,0 +1,51 @@
+body {
+    background-color: #f3e8f3;
+}
+
+/* ─── Tablette (max 768px) ─── */
+@media screen and (max-width: 768px) {
+    /* En-tête recherche */
+    main > div:first-child {
+        padding: 2rem 1rem !important;
+    }
+
+    main > div:first-child h1 {
+        font-size: 2rem !important;
+    }
+
+    /* Formulaire : empiler les champs */
+    main > div:first-child .columns.is-vcentered {
+        flex-direction: column;
+    }
+
+    main > div:first-child .columns.is-vcentered .column {
+        width: 100%;
+        padding-bottom: 0.25rem;
+    }
+
+    /* Résultats container */
+    .container[style*="padding: 3rem"] {
+        padding: 2rem 1rem !important;
+    }
+}
+
+/* ─── Mobile (max 480px) ─── */
+@media screen and (max-width: 480px) {
+    main > div:first-child {
+        padding: 1.5rem 0.75rem !important;
+        border-radius: 0 0 16px 16px !important;
+    }
+
+    main > div:first-child h1 {
+        font-size: 1.6rem !important;
+    }
+
+    main > div:first-child p {
+        font-size: 0.95rem !important;
+    }
+
+    /* Résultats container */
+    .container[style*="padding: 3rem"] {
+        padding: 1.5rem 0.75rem !important;
+    }
+}

@@ -17,5 +17,6 @@ Message.init(
   {
     sequelize,
     tableName: "message",
+    underscored: true,
   }
 );

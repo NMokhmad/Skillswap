@@ -17,5 +17,6 @@ Review.init(
   {
     sequelize,
     tableName: "review",
+    underscored: true,
   }
 );

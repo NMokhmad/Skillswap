@@ -1,0 +1,92 @@
+<%- include('../partials/header.ejs') %>
+<script src="https://kit.fontawesome.com/626daf36fc.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+<%- include('../partials/navbar.ejs') %>
+
+<main class="section" style="background: linear-gradient(135deg, #f3e8f3 0%, #ffeef8 100%); min-height: 80vh;">
+    <div class="container">
+
+        <!-- En-tête -->
+        <div class="has-text-centered mb-6" style="background: linear-gradient(135deg, #30293d, #5a4a6f, #7d6b93); padding: 2.5rem 1.5rem; border-radius: 16px; box-shadow: 0 8px 24px rgba(48, 41, 61, 0.15);">
+            <h1 class="title has-text-white" style="font-weight: 700; font-size: 2rem;">
+                <span class="icon is-large" style="color: #ffd700;">
+                    <i class="fas fa-envelope"></i>
+                </span>
+                <br>
+                Mes Messages
+            </h1>
+            <p style="color: #ffa8c5; font-size: 1.1rem;"><%= conversations.length %> conversation<%= conversations.length > 1 ? 's' : '' %></p>
+        </div>
+
+        <% if (conversations.length === 0) { %>
+            <div class="box has-text-centered" style="border-radius: 16px; padding: 3rem;">
+                <span class="icon is-large has-text-grey-light" style="font-size: 3rem;">
+                    <i class="fas fa-comments"></i>
+                </span>
+                <p class="title is-5 mt-4" style="color: #7d6b93;">Aucune conversation</p>
+                <p class="has-text-grey">Envoyez un message depuis le profil d'un talent pour commencer une conversation.</p>
+                <a href="/talents" class="button mt-4" style="background-color: #e07b91; color: white; border: none; border-radius: 10px; font-weight: 600;">
+                    <span class="icon"><i class="fas fa-users"></i></span>
+                    <span>Voir les talents</span>
+                </a>
+            </div>
+        <% } else { %>
+            <div class="columns is-centered">
+                <div class="column is-8">
+                    <% conversations.forEach((conv, index) => { %>
+                        <% const variant = (index % 4) + 1; %>
+                        <% const borderColors = ['#ff6b9d', '#6b7db3', '#7d6b93', '#ffd700']; %>
+                        <% const avatarGradients = [
+                            'linear-gradient(135deg, #ff6b9d, #ffa8c5)',
+                            'linear-gradient(135deg, #6b7db3, #a8b7e5)',
+                            'linear-gradient(135deg, #7d6b93, #5a4a6f)',
+                            'linear-gradient(135deg, #ffd700, #ffed4e)'
+                        ]; %>
+                        <a href="/messages/<%= conv.user.id %>" style="text-decoration: none;">
+                            <div class="box mb-4" style="border-radius: 16px; border: 2px solid <%= borderColors[index % borderColors.length] %>; transition: all 0.3s ease; cursor: pointer;">
+                                <div class="is-flex is-align-items-center">
+                                    <!-- Avatar -->
+                                    <div style="width: 56px; height: 56px; border-radius: 50%; background: <%= avatarGradients[index % avatarGradients.length] %>; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                        <span style="color: white; font-weight: 700; font-size: 1.1rem;">
+                                            <%= conv.user.firstname.charAt(0).toUpperCase() %><%= conv.user.lastname.charAt(0).toUpperCase() %>
+                                        </span>
+                                    </div>
+                                    <!-- Contenu -->
+                                    <div class="ml-4" style="flex: 1; min-width: 0;">
+                                        <div class="is-flex is-justify-content-space-between is-align-items-center">
+                                            <p class="has-text-weight-bold" style="color: #30293d;"><%= conv.user.firstname %> <%= conv.user.lastname %></p>
+                                            <span class="is-size-7" style="color: #7d6b93;">
+                                                <%= new Date(conv.lastMessage.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }) %>
+                                            </span>
+                                        </div>
+                                        <p class="is-size-7" style="color: #7d6b93; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                            <%= conv.lastMessage.content %>
+                                        </p>
+                                    </div>
+                                    <% if (conv.unreadCount > 0) { %>
+                                        <span class="tag is-rounded ml-3" style="background-color: #e07b91; color: white; font-weight: 700;">
+                                            <%= conv.unreadCount %>
+                                        </span>
+                                    <% } %>
+                                </div>
+                            </div>
+                        </a>
+                    <% }) %>
+                </div>
+            </div>
+        <% } %>
+    </div>
+</main>
+
+<style>
+    .box:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(48, 41, 61, 0.15);
+    }
+</style>
+
+<%- include('../partials/footer.ejs') %>
+</body>
+</html>

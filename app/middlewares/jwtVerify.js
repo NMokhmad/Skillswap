@@ -9,7 +9,6 @@ export const verifyJWT = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
-    res.redirect('/'); // Ajoute les données du user dans req
     next();
   } catch (error) {
     console.error('Erreur de vérification du token JWT:', error);
