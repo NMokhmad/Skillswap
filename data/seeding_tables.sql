@@ -13,10 +13,10 @@ VALUES
 INSERT INTO 
 "user" ("firstname", "lastname", "email", "password", "bio", "image", "interest", "is_available", "role_id")
 VALUES
-('Badia', 'Abouanane', 'badia.abouanane@gmail.com', '$argon2i$v=19$m=16,t=2,p=1$ZEI2bVNIUDNkSU12YXpPZw$6/N/x7wSFAeFzg0qzp9zJA', 'je suis actuellement en reconversion professionnelle chez Oclock', 'badia.webp', 'developpement web', true, 1),
-('Mokhmad', 'Noutsoulkhanov', 'mokhmad.noutsoulkhanov@gmail.com', '$argon2i$v=19$m=16,t=2,p=1$ZEI2bVNIUDNkSU12YXpPZw$8eDu3PYXEUZ55NClHbz9ww', 'je suis fullstack mais avec une petite préférence pour le back', 'mokhmad.webp', 'mathematiques', false, 1),
-('Medhi', 'Lagil', 'mehdi.lagil@gmail.com', '$argon2i$v=19$m=16,t=2,p=1$ZEI2bVNIUDNkSU12YXpPZw$BR5DIs2SOUoGoH8enea6OQ', 'je kiffe le dev et la vie', 'medhi.webp', 'mathematiques', false, 1),
-('Fatima', 'Zouhiri', 'fatima.zouhiri@gmail.com', '$argon2i$v=19$m=16,t=2,p=1$ZEI2bVNIUDNkSU12YXpPZw$a2mHq9/wsxe4KHs4vh7C3w', 'je suis fullstack mais avec une petite préférence pour le back', 'fatima.webp', 'mathematiques', false, 1);
+('Badia', 'Abouanane', 'badia.abouanane@gmail.com', '$argon2i$v=19$m=16,t=2,p=1$ZEI2bVNIUDNkSU12YXpPZw$6/N/x7wSFAeFzg0qzp9zJA', 'je suis actuellement en reconversion professionnelle chez Oclock', 'defaultpp.jpg', 'developpement web', true, 1),
+('Mokhmad', 'Noutsoulkhanov', 'mokhmad.noutsoulkhanov@gmail.com', '$argon2i$v=19$m=16,t=2,p=1$ZEI2bVNIUDNkSU12YXpPZw$8eDu3PYXEUZ55NClHbz9ww', 'je suis fullstack mais avec une petite préférence pour le back', 'defaultpp.jpg', 'mathematiques', false, 1),
+('Medhi', 'Lagil', 'mehdi.lagil@gmail.com', '$argon2i$v=19$m=16,t=2,p=1$ZEI2bVNIUDNkSU12YXpPZw$BR5DIs2SOUoGoH8enea6OQ', 'je kiffe le dev et la vie', 'defaultpp.jpg', 'mathematiques', false, 1),
+('Fatima', 'Zouhiri', 'fatima.zouhiri@gmail.com', '$argon2i$v=19$m=16,t=2,p=1$ZEI2bVNIUDNkSU12YXpPZw$a2mHq9/wsxe4KHs4vh7C3w', 'je suis fullstack mais avec une petite préférence pour le back', 'defaultpp.jpg', 'mathematiques', false, 1);
 
 -- SELECT setval('user_id_seq', (SELECT MAX(id) from "user"));
 
