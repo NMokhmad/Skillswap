@@ -1,3 +1,4 @@
+import { jest, describe, test, expect } from '@jest/globals';
 import jwt from 'jsonwebtoken';
 import { verifyJWT } from '../app/middlewares/jwtVerify.js';
 
