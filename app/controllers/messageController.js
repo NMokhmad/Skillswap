@@ -3,16 +3,11 @@ import { User, Message } from '../models/index.js';
 import { sequelize } from '../database.js';
 
 const messageController = {
+  // Route protégée par verifyJWT → req.user est garanti
   async renderMessagesPage(req, res) {
     try {
-      const userInfo = req.cookies.userInfo ? JSON.parse(req.cookies.userInfo) : null;
-      if (!userInfo || !userInfo.id) {
-        return res.redirect('/login');
-      }
+      const userId = req.user.id;
 
-      const userId = userInfo.id;
-
-      // Récupérer tous les messages de l'utilisateur
       const messages = await Message.findAll({
         where: {
           [Op.or]: [
@@ -27,19 +22,37 @@ const messageController = {
         order: [['created_at', 'DESC']]
       });
 
-      // Grouper par conversation (l'autre utilisateur)
+      // UNE SEULE requête pour tous les counts de messages non lus
+      // Au lieu de N requêtes dans la boucle (problème N+1)
+      const unreadCounts = await Message.findAll({
+        attributes: [
+          'sender_id',
+          [sequelize.fn('COUNT', sequelize.col('id')), 'count']
+        ],
+        where: {
+          receiver_id: userId,
+          is_read: false
+        },
+        group: ['sender_id'],
+        raw: true
+      });
+
+      // Transformer en Map pour lookup O(1)
+      const unreadMap = new Map();
+      for (const row of unreadCounts) {
+        unreadMap.set(row.sender_id, parseInt(row.count));
+      }
+
+      // Grouper par conversation
       const conversationsMap = new Map();
       for (const msg of messages) {
         const otherId = msg.sender_id === userId ? msg.receiver_id : msg.sender_id;
         if (!conversationsMap.has(otherId)) {
           const otherUser = msg.sender_id === userId ? msg.receiver : msg.sender;
-          const unreadCount = await Message.count({
-            where: { sender_id: otherId, receiver_id: userId, is_read: false }
-          });
           conversationsMap.set(otherId, {
             user: otherUser,
             lastMessage: msg,
-            unreadCount
+            unreadCount: unreadMap.get(otherId) || 0
           });
         }
       }
@@ -57,14 +70,10 @@ const messageController = {
     }
   },
 
+  // Route protégée par verifyJWT → req.user est garanti
   async renderConversation(req, res) {
     try {
-      const userInfo = req.cookies.userInfo ? JSON.parse(req.cookies.userInfo) : null;
-      if (!userInfo || !userInfo.id) {
-        return res.redirect('/login');
-      }
-
-      const userId = userInfo.id;
+      const userId = req.user.id;
       const otherUserId = parseInt(req.params.userId);
 
       const otherUser = await User.findByPk(otherUserId);
@@ -72,7 +81,6 @@ const messageController = {
         return res.status(404).render('404', { title: 'Utilisateur introuvable', cssFile: '404' });
       }
 
-      // Récupérer les messages entre les deux utilisateurs
       const messages = await Message.findAll({
         where: {
           [Op.or]: [
@@ -112,14 +120,10 @@ const messageController = {
     }
   },
 
+  // Route protégée par verifyJWT → req.user est garanti
   async sendMessage(req, res) {
     try {
-      const userInfo = req.cookies.userInfo ? JSON.parse(req.cookies.userInfo) : null;
-      if (!userInfo || !userInfo.id) {
-        return res.redirect('/login');
-      }
-
-      const senderId = userInfo.id;
+      const senderId = req.user.id;
       const receiverId = parseInt(req.params.userId);
       const { content } = req.body;
 

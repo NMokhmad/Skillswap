@@ -341,6 +341,16 @@ body {
         font-weight: 600;
     }
 
+    /* Icône header */
+    .help-icon-header { color: #30293d; }
+
+    /* Sous-texte contact */
+    .contact-subtext {
+        color: #999;
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+    }
+
     /* Responsive */
     @media screen and (max-width: 768px) {
         .help-header .title {

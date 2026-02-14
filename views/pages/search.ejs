@@ -5,29 +5,29 @@
 <body>
 <%- include('../partials/navbar.ejs') %>
 
-<main style="background: linear-gradient(135deg, #f3e8f3 0%, #ffeef8 100%); min-height: 80vh;">
+<main class="search-main">
 
-    <!-- En-tête avec recherche -->
-    <div style="background: linear-gradient(135deg, #30293d, #5a4a6f, #7d6b93); padding: 3rem 1.5rem; border-radius: 0 0 24px 24px; box-shadow: 0 8px 24px rgba(48, 41, 61, 0.15);">
+    <!-- En-tete avec recherche -->
+    <div class="search-header">
         <div class="container has-text-centered">
-            <h1 class="title has-text-white" style="font-weight: 700; font-size: 2.5rem;">
-                <span class="icon is-large" style="color: #ffd700;">
+            <h1 class="title has-text-white search-title">
+                <span class="icon is-large search-title-icon">
                     <i class="fas fa-search fa-lg"></i>
                 </span>
                 <br>
                 Rechercher un talent
             </h1>
-            <p style="color: #ffa8c5; font-size: 1.1rem; margin-bottom: 2rem;">Trouvez le talent idéal par compétence ou par nom</p>
+            <p class="search-subtitle">Trouvez le talent ideal par competence ou par nom</p>
 
             <!-- Formulaire de recherche -->
             <div class="columns is-centered">
                 <div class="column is-8">
                     <form action="/search" method="GET">
-                        <div class="columns is-vcentered" style="align-items: stretch;">
+                        <div class="columns is-vcentered search-form-row">
                             <div class="column is-5">
                                 <div class="control has-icons-left">
-                                    <input class="input is-medium" type="text" name="q" placeholder="Nom ou prénom..." value="<%= query %>" style="border-radius: 12px; border: 2px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.95);">
-                                    <span class="icon is-left" style="color: #7d6b93;">
+                                    <input class="input is-medium search-input" type="text" name="q" placeholder="Nom, prenom ou compétence..." value="<%= query %>">
+                                    <span class="icon is-left search-input-icon">
                                         <i class="fas fa-user"></i>
                                     </span>
                                 </div>
@@ -35,8 +35,8 @@
                             <div class="column is-4">
                                 <div class="control has-icons-left">
                                     <div class="select is-medium is-fullwidth">
-                                        <select name="skill" style="border-radius: 12px; border: 2px solid rgba(255,255,255,0.3);">
-                                            <option value="">Toutes les compétences</option>
+                                        <select name="skill" class="search-select">
+                                            <option value="">Toutes les competences</option>
                                             <% skills.forEach(s => { %>
                                                 <option value="<%= s.id %>" <%= selectedSkill == s.id ? 'selected' : '' %>><%= s.label %></option>
                                             <% }) %>
@@ -45,7 +45,7 @@
                                 </div>
                             </div>
                             <div class="column is-3">
-                                <button type="submit" class="button is-medium is-fullwidth" style="background-color: #e07b91; color: white; border: none; border-radius: 12px; font-weight: 600; height: 100%;">
+                                <button type="submit" class="button is-medium is-fullwidth search-submit-btn">
                                     <span class="icon">
                                         <i class="fas fa-search"></i>
                                     </span>
@@ -59,14 +59,14 @@
         </div>
     </div>
 
-    <!-- Résultats -->
-    <div class="container" style="padding: 3rem 1.5rem;">
+    <!-- Resultats -->
+    <div class="container search-results">
 
-        <!-- Compteur de résultats -->
+        <!-- Compteur de resultats -->
         <div class="mb-5">
-            <p class="has-text-weight-semibold" style="color: #30293d; font-size: 1.1rem;">
+            <p class="has-text-weight-semibold search-results-count">
                 <% if (query || selectedSkill) { %>
-                    <%= users.length %> résultat<%= users.length > 1 ? 's' : '' %>
+                    <%= users.length %> resultat<%= users.length > 1 ? 's' : '' %>
                     <% if (query) { %> pour "<%= query %>"<% } %>
                     <% if (selectedSkill) { %>
                         <% const selectedSkillObj = skills.find(s => s.id == selectedSkill); %>
@@ -79,43 +79,34 @@
         </div>
 
         <% if (users.length === 0) { %>
-            <div class="box has-text-centered" style="border-radius: 16px; padding: 3rem;">
-                <span class="icon is-large has-text-grey-light" style="font-size: 3rem;">
+            <div class="box has-text-centered search-empty-box">
+                <span class="icon is-large has-text-grey-light search-empty-icon">
                     <i class="fas fa-search"></i>
                 </span>
-                <p class="title is-5 mt-4" style="color: #7d6b93;">Aucun résultat trouvé</p>
-                <p class="has-text-grey">Essayez de modifier vos critères de recherche.</p>
+                <p class="title is-5 mt-4 search-empty-title">Aucun resultat trouve</p>
+                <p class="has-text-grey">Essayez de modifier vos criteres de recherche.</p>
             </div>
         <% } else { %>
             <div class="columns is-multiline">
                 <% users.forEach((user, index) => { %>
                     <% const variant = (index % 6) + 1; %>
-                    <% const borderColors = ['#ff6b9d', '#6b7db3', '#ffd700', '#7d6b93', '#e07b91', '#a8b7e5']; %>
-                    <% const avatarGradients = [
-                        'linear-gradient(135deg, #ff6b9d, #ffa8c5)',
-                        'linear-gradient(135deg, #6b7db3, #a8b7e5)',
-                        'linear-gradient(135deg, #ffd700, #ffed4e)',
-                        'linear-gradient(135deg, #5a4a6f, #7d6b93)',
-                        'linear-gradient(135deg, #e07b91, #ff6b9d)',
-                        'linear-gradient(135deg, #a8b7e5, #6b7db3)'
-                    ]; %>
                     <div class="column is-12-mobile is-6-tablet is-4-desktop">
-                        <div class="box" style="border-radius: 16px; border: 3px solid <%= borderColors[index % borderColors.length] %>; height: 100%; transition: all 0.3s ease; position: relative; overflow: hidden;">
-                            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: <%= avatarGradients[index % avatarGradients.length] %>;"></div>
+                        <div class="box search-card search-card-variant-<%= variant %>">
+                            <div class="search-card-topbar search-topbar-variant-<%= variant %>"></div>
 
                             <!-- Avatar -->
                             <div class="has-text-centered">
-                                <div style="width: 72px; height: 72px; border-radius: 50%; background: <%= avatarGradients[index % avatarGradients.length] %>; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
-                                    <span style="font-size: 1.8rem; font-weight: 700; color: white;">
+                                <div class="search-avatar search-avatar-variant-<%= variant %>">
+                                    <span class="search-avatar-initials">
                                         <%= user.firstname.charAt(0).toUpperCase() %><%= user.lastname.charAt(0).toUpperCase() %>
                                     </span>
                                 </div>
 
-                                <a href="/talents/<%= user.id %>" class="has-text-weight-bold" style="color: #30293d; font-size: 1.1rem; text-decoration: none;">
+                                <a href="/talents/<%= user.id %>" class="has-text-weight-bold search-user-link">
                                     <%= user.firstname %> <%= user.lastname %>
                                 </a>
 
-                                <!-- Étoiles -->
+                                <!-- Etoiles -->
                                 <div class="mt-2 mb-3">
                                     <% const fullS = Math.floor(user.averageRating || 0); %>
                                     <% const halfS = (user.averageRating || 0) % 1 >= 0.5; %>
@@ -132,17 +123,17 @@
                                     <span class="has-text-grey is-size-7">(<%= (user.averageRating || 0).toFixed(1) %>/5)</span>
                                 </div>
 
-                                <!-- Tags compétences -->
-                                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-bottom: 1rem;">
+                                <!-- Tags competences -->
+                                <div class="search-skills-tags">
                                     <% user.skills.forEach(skill => { %>
-                                        <a href="/skills/<%= skill.slug %>" class="tag" style="background: rgba(48, 41, 61, 0.05); color: <%= borderColors[index % borderColors.length] %>; border-radius: 20px; font-weight: 600; font-size: 0.85rem; text-decoration: none;">
+                                        <a href="/skills/<%= skill.slug %>" class="tag search-skill-tag search-skill-tag-variant-<%= variant %>">
                                             <span class="icon is-small"><i class="fas fa-star"></i></span>
                                             <span><%= skill.label %></span>
                                         </a>
                                     <% }) %>
                                 </div>
 
-                                <a href="/talents/<%= user.id %>" class="button is-small" style="background-color: <%= borderColors[index % borderColors.length] %>; color: white; border: none; border-radius: 10px; font-weight: 600;">
+                                <a href="/talents/<%= user.id %>" class="button is-small search-profile-btn search-profile-btn-variant-<%= variant %>">
                                     Voir le profil
                                 </a>
                             </div>
@@ -153,13 +144,6 @@
         <% } %>
     </div>
 </main>
-
-<style>
-    .box:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 12px 32px rgba(48, 41, 61, 0.2);
-    }
-</style>
 
 <%- include('../partials/footer.ejs') %>
 </body>

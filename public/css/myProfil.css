@@ -1,0 +1,511 @@
+/* =============================================
+   myProfil.css - Styles for the profile page
+   ============================================= */
+
+/* --- Page background --- */
+.profil-main {
+    background: linear-gradient(135deg, #f3e8f3 0%, #ffeef8 100%);
+    min-height: calc(100vh - 200px);
+}
+
+/* --- Page header banner --- */
+.profil-header-banner {
+    background: linear-gradient(135deg, #30293d 0%, #5a4a6f 50%, #7d6b93 100%);
+    border-radius: 16px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 12px 32px rgba(48, 41, 61, 0.25);
+}
+
+.profil-header-shine {
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.profil-header-content {
+    position: relative;
+    z-index: 1;
+}
+
+.profil-header-icon {
+    font-size: 4rem;
+    filter: drop-shadow(0 8px 16px rgba(0,0,0,0.3));
+}
+
+.profil-subtitle-light {
+    opacity: 0.95;
+}
+
+/* --- Profile view card --- */
+.box.profil-view-card {
+    background-color: white !important;
+    border-radius: 16px !important;
+    border: 3px solid #30293d !important;
+    box-shadow: 0 8px 24px rgba(83, 13, 214, 0.12) !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+/* --- Avatar section --- */
+.profil-avatar-section {
+    border-bottom: 3px solid #f3e8f3;
+}
+
+.profil-avatar-img {
+    width: 128px;
+    height: 128px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid white;
+    box-shadow: 0 8px 20px rgba(224, 123, 145, 0.3);
+}
+
+.profil-avatar-default {
+    width: 128px;
+    height: 128px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #e07b91, #ff6b9d);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 5px solid white;
+    box-shadow: 0 8px 20px rgba(224, 123, 145, 0.3);
+}
+
+.profil-avatar-default-icon {
+    font-size: 3.5rem;
+}
+
+/* --- Member badge --- */
+.profil-member-badge {
+    display: inline-block;
+}
+
+.profil-badge-tag {
+    background-color: #6b7db3;
+    color: white;
+    border-radius: 20px;
+    padding: 0.5rem 1.5rem;
+    font-weight: bold;
+}
+
+/* --- Info boxes --- */
+.profil-info-firstname {
+    background: linear-gradient(135deg, #ffeef8 0%, #f9f5f9 100%);
+    border-radius: 12px;
+    border-left: 5px solid #e07b91;
+}
+
+.profil-info-lastname {
+    background: linear-gradient(135deg, #f0f4ff 0%, #f9f5f9 100%);
+    border-radius: 12px;
+    border-left: 5px solid #6b7db3;
+}
+
+.profil-info-email {
+    background: linear-gradient(135deg, #f9f5f9 0%, #ffeef8 100%);
+    border-radius: 12px;
+    border-left: 5px solid #7d6b93;
+}
+
+.profil-info-bio {
+    background: linear-gradient(135deg, #fff5f7 0%, #ffeef8 100%);
+    border-radius: 12px;
+    border-left: 5px solid #ff6b9d;
+}
+
+.profil-info-skills {
+    background: linear-gradient(135deg, #f0f4ff 0%, #f9f5f9 100%);
+    border-radius: 12px;
+    border-left: 5px solid #a8b7e5;
+}
+
+/* --- Info box icons --- */
+.profil-icon-pink {
+    color: #e07b91;
+    font-size: 1.5rem;
+}
+
+.profil-icon-blue {
+    color: #6b7db3;
+    font-size: 1.5rem;
+}
+
+.profil-icon-purple {
+    color: #7d6b93;
+    font-size: 1.5rem;
+}
+
+.profil-icon-rose {
+    color: #ff6b9d;
+    font-size: 1.5rem;
+}
+
+.profil-icon-skills {
+    color: #6b7db3;
+}
+
+/* --- Info box inner layout --- */
+.profil-info-flex {
+    flex: 1;
+}
+
+/* --- Info box labels and values --- */
+.profil-label {
+    color: #7d6b93;
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+}
+
+.profil-label-bio {
+    color: #7d6b93;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.profil-value {
+    color: #30293d;
+}
+
+.profil-value-email {
+    color: #30293d;
+    word-break: break-all;
+}
+
+.profil-bio-text {
+    color: #30293d;
+    line-height: 1.6;
+}
+
+.profil-skills-title {
+    color: #30293d;
+    font-size: 1rem;
+}
+
+/* --- Skill tag colors (dynamic by index) --- */
+.profil-skill-tag {
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+}
+
+.profil-color-0 {
+    background-color: #ffa8c5;
+    color: #8d1450;
+}
+
+.profil-color-1 {
+    background-color: #a8b7e5;
+    color: #1a2f5f;
+}
+
+.profil-color-2 {
+    background-color: #e8dce8;
+    color: #30293d;
+}
+
+.profil-color-3 {
+    background-color: #ffd7a8;
+    color: #8d4a00;
+}
+
+/* --- Action buttons --- */
+.profil-edit-btn {
+    background-color: #6b7db3;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    padding: 1.5rem 2.5rem;
+    transition: all 0.3s ease;
+}
+
+.profil-delete-btn {
+    background-color: white;
+    color: #ff6b9d;
+    border: 3px solid #ff6b9d;
+    border-radius: 12px;
+    font-weight: 600;
+    padding: 1.5rem 2.5rem;
+    transition: all 0.3s ease;
+}
+
+/* --- Delete confirmation modal --- */
+.profil-modal-box {
+    background-color: white;
+    border-radius: 16px;
+    border: 3px solid #ff6b9d;
+    box-shadow: 0 12px 32px rgba(255, 107, 157, 0.25);
+    padding: 3rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.profil-warning-icon {
+    font-size: 5rem;
+    color: #ff6b9d;
+}
+
+.profil-modal-title {
+    color: #30293d;
+}
+
+.profil-modal-subtitle {
+    color: #7d6b93;
+}
+
+.profil-warning-box {
+    background-color: #fff5f7;
+    border-radius: 12px;
+    border: 2px solid #ff6b9d;
+}
+
+.profil-warning-text {
+    color: #ff6b9d;
+}
+
+.profil-delete-form {
+    display: inline;
+}
+
+.profil-confirm-delete-btn {
+    background-color: #ff6b9d;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    padding: 1.5rem 2.5rem;
+}
+
+.profil-cancel-btn {
+    background-color: white;
+    color: #30293d;
+    border: 3px solid #30293d;
+    border-radius: 12px;
+    font-weight: 600;
+    padding: 1.5rem 2.5rem;
+}
+
+/* --- Edit form card --- */
+.profil-edit-card {
+    background-color: white;
+    border-radius: 16px;
+    border: 3px solid #6b7db3;
+    box-shadow: 0 8px 24px rgba(107, 125, 179, 0.15);
+}
+
+.profil-edit-header {
+    border-bottom: 3px solid #f3e8f3;
+}
+
+.profil-edit-header-icon {
+    font-size: 3rem;
+    color: #6b7db3;
+}
+
+.profil-edit-title {
+    color: #30293d;
+}
+
+.profil-edit-subtitle {
+    color: #7d6b93;
+}
+
+/* --- Form labels --- */
+.profil-form-label {
+    color: #30293d;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.profil-form-label-icon-pink {
+    color: #e07b91;
+}
+
+.profil-form-label-icon-blue {
+    color: #6b7db3;
+}
+
+.profil-form-label-icon-purple {
+    color: #7d6b93;
+}
+
+.profil-form-label-icon-rose {
+    color: #ff6b9d;
+}
+
+/* --- Form avatar edit --- */
+.profil-avatar-edit-img {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #e8dce8;
+}
+
+.profil-avatar-edit-default {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #e07b91, #ff6b9d);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid #e8dce8;
+}
+
+/* --- File upload --- */
+.profil-file-cta {
+    background-color: #e07b91;
+    color: white;
+    border: none;
+    border-radius: 10px 0 0 10px;
+}
+
+.profil-file-name {
+    border: 2px solid #e8dce8;
+    border-radius: 0 10px 10px 0;
+}
+
+/* --- Form inputs --- */
+.profil-input {
+    border: 2px solid #e8dce8;
+    border-radius: 10px;
+    font-weight: 500;
+}
+
+.profil-textarea {
+    border: 2px solid #e8dce8;
+    border-radius: 10px;
+}
+
+.profil-icon-left-pink {
+    color: #e07b91;
+}
+
+.profil-icon-left-blue {
+    color: #6b7db3;
+}
+
+.profil-icon-left-purple {
+    color: #7d6b93;
+}
+
+/* --- Bio counter --- */
+.profil-bio-help {
+    color: #7d6b93;
+}
+
+/* --- Info message box --- */
+.profil-info-message {
+    background-color: #f0f4ff;
+    border-radius: 12px;
+    border: 2px solid #a8b7e5;
+}
+
+.profil-info-message-text {
+    color: #6b7db3;
+    font-size: 0.9rem;
+}
+
+/* --- Form action buttons --- */
+.profil-submit-btn {
+    background-color: #6b7db3;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    padding: 1.5rem 2.5rem;
+    transition: all 0.3s ease;
+}
+
+.profil-cancel-edit-btn {
+    background-color: white;
+    color: #30293d;
+    border: 3px solid #30293d;
+    border-radius: 12px;
+    font-weight: 600;
+    padding: 1.5rem 2.5rem;
+    transition: all 0.3s ease;
+}
+
+/* --- Animations (from existing myProfile.css) --- */
+
+/* Animations des boutons profil */
+.profile-edit-btn:hover,
+.profil-edit-btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(107, 125, 179, 0.35);
+    background-color: #a8b7e5 !important;
+}
+
+.profile-delete-btn:hover,
+.profil-delete-btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(255, 107, 157, 0.25);
+    background-color: #ff6b9d !important;
+    color: white !important;
+}
+
+/* Animation des boxes d'infos */
+.content .box {
+    transition: all 0.3s ease;
+}
+
+.content .box:hover {
+    transform: translateX(8px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Inputs focus */
+.input:focus, .textarea:focus {
+    border-color: #6b7db3 !important;
+    box-shadow: 0 0 0 3px rgba(107, 125, 179, 0.1) !important;
+}
+
+/* Boutons du formulaire */
+form .button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+form .button[type="submit"]:hover {
+    background-color: #a8b7e5 !important;
+}
+
+form .button#cancelEdit:hover {
+    background-color: #30293d !important;
+    color: white !important;
+}
+
+/* Dialog de confirmation */
+#delete-confirmation button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+#delete-confirmation button[type="submit"]:hover {
+    background-color: #e07b91 !important;
+}
+
+#cancelDelete:hover {
+    background-color: #30293d !important;
+    color: white !important;
+}
+
+/* Upload d'avatar */
+.file-cta:hover {
+    background-color: #ff6b9d !important;
+}
+
+/* Animation de l'icone principale */
+
+
+.box .icon.is-large {
+    animation: float 3s ease-in-out infinite;
+}

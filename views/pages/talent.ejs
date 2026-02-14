@@ -4,7 +4,7 @@
 
 <%- include('../partials/navbar.ejs') %>
 
-<main class="section" style="background: linear-gradient(135deg, #f3e8f3 0%, #ffeef8 100%);">
+<main class="section talent-main">
     <div class="container">
 
         <div class="columns">
@@ -12,14 +12,14 @@
             <div class="column is-8">
 
                 <!-- Carte profil principale -->
-                <div class="box" style="background-color: white; border-radius: 16px; border: 3px solid #30293d; box-shadow: 0 8px 24px rgba(48, 41, 61, 0.12);">
+                <div class="box talent-profile-card">
 
                     <!-- En-tête du profil avec gradient -->
-                    <div class="has-text-centered mb-5 pb-5" style="background: linear-gradient(135deg, #7d6b93 0%, #5a4a6f 100%); margin: -1.25rem -1.25rem 2rem -1.25rem; padding: 3rem 1.25rem 2rem 1.25rem; border-radius: 13px 13px 0 0; position: relative;">
+                    <div class="has-text-centered mb-5 pb-5 talent-profile-header">
 
                         <!-- Badge vérifié en haut à droite -->
-                        <div style="position: absolute; top: 1rem; right: 1rem;">
-                            <span class="tag is-medium" style="background-color: #e07b91; color: white; border-radius: 20px; padding: 0.5rem 1rem; font-weight: bold;">
+                        <div class="talent-verified-wrapper">
+                            <span class="tag is-medium talent-verified-badge">
                                 <span class="icon">
                                     <i class="fa-solid fa-circle-check"></i>
                                 </span>
@@ -29,8 +29,8 @@
 
                         <!-- Avatar -->
                         <figure class="image is-128x128 is-inline-block mb-4">
-                            <div style="width: 128px; height: 128px; border-radius: 50%; background: linear-gradient(135deg, #ff6b9d, #ffa8c5); display: flex; align-items: center; justify-content: center; border: 5px solid white; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
-                                <span style="font-size: 3rem; color: white; font-weight: 700;">
+                            <div class="talent-avatar">
+                                <span class="talent-avatar-text">
                                     <%= profils.firstname.charAt(0).toUpperCase() %><%= profils.lastname.charAt(0).toUpperCase() %>
                                 </span>
                             </div>
@@ -42,9 +42,9 @@
                         </h1>
 
                         <!-- Note avec fond semi-transparent -->
-                        <div class="mb-4" style="background-color: rgba(255, 255, 255, 0.2); display: inline-block; padding: 0.5rem 1.5rem; border-radius: 20px; backdrop-filter: blur(10px);">
+                        <div class="mb-4 talent-rating-badge">
                             <span class="icon-text">
-                                <span class="icon" style="color: #ffd700; font-size: 1.2rem;">
+                                <span class="talent-rating-stars">
                                     <% const fullStars = Math.floor(averageRating); %>
                                     <% const hasHalf = averageRating % 1 >= 0.5; %>
                                     <% for (let i = 0; i < fullStars; i++) { %>
@@ -57,20 +57,20 @@
                                         <i class="fa-regular fa-star"></i>
                                     <% } %>
                                 </span>
-                                <span class="has-text-weight-bold has-text-white" style="font-size: 1.1rem; margin-left: 0.5rem;"><%= averageRating.toFixed(1) %>/5</span>
-                                <span class="has-text-white" style="opacity: 0.9; margin-left: 0.5rem;">(<%= reviewCount %> avis)</span>
+                                <span class="has-text-weight-bold has-text-white talent-rating-value"><%= averageRating.toFixed(1) %>/5</span>
+                                <span class="has-text-white talent-rating-count">(<%= reviewCount %> avis)</span>
                             </span>
                         </div>
 
                         <!-- Boutons d'action -->
                         <div class="buttons is-centered mt-4">
-                            <button class="button is-medium profile-button-primary btn-follow <%= isFollowing ? 'is-following' : '' %>" data-user-id="<%= profils.id %>" data-following="<%= isFollowing ? 'true' : 'false' %>" style="background-color: #e07b91; color: white; border: none; border-radius: 10px; font-weight: 600; padding: 1.5rem 2rem; transition: all 0.3s ease;">
+                            <button class="button is-medium talent-btn-follow btn-follow <%= isFollowing ? 'is-following' : '' %>" data-user-id="<%= profils.id %>" data-following="<%= isFollowing ? 'true' : 'false' %>">
                                 <span class="icon">
                                     <i class="fa-solid <%= isFollowing ? 'fa-user-minus' : 'fa-user-plus' %>"></i>
                                 </span>
                                 <span><%= isFollowing ? 'Ne plus suivre' : 'Suivre' %></span>
                             </button>
-                            <a href="/messages/<%= profils.id %>" class="button is-medium profile-button-secondary" style="background-color: white; color: #30293d; border: 2px solid white; border-radius: 10px; font-weight: 600; padding: 1.5rem 2rem; transition: all 0.3s ease;">
+                            <a href="/messages/<%= profils.id %>" class="button is-medium talent-btn-message">
                                 <span class="icon">
                                     <i class="fa-solid fa-message"></i>
                                 </span>
@@ -82,39 +82,31 @@
                     <% if (profils.bio) { %>
                     <!-- Bio -->
                     <div class="content mb-5">
-                        <h2 class="title is-5 has-text-weight-semibold mb-4" style="color: #30293d;">
+                        <h2 class="title is-5 has-text-weight-semibold mb-4 talent-section-title">
                             <span class="icon-text">
-                                <span class="icon" style="color: #e07b91;">
+                                <span class="icon talent-icon-about">
                                     <i class="fa-solid fa-user"></i>
                                 </span>
                                 <span>À propos</span>
                             </span>
                         </h2>
-                        <p style="color: #30293d; line-height: 1.6;"><%= profils.bio %></p>
+                        <p class="talent-bio-text"><%= profils.bio %></p>
                     </div>
                     <% } %>
 
                     <!-- Compétences -->
                     <div class="content mb-5">
-                        <h2 class="title is-5 has-text-weight-semibold mb-4" style="color: #30293d;">
+                        <h2 class="title is-5 has-text-weight-semibold mb-4 talent-section-title">
                             <span class="icon-text">
-                                <span class="icon" style="color: #6b7db3;">
+                                <span class="icon talent-icon-skills">
                                     <i class="fa-solid fa-certificate"></i>
                                 </span>
                                 <span>Compétences</span>
                             </span>
                         </h2>
                         <div class="tags are-medium">
-                            <% profils.skills.forEach((skill, index) => {
-                                const colors = [
-                                    { bg: '#ffa8c5', border: '#ff6b9d', text: '#8d1450' },
-                                    { bg: '#a8b7e5', border: '#6b7db3', text: '#1a2f5f' },
-                                    { bg: '#e8dce8', border: '#7d6b93', text: '#30293d' },
-                                    { bg: '#ffd7a8', border: '#ffb366', text: '#8d4a00' }
-                                ];
-                                const color = colors[index % colors.length];
-                            %>
-                                <a href="/skills/<%= skill.slug %>" class="tag skill-tag" style="background-color: <%= color.bg %>; color: <%= color.text %>; border: 2px solid <%= color.border %>; border-radius: 10px; padding: 0.75rem 1.25rem; font-weight: 600; transition: all 0.3s ease;">
+                            <% profils.skills.forEach((skill, index) => { %>
+                                <a href="/skills/<%= skill.slug %>" class="tag skill-tag skill-color-<%= index % 4 %>">
                                     <span class="icon">
                                         <i class="fa-solid fa-star"></i>
                                     </span>
@@ -126,18 +118,18 @@
 
                     <!-- Contact -->
                     <div class="content">
-                        <h2 class="title is-5 has-text-weight-semibold mb-4" style="color: #30293d;">
+                        <h2 class="title is-5 has-text-weight-semibold mb-4 talent-section-title">
                             <span class="icon-text">
-                                <span class="icon" style="color: #e07b91;">
+                                <span class="icon talent-icon-contact">
                                     <i class="fa-solid fa-envelope"></i>
                                 </span>
                                 <span>Contact</span>
                             </span>
                         </h2>
-                        <div class="box" style="background: linear-gradient(135deg, #f9f5f9 0%, #ffeef8 100%); border-radius: 12px; border: 2px solid #ffa8c5;">
-                            <p class="has-text-weight-semibold" style="color: #30293d;">
+                        <div class="box talent-contact-box">
+                            <p class="has-text-weight-semibold talent-contact-text">
                                 <span class="icon-text">
-                                    <span class="icon" style="color: #ff6b9d;">
+                                    <span class="icon talent-contact-email-icon">
                                         <i class="fa-solid fa-at"></i>
                                     </span>
                                     <span><%= profils.email %></span>
@@ -149,18 +141,18 @@
                 </div>
 
                 <!-- Section Avis -->
-                <div class="box mt-5" style="background-color: white; border-radius: 16px; box-shadow: 0 8px 24px rgba(48, 41, 61, 0.12);">
-                    <div class="is-flex is-justify-content-space-between is-align-items-center mb-5 pb-4" style="border-bottom: 3px solid #f3e8f3;">
-                        <h2 class="title is-4 has-text-weight-semibold mb-0" style="color: #30293d;">
+                <div class="box mt-5 talent-reviews-card">
+                    <div class="is-flex is-justify-content-space-between is-align-items-center mb-5 pb-4 talent-reviews-header">
+                        <h2 class="title is-4 has-text-weight-semibold mb-0 talent-section-title">
                             <span class="icon-text">
-                                <span class="icon" style="color: #6b7db3;">
+                                <span class="icon talent-icon-reviews">
                                     <i class="fa-solid fa-comments"></i>
                                 </span>
                                 <span>Avis des utilisateurs</span>
                             </span>
                         </h2>
                         <% if (typeof user !== 'undefined' && user && user.id !== profils.id) { %>
-                        <button class="button is-medium" id="btn-toggle-review-form" style="background-color: #e07b91; color: white; border: none; border-radius: 10px; font-weight: 600;">
+                        <button class="button is-medium talent-btn-review" id="btn-toggle-review-form">
                             <span class="icon">
                                 <i class="fa-solid fa-plus"></i>
                             </span>
@@ -172,15 +164,15 @@
                     <!-- Formulaire d'avis -->
                     <% if (typeof user !== 'undefined' && user && user.id !== profils.id) { %>
                     <div id="review-form-container" style="display: none;" class="mb-5">
-                        <div class="box" style="background: linear-gradient(135deg, #f9f5f9 0%, #ffeef8 100%); border-radius: 12px; border: 2px solid #e07b91;">
+                        <div class="box talent-review-form-box">
                             <form action="/review/<%= profils.id %>" method="POST">
                                 <div class="field">
-                                    <label class="label" style="color: #30293d;">Note</label>
+                                    <label class="label talent-review-label">Note</label>
                                     <div class="control">
                                         <input type="hidden" name="rate" id="review-rate" value="0">
-                                        <div class="review-stars" style="font-size: 1.5rem; cursor: pointer;">
+                                        <div class="review-stars talent-review-stars">
                                             <% for (let i = 1; i <= 5; i++) { %>
-                                                <span class="review-star" data-value="<%= i %>" style="color: #ccc;">
+                                                <span class="review-star talent-review-star" data-value="<%= i %>">
                                                     <i class="far fa-star"></i>
                                                 </span>
                                             <% } %>
@@ -189,7 +181,7 @@
                                 </div>
 
                                 <div class="field">
-                                    <label class="label" style="color: #30293d;">Compétence évaluée</label>
+                                    <label class="label talent-review-label">Compétence évaluée</label>
                                     <div class="control">
                                         <div class="select is-fullwidth">
                                             <select name="skill_id" required>
@@ -203,7 +195,7 @@
                                 </div>
 
                                 <div class="field">
-                                    <label class="label" style="color: #30293d;">Commentaire</label>
+                                    <label class="label talent-review-label">Commentaire</label>
                                     <div class="control">
                                         <textarea class="textarea" name="content" placeholder="Décrivez votre expérience..." rows="3"></textarea>
                                     </div>
@@ -211,7 +203,7 @@
 
                                 <div class="field">
                                     <div class="control">
-                                        <button type="submit" class="button is-medium" style="background-color: #e07b91; color: white; border: none; border-radius: 10px; font-weight: 600; width: 100%;">
+                                        <button type="submit" class="button is-medium talent-btn-submit-review">
                                             <span class="icon">
                                                 <i class="fa-solid fa-paper-plane"></i>
                                             </span>
@@ -227,42 +219,28 @@
                     <!-- Liste des avis -->
                     <div class="review-list">
                         <% if (reviews.length === 0) { %>
-                            <p class="has-text-centered has-text-grey" style="padding: 2rem;">Aucun avis pour le moment.</p>
+                            <p class="has-text-centered has-text-grey talent-no-reviews">Aucun avis pour le moment.</p>
                         <% } %>
 
-                        <% const reviewColors = ['#ffa8c5', '#a8b7e5', '#e8dce8', '#ffd7a8']; %>
-                        <% const reviewBgs = [
-                            'linear-gradient(135deg, #ffeef8 0%, #f9f5f9 100%)',
-                            'linear-gradient(135deg, #f0f4ff 0%, #f9f5f9 100%)',
-                            'linear-gradient(135deg, #f9f5f9 0%, #ffeef8 100%)',
-                            'linear-gradient(135deg, #fff8ef 0%, #f9f5f9 100%)'
-                        ]; %>
-                        <% const avatarGradients = [
-                            'linear-gradient(135deg, #6b7db3, #a8b7e5)',
-                            'linear-gradient(135deg, #e07b91, #ff6b9d)',
-                            'linear-gradient(135deg, #7d6b93, #5a4a6f)',
-                            'linear-gradient(135deg, #ffb366, #ffd7a8)'
-                        ]; %>
-
                         <% reviews.forEach((review, index) => { %>
-                            <div class="box mb-4" style="background: <%= reviewBgs[index % reviewBgs.length] %>; border-radius: 12px; border: 2px solid <%= reviewColors[index % reviewColors.length] %>; transition: all 0.3s ease;">
+                            <div class="box mb-4 review-bg-<%= index % 4 %>">
                                 <div class="is-flex is-justify-content-space-between is-align-items-start mb-3">
                                     <div class="is-flex is-align-items-center">
                                         <figure class="image is-48x48 mr-3">
-                                            <div style="width: 48px; height: 48px; border-radius: 50%; background: <%= avatarGradients[index % avatarGradients.length] %>; display: flex; align-items: center; justify-content: center;">
-                                                <span style="color: white; font-weight: 700; font-size: 0.9rem;">
+                                            <div class="talent-review-avatar review-avatar-<%= index % 4 %>">
+                                                <span class="talent-review-avatar-text">
                                                     <%= review.reviewer.firstname.charAt(0).toUpperCase() %><%= review.reviewer.lastname.charAt(0).toUpperCase() %>
                                                 </span>
                                             </div>
                                         </figure>
                                         <div>
-                                            <a href="/talents/<%= review.reviewer.id %>" class="has-text-weight-bold" style="color: #30293d;"><%= review.reviewer.firstname %> <%= review.reviewer.lastname %></a>
-                                            <p class="is-size-7" style="color: #7d6b93;"><%= new Date(review.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }) %></p>
+                                            <a href="/talents/<%= review.reviewer.id %>" class="has-text-weight-bold talent-reviewer-name"><%= review.reviewer.firstname %> <%= review.reviewer.lastname %></a>
+                                            <p class="is-size-7 talent-review-date"><%= new Date(review.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }) %></p>
                                         </div>
                                     </div>
                                     <div>
                                         <span class="icon-text">
-                                            <span class="icon" style="color: #ffd700;">
+                                            <span class="talent-review-stars-display">
                                                 <% for (let i = 0; i < review.rate; i++) { %>
                                                     <i class="fa-solid fa-star"></i>
                                                 <% } %>
@@ -274,7 +252,7 @@
                                     </div>
                                 </div>
                                 <% if (review.content) { %>
-                                    <p style="color: #30293d; line-height: 1.6;"><%= review.content %></p>
+                                    <p class="talent-review-content"><%= review.content %></p>
                                 <% } %>
                             </div>
                         <% }) %>
@@ -285,10 +263,10 @@
 
             <!-- Colonne latérale - Statistiques -->
             <div class="column is-4">
-                <div class="box" style="background-color: white; border-radius: 16px; position: sticky; top: 20px; box-shadow: 0 8px 24px rgba(48, 41, 61, 0.12);">
-                    <h3 class="title is-5 has-text-weight-semibold mb-5 pb-3" style="color: #30293d; border-bottom: 3px solid #f3e8f3;">
+                <div class="box talent-sidebar">
+                    <h3 class="title is-5 has-text-weight-semibold mb-5 pb-3 talent-sidebar-title">
                         <span class="icon-text">
-                            <span class="icon" style="color: #e07b91;">
+                            <span class="icon talent-icon-stats">
                                 <i class="fa-solid fa-chart-line"></i>
                             </span>
                             <span>Statistiques</span>
@@ -297,7 +275,7 @@
 
                     <!-- Stats -->
                     <div class="content">
-                        <div class="box mb-3" style="background: linear-gradient(135deg, #a8b7e5 0%, #6b7db3 100%); border-radius: 12px; border: none; transition: all 0.3s ease;">
+                        <div class="box mb-3 talent-stat-skills">
                             <div class="is-flex is-justify-content-space-between is-align-items-center">
                                 <span class="has-text-white has-text-weight-semibold">
                                     <span class="icon">
@@ -305,13 +283,13 @@
                                     </span>
                                     Compétences
                                 </span>
-                                <span class="tag is-large" style="background-color: white; color: #6b7db3; font-weight: bold; font-size: 1.2rem; border-radius: 8px;">
+                                <span class="tag is-large talent-stat-value talent-stat-value-skills">
                                     <%= profils.skills.length %>
                                 </span>
                             </div>
                         </div>
 
-                        <div class="box mb-3" style="background: linear-gradient(135deg, #ff6b9d 0%, #e07b91 100%); border-radius: 12px; border: none; transition: all 0.3s ease;">
+                        <div class="box mb-3 talent-stat-reviews">
                             <div class="is-flex is-justify-content-space-between is-align-items-center">
                                 <span class="has-text-white has-text-weight-semibold">
                                     <span class="icon">
@@ -319,13 +297,13 @@
                                     </span>
                                     Avis reçus
                                 </span>
-                                <span class="tag is-large" style="background-color: white; color: #e07b91; font-weight: bold; font-size: 1.2rem; border-radius: 8px;">
+                                <span class="tag is-large talent-stat-value talent-stat-value-reviews">
                                     <%= reviewCount %>
                                 </span>
                             </div>
                         </div>
 
-                        <div class="box" style="background: linear-gradient(135deg, #7d6b93 0%, #5a4a6f 100%); border-radius: 12px; border: none; transition: all 0.3s ease;">
+                        <div class="box talent-stat-followers">
                             <div class="is-flex is-justify-content-space-between is-align-items-center">
                                 <span class="has-text-white has-text-weight-semibold">
                                     <span class="icon">
@@ -333,7 +311,7 @@
                                     </span>
                                     Abonnés
                                 </span>
-                                <span class="tag is-large" style="background-color: white; color: #5a4a6f; font-weight: bold; font-size: 1.2rem; border-radius: 8px;">
+                                <span class="tag is-large talent-stat-value talent-stat-value-followers">
                                     <%= followerCount %>
                                 </span>
                             </div>
@@ -341,14 +319,14 @@
                     </div>
 
                     <!-- Badge membre -->
-                    <div class="box mt-5" style="background: linear-gradient(135deg, #30293d 0%, #5a4a6f 50%, #7d6b93 100%); border-radius: 12px; text-align: center; padding: 2rem; position: relative; overflow: hidden;">
-                        <div style="position: absolute; top: -50%; right: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%); pointer-events: none;"></div>
+                    <div class="box mt-5 talent-member-badge">
+                        <div class="talent-member-glow"></div>
 
-                        <span class="icon is-large has-text-light mb-3" style="font-size: 3rem; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));">
+                        <span class="icon is-large has-text-light mb-3 talent-member-icon">
                             <i class="fa-solid fa-award"></i>
                         </span>
                         <p class="has-text-light has-text-weight-bold is-size-5 mb-2">Membre Vérifié</p>
-                        <p class="has-text-light is-size-6" style="opacity: 0.9;">
+                        <p class="has-text-light is-size-6 talent-member-date">
                             <span class="icon-text">
                                 <span class="icon">
                                     <i class="fa-solid fa-calendar-check"></i>
@@ -363,138 +341,6 @@
 
     </div>
 </main>
-
-<style>
-    .skill-tag {
-        position: relative;
-        overflow: hidden;
-    }
-
-    .skill-tag::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 0;
-        height: 0;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.3);
-        transform: translate(-50%, -50%);
-        transition: width 0.4s, height 0.4s;
-    }
-
-    .skill-tag:hover::before {
-        width: 300px;
-        height: 300px;
-    }
-
-    .skill-tag:hover {
-        transform: translateY(-3px) scale(1.05);
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-    }
-
-    .profile-button-primary:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 20px rgba(224, 123, 145, 0.4);
-        background-color: #ff6b9d !important;
-    }
-
-    .profile-button-secondary:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 20px rgba(255, 255, 255, 0.5);
-        background-color: rgba(255, 255, 255, 0.9) !important;
-    }
-
-    .content .box {
-        cursor: pointer;
-    }
-
-    .content .box:hover {
-        transform: translateX(5px) scale(1.02);
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-    }
-
-    .review-list .box:hover {
-        transform: translateX(8px) scale(1.02);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-    }
-
-    .btn-follow.is-following {
-        background-color: #6b7db3 !important;
-    }
-
-    .review-stars .review-star {
-        transition: color 0.2s ease;
-    }
-    .review-stars .review-star:hover {
-        transform: scale(1.2);
-    }
-
-    @keyframes float {
-        0%, 100% {
-            transform: translateY(0px);
-        }
-        50% {
-            transform: translateY(-10px);
-        }
-    }
-
-    .box .icon.is-large {
-        animation: float 3s ease-in-out infinite;
-    }
-
-    /* Responsive - Tablette */
-    @media screen and (max-width: 768px) {
-        /* Action buttons stacked */
-        .buttons.is-centered.mt-4 {
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .buttons.is-centered.mt-4 .button {
-            width: 100%;
-            margin: 0 !important;
-            padding: 1rem 1.5rem !important;
-        }
-
-        /* Review header flex wrap */
-        .is-flex.is-justify-content-space-between.is-align-items-center.mb-5 {
-            flex-direction: column;
-            gap: 1rem;
-            text-align: center;
-        }
-
-        /* Review items - reviewer info and stars */
-        .review-list .box .is-flex.is-justify-content-space-between.is-align-items-start {
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        /* Sidebar - unstick */
-        .column.is-4 .box[style*="sticky"] {
-            position: static !important;
-        }
-    }
-
-    /* Responsive - Mobile */
-    @media screen and (max-width: 480px) {
-        /* Badge vérifié */
-        div[style*="position: absolute; top: 1rem; right: 1rem"] .tag {
-            font-size: 0.75rem !important;
-            padding: 0.3rem 0.6rem !important;
-        }
-
-        /* Stat cards in sidebar */
-        .column.is-4 .tag.is-large {
-            font-size: 1rem !important;
-        }
-
-        /* Badge membre */
-        .column.is-4 .box[style*="text-align: center; padding: 2rem"] {
-            padding: 1.25rem !important;
-        }
-    }
-</style>
 
 <script src="/js/follow.js"></script>
 <script src="/js/review.js"></script>

@@ -176,28 +176,25 @@ body {
     }
 
     /* Bouton d'inscription */
-    .btn-register {
+    .btn-register1 {
         background: linear-gradient(135deg, #ff6b9d, #ffd700);
         border: none;
         border-radius: 12px;
         color: white;
-        font-weight: 700;
         font-size: 1.1rem;
         padding: 1rem;
-        width: 100%;
         cursor: pointer;
         transition: all 0.3s ease;
         box-shadow: 0 6px 20px rgba(255, 107, 157, 0.3);
-        text-transform: uppercase;
         letter-spacing: 0.5px;
     }
 
-    .btn-register:hover {
+    .btn-register1:hover {
         transform: translateY(-3px);
         box-shadow: 0 8px 24px rgba(255, 107, 157, 0.4);
     }
 
-    .btn-register:active {
+    .btn-register1:active {
         transform: translateY(-1px);
     }
 
@@ -244,6 +241,17 @@ body {
         font-size: 0.9rem;
         font-weight: 600;
     }
+
+    /* Icônes de labels */
+    .register-icon-lastname { color: #ff6b9d; }
+    .register-icon-firstname { color: #6b7db3; }
+    .register-icon-email { color: #ffd700; }
+    .register-icon-password { color: #e07b91; }
+    .register-icon-confirm { color: #a8b7e5; }
+    .register-icon-header { color: white; }
+
+    /* Espacement bouton */
+    .register-submit-field { margin-top: 2rem; }
 
     /* Responsive - Tablette */
     @media screen and (max-width: 768px) {
@@ -296,7 +304,7 @@ body {
             padding: 1.5rem 1rem;
         }
 
-        .btn-register {
+        .btn-register1 {
             font-size: 1rem;
             padding: 0.85rem;
         }

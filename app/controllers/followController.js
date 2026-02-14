@@ -2,15 +2,11 @@ import { User } from '../models/index.js';
 import { sequelize } from '../database.js';
 
 const followController = {
+  // Route protégée par verifyJWT → req.user est garanti
   async follow(req, res) {
     try {
-      const userInfo = req.cookies.userInfo ? JSON.parse(req.cookies.userInfo) : null;
-      if (!userInfo || !userInfo.id) {
-        return res.status(401).json({ error: 'Vous devez être connecté' });
-      }
-
       const followedId = parseInt(req.params.id);
-      const followerId = userInfo.id;
+      const followerId = req.user.id; // Vient du JWT vérifié
 
       if (followerId === followedId) {
         return res.status(400).json({ error: 'Vous ne pouvez pas vous suivre vous-même' });
@@ -21,7 +17,6 @@ const followController = {
         return res.status(404).json({ error: 'Utilisateur introuvable' });
       }
 
-      // Vérifier si déjà suivi
       const [result, created] = await sequelize.models.user_has_follow.findOrCreate({
         where: { follower_id: followerId, followed_id: followedId },
         defaults: { follower_id: followerId, followed_id: followedId }
@@ -38,15 +33,11 @@ const followController = {
     }
   },
 
+  // Route protégée par verifyJWT → req.user est garanti
   async unfollow(req, res) {
     try {
-      const userInfo = req.cookies.userInfo ? JSON.parse(req.cookies.userInfo) : null;
-      if (!userInfo || !userInfo.id) {
-        return res.status(401).json({ error: 'Vous devez être connecté' });
-      }
-
       const followedId = parseInt(req.params.id);
-      const followerId = userInfo.id;
+      const followerId = req.user.id; // Vient du JWT vérifié
 
       const deleted = await sequelize.models.user_has_follow.destroy({
         where: { follower_id: followerId, followed_id: followedId }

@@ -1,13 +1,11 @@
-<!-- 🎨 Navbar SkillSwap - Design amélioré -->
-<nav class="navbar" style="background: linear-gradient(135deg, #30293d, #5a4a6f); box-shadow: 0 4px 12px rgba(48, 41, 61, 0.15);">
+<nav class="navbar">
     <div class="container">
         <div class="navbar-brand">
-            <!-- Logo avec effet glassmorphism -->
-            <a class="navbar-item has-text-light" href="/" style="font-weight: 700; font-size: 1.4rem; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 12px; margin: 0.5rem; padding: 0.5rem 1.2rem; transition: all 0.3s ease;">
-                <span style="background: linear-gradient(135deg, #ff6b9d, #ffd700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">SkillSwap</span>
+            <a class="navbar-item has-text-light navbar-logo" href="/">
+                <span class="logo-text">SkillSwap</span>
             </a>
 
-            <a role="button" class="navbar-burger" id="burger" style="color: #ffa8c5; border-radius: 8px; margin: 0.5rem;">
+            <a role="button" class="navbar-burger" id="burger">
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
@@ -15,90 +13,64 @@
             </a>
         </div>
 
-        <div class="navbar-menu" style="background: transparent;" id="navbarMenu">
+        <div class="navbar-menu" id="navbarMenu">
             <div class="navbar-end">
-                <!-- Liens de navigation avec effets hover -->
-                <a class="navbar-item has-text-light nav-link" href="/" style="transition: all 0.3s ease; border-radius: 8px; margin: 0 0.25rem;">
-                    <span class="icon" style="color: #ffa8c5;">
-                        <i class="fas fa-home"></i>
-                    </span>
+                <a class="navbar-item has-text-light nav-link" href="/">
+                    <span class="icon icon-home"><i class="fas fa-home"></i></span>
                     <span>Accueil</span>
                 </a>
-                
-                <a class="navbar-item has-text-light nav-link" href="/talents" style="transition: all 0.3s ease; border-radius: 8px; margin: 0 0.25rem;">
-                    <span class="icon" style="color: #a8b7e5;">
-                        <i class="fas fa-users"></i>
-                    </span>
+
+                <a class="navbar-item has-text-light nav-link" href="/talents">
+                    <span class="icon icon-talents"><i class="fas fa-users"></i></span>
                     <span>Talents</span>
                 </a>
-                
-                <a class="navbar-item has-text-light nav-link" href="/skills" style="transition: all 0.3s ease; border-radius: 8px; margin: 0 0.25rem;">
-                    <span class="icon" style="color: #ffd700;">
-                        <i class="fas fa-star"></i>
-                    </span>
+
+                <a class="navbar-item has-text-light nav-link" href="/skills">
+                    <span class="icon icon-skills"><i class="fas fa-star"></i></span>
                     <span>Compétences</span>
                 </a>
-                
-                <a class="navbar-item has-text-light nav-link" href="/search" style="transition: all 0.3s ease; border-radius: 8px; margin: 0 0.25rem;">
-                    <span class="icon" style="color: #e07b91;">
-                        <i class="fas fa-search"></i>
-                    </span>
+
+                <a class="navbar-item has-text-light nav-link" href="/search">
+                    <span class="icon icon-search"><i class="fas fa-search"></i></span>
                     <span>Recherche</span>
                 </a>
 
-                <a class="navbar-item has-text-light nav-link" href="/help" style="transition: all 0.3s ease; border-radius: 8px; margin: 0 0.25rem;">
-                    <span class="icon" style="color: #6b7db3;">
-                        <i class="fas fa-question-circle"></i>
-                    </span>
+                <a class="navbar-item has-text-light nav-link" href="/help">
+                    <span class="icon icon-help"><i class="fas fa-question-circle"></i></span>
                     <span>Aide</span>
                 </a>
 
                 <% if (user) { %>
-                    <!-- Dropdown utilisateur -->
-                    <div class="navbar-item has-dropdown" id="userDropdown" style="margin: 0 0.25rem; padding: 0;">
-                        <a class="navbar-link is-arrowless" id="userDropdownToggle" style="background: rgba(255, 168, 197, 0.2); backdrop-filter: blur(10px); padding: 0.5rem 1rem; border-radius: 20px; color: #ffa8c5; font-weight: 600; border: 2px solid rgba(255, 168, 197, 0.3); transition: all 0.3s ease; gap: 0.4rem;">
-                            <span class="icon">
-                                <i class="fas fa-user-circle"></i>
-                            </span>
+                    <div class="navbar-item has-dropdown" id="userDropdown">
+                        <a class="navbar-link is-arrowless" id="userDropdownToggle">
+                            <span class="icon"><i class="fas fa-user-circle"></i></span>
                             <span><%= user.firstname %></span>
-                            <span class="icon is-small" style="font-size: 0.65rem; margin-left: 0.15rem;">
-                                <i class="fas fa-chevron-down"></i>
-                            </span>
+                            <span class="icon is-small chevron-icon"><i class="fas fa-chevron-down"></i></span>
                         </a>
-                        <div class="navbar-dropdown is-right" style="background: #30293d; border: 2px solid rgba(255, 168, 197, 0.2); border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.3); padding: 0.5rem 0; margin-top: 0;">
-                            <a class="navbar-item" href="/user/<%= user.id %>/profil" style="color: #ffa8c5; border-radius: 8px; margin: 0.25rem 0.5rem; transition: all 0.3s ease;">
-                                <span class="icon" style="color: #ffd700;">
-                                    <i class="fas fa-user"></i>
-                                </span>
+                        <div class="navbar-dropdown is-right">
+                            <a class="navbar-item" href="/user/<%= user.id %>/profil">
+                                <span class="icon dropdown-icon-profil"><i class="fas fa-user"></i></span>
                                 <span>Mon profil</span>
                             </a>
-                            <a class="navbar-item" href="/messages" style="color: #ffa8c5; border-radius: 8px; margin: 0.25rem 0.5rem; transition: all 0.3s ease;">
-                                <span class="icon" style="color: #a8b7e5;">
-                                    <i class="fas fa-envelope"></i>
-                                </span>
+                            <a class="navbar-item" href="/messages">
+                                <span class="icon dropdown-icon-messages"><i class="fas fa-envelope"></i></span>
                                 <span>Messages</span>
                             </a>
-                            <hr class="navbar-divider" style="background-color: rgba(255, 168, 197, 0.15); margin: 0.25rem 0.75rem;">
-                            <a class="navbar-item" href="/logout" style="color: #ff6b9d; border-radius: 8px; margin: 0.25rem 0.5rem; transition: all 0.3s ease;">
-                                <span class="icon">
-                                    <i class="fas fa-sign-out-alt"></i>
-                                </span>
+                            <hr class="navbar-divider dropdown-divider">
+                            <a class="navbar-item dropdown-item-logout" href="/logout">
+                                <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
                                 <span>Déconnexion</span>
                             </a>
                         </div>
                     </div>
                 <% } else { %>
-                    <a class="navbar-item" href="/login" style="background: rgba(255, 255, 255, 0.1); color: white; border-radius: 12px; margin: 0.5rem 0.25rem; padding: 0.5rem 1.2rem; font-weight: 600; transition: all 0.3s ease; border: 2px solid rgba(255, 255, 255, 0.2);">
-                        <span class="icon">
-                            <i class="fas fa-sign-in-alt"></i>
-                        </span>
+                    <a class="navbar-item btn-login" href="/login">
+                        <span class="icon"><i class="fas fa-sign-in-alt"></i></span>
                         <span>Connexion</span>
                     </a>
-                    
-                    <a class="navbar-item" href="/register" style="background: linear-gradient(135deg, #ff6b9d, #ffd700); color: white; border-radius: 12px; margin: 0.5rem 0.5rem 0.5rem 0.25rem; padding: 0.5rem 1.2rem; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(255, 107, 157, 0.3);">
-                        <span class="icon">
-                            <i class="fas fa-user-plus"></i>
-                        </span>
+
+                    <a class="navbar-item btn-register" href="/register">
+                        <span class="icon"><i class="fas fa-user-plus"></i></span>
                         <span>Inscription</span>
                     </a>
                 <% } %>

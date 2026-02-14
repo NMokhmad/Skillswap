@@ -1,7 +1,9 @@
 import { User } from '../models/User.js';
 import { Skill, Review } from '../models/index.js';
+import { addAverageRating } from '../helpers/rating.js';
 
-const talentController={
+const talentController = {
+  // Route publique avec optionalJWT → req.user peut être null
   async renderTalentsPage(req, res) {
     const title = "Talents";
     const cssFile = "talents";
@@ -16,22 +18,13 @@ const talentController={
         ]
       });
 
-      const usersRated = users.map(user => {
-        const reviews = user.received_reviews || [];
-        const total = reviews.reduce((sum, r) => sum + r.rate, 0);
-        const average = reviews.length ? total / reviews.length : 0;
-
-        return {
-          ...user.toJSON(),
-          averageRating: average
-        };
-      });
+      const usersRated = addAverageRating(users);
 
       // Récupère les utilisateurs suivis, si connecté
       let followedUser = null;
-      const userInfo = req.cookies.userInfo ? JSON.parse(req.cookies.userInfo) : null;
-      if (userInfo) {
-        followedUser = await User.findByPk(userInfo.id, {
+      if (req.user) {
+        // req.user vient du JWT vérifié par optionalJWT
+        followedUser = await User.findByPk(req.user.id, {
           include: 'followed'
         });
       }
@@ -50,6 +43,7 @@ const talentController={
     }
   },
 
+  // Route publique avec optionalJWT → req.user peut être null
   async renderTalentPage(req, res) {
     const talentId = req.params.id;
     const cssFile = "talent";
@@ -73,16 +67,15 @@ const talentController={
         return res.status(404).render("404", { title: "Utilisateur introuvable", cssFile: "404" });
       }
 
-      // Calculer la moyenne des avis
       const reviews = profils.received_reviews || [];
       const totalRate = reviews.reduce((sum, r) => sum + r.rate, 0);
       const averageRating = reviews.length ? totalRate / reviews.length : 0;
 
       // Vérifier si l'utilisateur connecté suit ce profil
       let isFollowing = false;
-      const userInfo = req.cookies.userInfo ? JSON.parse(req.cookies.userInfo) : null;
-      if (userInfo) {
-        isFollowing = profils.followers.some(f => f.id === userInfo.id);
+      if (req.user) {
+        // req.user vient du JWT vérifié par optionalJWT
+        isFollowing = profils.followers.some(f => f.id === req.user.id);
       }
 
       const title = `Talents | ${profils.firstname}`;

@@ -1,37 +1,43 @@
-import { User } from '../models/User.js';
 import { Skill } from '../models/index.js';
 
-const skillController={
-  async renderSkillsPage(req,res){
+const skillController = {
+  // Route publique avec optionalJWT → req.user peut être null
+  async renderSkillsPage(req, res) {
     const title = "Skills";
     const cssFile = "skills";
 
-    // Je récupère les compétences stockées en base de données
-    const skills = await Skill.findAll();
-
-    const user = req.cookies.userInfo ? JSON.parse(req.cookies.userInfo) : null;
-    res.render("skills", { user, skills, title, cssFile } );
+    try {
+      const skills = await Skill.findAll();
+      res.render("skills", { skills, title, cssFile });
+    } catch (error) {
+      console.error("Erreur renderSkillsPage:", error);
+      res.status(500).send("Erreur serveur");
+    }
   },
 
-  async renderSkillPage(req,res){
+  // Route publique avec optionalJWT → req.user peut être null
+  async renderSkillPage(req, res) {
     const skillSlug = req.params.slug;
-
     const cssFile = "skill";
 
-    const skills = await Skill.findAll();
-    
-    // Je récupère les compétences stockées en base de données
-    const skill = await Skill.findAll({
-      where: {
-        slug: skillSlug
-      },
-      include: 'users'
-    });
+    try {
+      const skills = await Skill.findAll();
 
-    const title = `Skills | ${skill[0].label}`;
+      const skill = await Skill.findOne({
+        where: { slug: skillSlug },
+        include: 'users'
+      });
 
-    const user = req.cookies.userInfo ? JSON.parse(req.cookies.userInfo) : null;
-    res.render("skill",{ user, skills, skill: skill[0], title, cssFile } );
+      if (!skill) {
+        return res.status(404).render("404", { title: "Compétence introuvable", cssFile: "404" });
+      }
+
+      const title = `Skills | ${skill.label}`;
+      res.render("skill", { skills, skill, title, cssFile });
+    } catch (error) {
+      console.error("Erreur renderSkillPage:", error);
+      res.status(500).send("Erreur serveur");
+    }
   },
 };
 

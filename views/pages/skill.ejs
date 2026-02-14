@@ -2,100 +2,89 @@
 </head>
 <%- include('../partials/navbar.ejs') %>
 
-<main class="section" style="background: linear-gradient(135deg, #f3e8f3 0%, #ffeef8 100%);">
+<main class="section skill-page-main">
     <div class="container">
-        
-        <!-- En-tête de la compétence avec gradient et icône -->
-        <div class="box has-text-centered mb-6 p-6" style="background: linear-gradient(135deg, #30293d 0%, #5a4a6f 50%, #7d6b93 100%); border-radius: 16px; position: relative; overflow: hidden; box-shadow: 0 12px 32px rgba(48, 41, 61, 0.25);">
-            
-            <!-- Effet de brillance en arrière-plan -->
-            <div style="position: absolute; top: -50%; right: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%); pointer-events: none;"></div>
-            
-            <!-- Icône de la compétence -->
-            <div class="mb-4" style="position: relative;">
-                <span class="icon is-large has-text-light" style="font-size: 5rem; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.3));">
-                    <i class="fa-solid fa-code"></i> <!-- Icône d'exemple, à remplacer dynamiquement -->
+
+        <!-- En-tete de la competence avec gradient et icone -->
+        <div class="box has-text-centered mb-6 p-6 skill-page-header">
+
+            <!-- Effet de brillance en arriere-plan -->
+            <div class="skill-page-shine-overlay"></div>
+
+            <!-- Icone de la competence -->
+            <div class="mb-4 skill-page-relative">
+                <span class="icon is-large has-text-light skill-page-icon-large">
+                    <i class="fa-solid fa-code"></i>
                 </span>
             </div>
-            
-            <h1 class="title is-1 has-text-light has-text-weight-bold mb-3" style="position: relative;">
+
+            <h1 class="title is-1 has-text-light has-text-weight-bold mb-3 skill-page-relative">
                 <%= skill.label %>
             </h1>
-            
+
             <!-- Compteur avec style moderne -->
-            <div style="display: inline-block; background-color: rgba(255, 255, 255, 0.2); padding: 0.75rem 2rem; border-radius: 25px; backdrop-filter: blur(10px); border: 2px solid rgba(255, 255, 255, 0.3);">
-                <p class="subtitle is-4 has-text-light mb-0" style="font-weight: 600;">
+            <div class="skill-page-counter-badge">
+                <p class="subtitle is-4 has-text-light mb-0 skill-page-counter-text">
                     <span class="icon-text">
-                        <span class="icon" style="color: #ffd700;">
+                        <span class="icon skill-page-icon-gold">
                             <i class="fa-solid fa-users"></i>
                         </span>
                         <span><%= skill.users.length %> <%= skill.users.length > 1 ? 'talents disponibles' : 'talent disponible' %></span>
                     </span>
                 </p>
             </div>
-            
-            <!-- Tags de catégorie (exemple) -->
-            <div class="mt-4" style="position: relative;">
-                <span class="tag is-medium" style="background-color: #e07b91; color: white; border-radius: 20px; padding: 0.5rem 1.5rem; font-weight: 600; margin: 0.25rem;">
+
+            <!-- Tags de categorie -->
+            <div class="mt-4 skill-page-relative">
+                <span class="tag is-medium skill-page-tag-popular">
                     <span class="icon">
                         <i class="fa-solid fa-fire"></i>
                     </span>
                     <span>Populaire</span>
                 </span>
-                <span class="tag is-medium" style="background-color: #6b7db3; color: white; border-radius: 20px; padding: 0.5rem 1.5rem; font-weight: 600; margin: 0.25rem;">
+                <span class="tag is-medium skill-page-tag-demanded">
                     <span class="icon">
                         <i class="fa-solid fa-star"></i>
                     </span>
-                    <span>Demandé</span>
+                    <span>Demande</span>
                 </span>
             </div>
         </div>
 
         <% if (skill.users.length > 0) { %>
-            <!-- En-tête de section -->
-            <div class="box mb-5 p-5" style="background-color: white; border-radius: 12px; border-left: 5px solid #e07b91; box-shadow: 0 4px 12px rgba(48, 41, 61, 0.08);">
-                <h2 class="title is-4 has-text-weight-semibold mb-2" style="color: #30293d;">
+            <!-- En-tete de section -->
+            <div class="box mb-5 p-5 skill-page-section-header">
+                <h2 class="title is-4 has-text-weight-semibold mb-2 skill-page-title-dark">
                     <span class="icon-text">
-                        <span class="icon" style="color: #e07b91;">
+                        <span class="icon skill-page-icon-accent">
                             <i class="fa-solid fa-user-check"></i>
                         </span>
-                        <span>Talents maîtrisant cette compétence</span>
+                        <span>Talents maitrisant cette competence</span>
                     </span>
                 </h2>
-                <p class="subtitle is-6" style="color: #7d6b93; margin-bottom: 0;">
-                    Découvrez les professionnels certifiés dans ce domaine
+                <p class="subtitle is-6 skill-page-subtitle-muted">
+                    Decouvrez les professionnels certifies dans ce domaine
                 </p>
             </div>
 
             <!-- Grille des talents -->
             <div class="columns is-multiline">
-                <% skill.users.forEach((user, index) => { 
-                    const gradients = [
-                        'linear-gradient(135deg, #ff6b9d, #ffa8c5)',
-                        'linear-gradient(135deg, #6b7db3, #a8b7e5)',
-                        'linear-gradient(135deg, #7d6b93, #5a4a6f)',
-                        'linear-gradient(135deg, #e07b91, #ff6b9d)',
-                        'linear-gradient(135deg, #a8b7e5, #6b7db3)',
-                        'linear-gradient(135deg, #ffa8c5, #ff6b9d)'
-                    ];
-                    const gradient = gradients[index % gradients.length];
-                    
-                    const borderColors = ['#ff6b9d', '#6b7db3', '#7d6b93', '#e07b91', '#a8b7e5', '#ffa8c5'];
-                    const borderColor = borderColors[index % borderColors.length];
+                <% skill.users.forEach((user, index) => {
+                    const colorIndex = index % 6;
                 %>
                     <div class="column is-one-quarter-desktop is-one-third-tablet is-half-mobile">
-                        <a href="/talents/<%= user.id %>" style="text-decoration: none;">
-                            <div class="box profile-card has-text-centered p-5" style="background-color: white; border-radius: 16px; transition: all 0.3s ease; border: 3px solid <%= borderColor %>; height: 100%; position: relative; overflow: hidden; box-shadow: 0 4px 12px rgba(48, 41, 61, 0.1);">
-                                
+                        <a href="/talents/<%= user.id %>" class="skill-page-talent-link">
+                            <div class="box profile-card has-text-centered p-5 skill-page-card skill-page-card-border-<%= colorIndex %>">
+
                                 <!-- Effet de fond au hover -->
-                                <div class="card-bg-effect" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: <%= gradient %>; opacity: 0; transition: opacity 0.3s ease; z-index: 0;"></div>
-                                
+                                <div class="card-bg-effect skill-page-card-bg skill-page-gradient-<%= colorIndex %>"></div>
+
                                 <!-- Contenu de la carte -->
-                                <div style="position: relative; z-index: 1;">
+                                <div class="skill-page-card-content">
                                     <!-- Badge position (si premier) -->
                                     <% if (index < 3) { %>
-                                        <div style="position: absolute; top: -1rem; right: -1rem;">
-                                            <span class="tag is-medium" style="background-color: #ffd700; color: #8d4a00; border-radius: 20px; padding: 0.5rem 1rem; font-weight: bold; box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);">
+                                        <div class="skill-page-top-badge-wrapper">
+                                            <span class="tag is-medium skill-page-top-badge">
                                                 <span class="icon">
                                                     <i class="fa-solid fa-crown"></i>
                                                 </span>
@@ -103,54 +92,54 @@
                                             </span>
                                         </div>
                                     <% } %>
-                                    
+
                                     <!-- Avatar -->
                                     <div class="profile-avatar mb-4">
                                         <figure class="image is-96x96 is-inline-block">
-                                            <div class="avatar-circle" style="width: 96px; height: 96px; border-radius: 50%; background: <%= gradient %>; display: flex; align-items: center; justify-content: center; border: 4px solid white; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: all 0.3s ease;">
-                                                <span class="icon is-large has-text-light" style="font-size: 2.5rem;">
+                                            <div class="avatar-circle skill-page-avatar skill-page-gradient-<%= colorIndex %>">
+                                                <span class="icon is-large has-text-light skill-page-avatar-icon">
                                                     <i class="fa-solid fa-user"></i>
                                                 </span>
                                             </div>
                                         </figure>
                                     </div>
-                                    
+
                                     <!-- Nom du talent -->
-                                    <h3 class="title is-5 has-text-weight-bold mb-3 talent-name" style="color: #30293d; transition: color 0.3s ease;">
+                                    <h3 class="title is-5 has-text-weight-bold mb-3 talent-name skill-page-talent-name">
                                         <%= user.firstname %>
                                     </h3>
-                                    
-                                    <!-- Note (exemple) -->
+
+                                    <!-- Note -->
                                     <div class="mb-3">
                                         <span class="icon-text">
-                                            <span class="icon" style="color: #ffd700; font-size: 0.9rem;">
+                                            <span class="icon skill-page-rating-stars">
                                                 <i class="fa-solid fa-star"></i>
                                                 <i class="fa-solid fa-star"></i>
                                                 <i class="fa-solid fa-star"></i>
                                                 <i class="fa-solid fa-star"></i>
                                                 <i class="fa-solid fa-star-half-stroke"></i>
                                             </span>
-                                            <span class="has-text-weight-semibold" style="color: #7d6b93; font-size: 0.9rem;">4.5</span>
+                                            <span class="has-text-weight-semibold skill-page-rating-score">4.5</span>
                                         </span>
                                     </div>
-                                    
-                                    <!-- Badge de compétence -->
-                                    <span class="tag is-medium skill-badge" style="background-color: #f3e8f3; color: #30293d; border: 2px solid <%= borderColor %>; border-radius: 10px; font-weight: 600; transition: all 0.3s ease;">
+
+                                    <!-- Badge de competence -->
+                                    <span class="tag is-medium skill-badge skill-page-skill-tag skill-page-skill-tag-border-<%= colorIndex %>">
                                         <span class="icon is-small">
                                             <i class="fa-solid fa-certificate"></i>
                                         </span>
                                         <span>Expert</span>
                                     </span>
-                                    
+
                                     <!-- Stats rapides -->
-                                    <div class="mt-4 pt-3" style="border-top: 2px solid #f3e8f3; display: flex; justify-content: space-around;">
+                                    <div class="mt-4 pt-3 skill-page-stats-row">
                                         <div>
-                                            <p class="has-text-weight-bold" style="color: #30293d; font-size: 1.1rem;">42</p>
-                                            <p class="is-size-7" style="color: #7d6b93;">Projets</p>
+                                            <p class="has-text-weight-bold skill-page-stat-value">42</p>
+                                            <p class="is-size-7 skill-page-stat-label">Projets</p>
                                         </div>
-                                        <div style="border-left: 2px solid #f3e8f3; padding-left: 1rem;">
-                                            <p class="has-text-weight-bold" style="color: #30293d; font-size: 1.1rem;">89%</p>
-                                            <p class="is-size-7" style="color: #7d6b93;">Succès</p>
+                                        <div class="skill-page-stats-divider">
+                                            <p class="has-text-weight-bold skill-page-stat-value">89%</p>
+                                            <p class="is-size-7 skill-page-stat-label">Succes</p>
                                         </div>
                                     </div>
                                 </div>
@@ -161,66 +150,66 @@
             </div>
         <% } else { %>
             <!-- Message si aucun talent -->
-            <div class="box has-text-centered p-6" style="background: linear-gradient(135deg, white 0%, #ffeef8 100%); border-radius: 16px; border: 3px dashed #e07b91; box-shadow: 0 8px 24px rgba(48, 41, 61, 0.08);">
+            <div class="box has-text-centered p-6 skill-page-empty-state">
                 <div class="mb-5">
-                    <span class="icon" style="font-size: 6rem; color: #7d6b93; opacity: 0.3;">
+                    <span class="icon skill-page-empty-icon">
                         <i class="fa-solid fa-users-slash"></i>
                     </span>
                 </div>
-                <h3 class="title is-4 has-text-weight-bold" style="color: #30293d;">Aucun talent disponible pour le moment</h3>
-                <p class="subtitle is-5 mb-5" style="color: #7d6b93;">
-                    Cette compétence n'a pas encore de talents inscrits. Soyez le premier !
+                <h3 class="title is-4 has-text-weight-bold skill-page-title-dark">Aucun talent disponible pour le moment</h3>
+                <p class="subtitle is-5 mb-5 skill-page-empty-subtitle">
+                    Cette competence n'a pas encore de talents inscrits. Soyez le premier !
                 </p>
-                
+
                 <!-- Suggestions -->
-                <div class="box" style="background-color: white; border-radius: 12px; max-width: 500px; margin: 0 auto 2rem auto; border: 2px solid #ffa8c5;">
-                    <p class="has-text-weight-semibold mb-3" style="color: #30293d;">
+                <div class="box skill-page-suggestions-box">
+                    <p class="has-text-weight-semibold mb-3 skill-page-title-dark">
                         <span class="icon-text">
-                            <span class="icon" style="color: #e07b91;">
+                            <span class="icon skill-page-icon-accent">
                                 <i class="fa-solid fa-lightbulb"></i>
                             </span>
                             <span>Que faire en attendant ?</span>
                         </span>
                     </p>
-                    <div class="content has-text-left" style="color: #7d6b93;">
-                        <ul style="list-style: none; padding-left: 0;">
+                    <div class="content has-text-left skill-page-suggestion-text">
+                        <ul class="skill-page-suggestion-list">
                             <li class="mb-2">
                                 <span class="icon-text">
-                                    <span class="icon" style="color: #6b7db3;">
+                                    <span class="icon skill-page-icon-blue">
                                         <i class="fa-solid fa-bell"></i>
                                     </span>
-                                    <span>Activez les notifications pour cette compétence</span>
+                                    <span>Activez les notifications pour cette competence</span>
                                 </span>
                             </li>
                             <li class="mb-2">
                                 <span class="icon-text">
-                                    <span class="icon" style="color: #6b7db3;">
+                                    <span class="icon skill-page-icon-blue">
                                         <i class="fa-solid fa-share-nodes"></i>
                                     </span>
-                                    <span>Partagez cette compétence avec votre réseau</span>
+                                    <span>Partagez cette competence avec votre reseau</span>
                                 </span>
                             </li>
                             <li>
                                 <span class="icon-text">
-                                    <span class="icon" style="color: #6b7db3;">
+                                    <span class="icon skill-page-icon-blue">
                                         <i class="fa-solid fa-compass"></i>
                                     </span>
-                                    <span>Explorez des compétences similaires</span>
+                                    <span>Explorez des competences similaires</span>
                                 </span>
                             </li>
                         </ul>
                     </div>
                 </div>
-                
+
                 <div class="buttons is-centered">
-                    <a href="/skills" class="button is-large" style="background-color: #30293d; color: white; border-radius: 12px; font-weight: 600; transition: all 0.3s ease;">
+                    <a href="/skills" class="button is-large skill-page-btn-dark">
                         <span class="icon">
                             <i class="fa-solid fa-arrow-left"></i>
                         </span>
-                        <span>Voir toutes les compétences</span>
+                        <span>Voir toutes les competences</span>
                     </a>
-                    
-                    <button class="button is-large" style="background-color: #e07b91; color: white; border: none; border-radius: 12px; font-weight: 600; transition: all 0.3s ease;">
+
+                    <button class="button is-large skill-page-btn-alert">
                         <span class="icon">
                             <i class="fa-solid fa-bell"></i>
                         </span>
@@ -230,125 +219,18 @@
             </div>
         <% } %>
 
-        <!-- Bouton retour stylisé -->
+        <!-- Bouton retour stylise -->
         <div class="has-text-centered mt-6">
-            <a href="/skills" class="button is-large back-button" style="background-color: white; border: 3px solid #30293d; color: #30293d; border-radius: 12px; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(48, 41, 61, 0.1);">
+            <a href="/skills" class="button is-large back-button skill-page-btn-back">
                 <span class="icon">
                     <i class="fa-solid fa-arrow-left"></i>
                 </span>
-                <span>Retour aux compétences</span>
+                <span>Retour aux competences</span>
             </a>
         </div>
 
     </div>
 </main>
-
-<style>
-    /* Cartes de profil avec effet hover avancé */
-    .profile-card {
-        min-height: 320px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-
-    .profile-card:hover {
-        transform: translateY(-12px) scale(1.02);
-        box-shadow: 0 20px 40px rgba(48, 41, 61, 0.2) !important;
-    }
-    
-    .profile-card:hover .card-bg-effect {
-        opacity: 0.1;
-    }
-    
-    .profile-card:hover .talent-name {
-        color: white !important;
-    }
-    
-    .profile-card:hover .skill-badge {
-        background-color: white !important;
-        transform: scale(1.05);
-    }
-
-    /* Animation de l'avatar */
-    .profile-avatar {
-        transition: transform 0.3s ease;
-    }
-
-    .profile-card:hover .profile-avatar {
-        transform: scale(1.15) rotate(5deg);
-    }
-    
-    .profile-card:hover .avatar-circle {
-        box-shadow: 0 8px 24px rgba(0,0,0,0.25) !important;
-        border-width: 5px !important;
-    }
-
-    /* Bouton retour */
-    .back-button:hover {
-        background-color: #30293d !important;
-        color: white !important;
-        transform: translateY(-4px);
-        box-shadow: 0 8px 20px rgba(48, 41, 61, 0.25) !important;
-    }
-    
-    /* Boutons dans l'état vide */
-    .buttons .button:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-    }
-    
-    .buttons .button:first-child:hover {
-        background-color: #5a4a6f !important;
-    }
-    
-    .buttons .button:last-child:hover {
-        background-color: #ff6b9d !important;
-    }
-    
-    /* Animation de pulsation pour les tags populaires */
-    @keyframes pulse {
-        0%, 100% {
-            transform: scale(1);
-        }
-        50% {
-            transform: scale(1.05);
-        }
-    }
-    
-    .tag.is-medium {
-        animation: pulse 2s ease-in-out infinite;
-    }
-    
-    /* Effet de brillance sur l'en-tête */
-    @keyframes shine {
-        0% {
-            background-position: -200% center;
-        }
-        100% {
-            background-position: 200% center;
-        }
-    }
-    
-    /* Effet parallaxe subtil sur l'icône principale */
-    @keyframes float-icon {
-        0%, 100% {
-            transform: translateY(0px) rotate(0deg);
-        }
-        50% {
-            transform: translateY(-15px) rotate(5deg);
-        }
-    }
-    
-    .icon.is-large {
-        animation: float-icon 4s ease-in-out infinite;
-    }
-    
-    /* Transition fluide pour tous les éléments interactifs */
-    * {
-        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    }
-</style>
 
 <%- include('../partials/footer.ejs') %>
 

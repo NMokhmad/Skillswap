@@ -7,50 +7,57 @@ import skillController from "./controllers/skillController.js";
 import followController from "./controllers/followController.js";
 import reviewController from "./controllers/reviewController.js";
 import messageController from "./controllers/messageController.js";
-import { userInfo } from "./middlewares/userInfoCookie.js";
+import { verifyJWT, optionalJWT } from "./middlewares/jwtVerify.js";
 
 const router = Router();
 
-router.get("/", mainController.renderHomePage);
+// ============================================
+// Routes publiques (optionalJWT pour savoir si un user est connecté)
+// ============================================
+router.get("/", optionalJWT, mainController.renderHomePage);
 router.get("/help", mainController.renderHelpPage);
 
-router.get("/talents", talentController.renderTalentsPage);
-router.get("/talents/:id", talentController.renderTalentPage);
+router.get("/talents", optionalJWT, talentController.renderTalentsPage);
+router.get("/talents/:id", optionalJWT, talentController.renderTalentPage);
 
-router.get("/skills", skillController.renderSkillsPage);
-router.get("/skills/:slug", skillController.renderSkillPage);
+router.get("/skills", optionalJWT, skillController.renderSkillsPage);
+router.get("/skills/:slug", optionalJWT, skillController.renderSkillPage);
 
 router.get("/register", authController.renderRegisterPage);
 router.post("/register", authController.register);
-
-router.get("/onboarding", mainController.renderOnboardingPage);
-router.post("/onboarding", mainController.completeOnboarding);
 
 router.get("/login", authController.renderloginPage);
 router.post("/login", authController.login);
 
 router.get("/logout", authController.logout);
 
-// Recherche par compétences
-router.get("/search", mainController.searchPage);
+router.get("/search", optionalJWT, mainController.searchPage);
 
-router.get("/user/:id", mainController.renderHomePage);
+// ============================================
+// Routes protégées (verifyJWT obligatoire)
+// ============================================
 
+// Onboarding
+router.get("/onboarding", verifyJWT, mainController.renderOnboardingPage);
+router.post("/onboarding", verifyJWT, mainController.completeOnboarding);
+
+// Profil
+router.get("/user/:id", verifyJWT, mainController.renderHomePage);
 router.route("/user/:id/profil")
-  .get(mainController.renderProfilePage)
-  .post(profilController.updateProfile)
-  .delete(profilController.deleteProfile);
+  .get(verifyJWT, mainController.renderProfilePage)
+  .post(verifyJWT, profilController.updateProfile)
+  .delete(verifyJWT, profilController.deleteProfile);
 
 // Follow / Unfollow
-router.post("/follow/:id", followController.follow);
-router.delete("/follow/:id", followController.unfollow);
+router.post("/follow/:id", verifyJWT, followController.follow);
+router.delete("/follow/:id", verifyJWT, followController.unfollow);
 
 // Avis
-router.post("/review/:userId", reviewController.createReview);
+router.post("/review/:userId", verifyJWT, reviewController.createReview);
 
 // Messagerie
-router.get("/messages", messageController.renderMessagesPage);
-router.get("/messages/:userId", messageController.renderConversation);
-router.post("/messages/:userId", messageController.sendMessage);
+router.get("/messages", verifyJWT, messageController.renderMessagesPage);
+router.get("/messages/:userId", verifyJWT, messageController.renderConversation);
+router.post("/messages/:userId", verifyJWT, messageController.sendMessage);
 
 export default router;

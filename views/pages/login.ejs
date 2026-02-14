@@ -1,13 +1,9 @@
 <%- include('../partials/header.ejs') %>
-
-<style>
-    
-</style>
 </head>
 
 <body>
     <%- include('../partials/navbar.ejs') %>
-    
+
     <section class="login-section">
         <div class="container">
             <div class="columns is-centered">
@@ -17,7 +13,7 @@
                         <div class="login-header">
                             <div class="icon-circle">
                                 <span class="icon is-large">
-                                    <i class="fas fa-sign-in-alt fa-2x" style="color: white;"></i>
+                                    <i class="fas fa-sign-in-alt fa-2x login-icon-header"></i>
                                 </span>
                             </div>
                             <h1 class="title">Bon retour !</h1>
@@ -52,7 +48,7 @@
                                 <!-- Email -->
                                 <div class="field">
                                     <label class="label">
-                                        <span class="icon is-small" style="color: #6b7db3;">
+                                        <span class="icon is-small login-icon-email">
                                             <i class="fas fa-envelope"></i>
                                         </span>
                                         Email
@@ -68,7 +64,7 @@
                                 <!-- Mot de passe -->
                                 <div class="field">
                                     <label class="label">
-                                        <span class="icon is-small" style="color: #a8b7e5;">
+                                        <span class="icon is-small login-icon-password">
                                             <i class="fas fa-lock"></i>
                                         </span>
                                         Mot de passe
@@ -92,8 +88,8 @@
                                 </div>
 
                                 <!-- Bouton de connexion -->
-                                <div class="field" style="margin-top: 2rem;">
-                                    <button type="submit" class="btn-login">
+                                <div class="field login-submit-field">
+                                    <button type="submit" class="btn-login1">
                                         <span class="icon">
                                             <i class="fas fa-arrow-right"></i>
                                         </span>

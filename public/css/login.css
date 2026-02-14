@@ -189,7 +189,7 @@ body {
     }
 
     /* Bouton de connexion */
-    .btn-login {
+    .btn-login1 {
         background: linear-gradient(135deg, #6b7db3, #a8b7e5);
         border: none;
         border-radius: 12px;
@@ -197,20 +197,19 @@ body {
         font-weight: 700;
         font-size: 1.1rem;
         padding: 1rem;
-        width: 100%;
         cursor: pointer;
         transition: all 0.3s ease;
         box-shadow: 0 6px 20px rgba(107, 125, 179, 0.3);
-        text-transform: uppercase;
+
         letter-spacing: 0.5px;
     }
 
-    .btn-login:hover {
+    .btn-login1:hover {
         transform: translateY(-3px);
         box-shadow: 0 8px 24px rgba(107, 125, 179, 0.4);
     }
 
-    .btn-login:active {
+    .btn-login1:active {
         transform: translateY(-1px);
     }
 
@@ -281,6 +280,14 @@ body {
         font-weight: 600;
     }
 
+    /* Icônes de labels */
+    .login-icon-email { color: #6b7db3; }
+    .login-icon-password { color: #a8b7e5; }
+    .login-icon-header { color: white; }
+
+    /* Espacement bouton */
+    .login-submit-field { margin-top: 2rem; }
+
     /* Responsive - Tablette */
     @media screen and (max-width: 768px) {
         .login-section {
@@ -332,7 +339,7 @@ body {
             padding: 1.5rem 1rem;
         }
 
-        .btn-login {
+        .btn-login1 {
             font-size: 1rem;
             padding: 0.85rem;
         }
