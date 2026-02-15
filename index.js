@@ -12,11 +12,11 @@ import methodeOverride from 'method-override';
 import { sanitize } from './app/middlewares/sanitizeHtml.js';
 import { sequelize } from './app/database.js';
 
-// Sync BDD : alter uniquement en développement
+// Sync BDD : alter en dev, sync simple en prod (crée les tables manquantes)
 if (process.env.NODE_ENV === 'production') {
-  sequelize.authenticate()
-    .then(() => console.log('Base de donnees connectee'))
-    .catch((err) => console.error('Erreur connexion DB :', err));
+  sequelize.sync()
+    .then(() => console.log('Base de donnees synchronisee (prod)'))
+    .catch((err) => console.error('Erreur sync DB :', err));
 } else {
   sequelize.sync({ alter: true })
     .then(() => console.log('Base de donnees synchronisee (dev)'))
