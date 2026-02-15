@@ -8,12 +8,12 @@ export const sequelize = new Sequelize(process.env.DATABASE_URL, {
     updatedAt: 'updated_at',
     createdAt: 'created_at',
   },
-  dialectOptions: {
+  dialectOptions: process.env.NODE_ENV === 'production' ? {
     ssl: {
       require: true,
-      rejectUnauthorized: false  // Toujours false pour DigitalOcean
+      rejectUnauthorized: false
     }
-  },
+  } : {},
   logging: false
 });
 
