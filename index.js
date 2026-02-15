@@ -25,6 +25,11 @@ if (process.env.NODE_ENV === 'production') {
 
 const app = express();
 
+// Trust proxy en production (DigitalOcean utilise un reverse proxy)
+if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1);
+}
+
 // Sécurité : en-têtes HTTP (XSS, clickjacking, sniffing MIME, etc.)
 app.use(helmet({
   contentSecurityPolicy: {
