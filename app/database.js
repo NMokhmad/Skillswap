@@ -3,7 +3,7 @@ import { Sequelize } from "sequelize";
 // dotenv est déjà chargé une seule fois dans index.js via import 'dotenv/config'
 // Pas besoin de le recharger ici
 
-export const sequelize = new Sequelize(process.env.PG_URL, {
+export const sequelize = new Sequelize(process.env.DATABASE_URL, {
   define: {
     updatedAt: 'updated_at',
     createdAt: 'created_at',
