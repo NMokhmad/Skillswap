@@ -10,7 +10,6 @@ export const sequelize = new Sequelize(process.env.DATABASE_URL, {
   },
   dialectOptions: process.env.NODE_ENV === 'production' ? {
     ssl: {
-      require: true,
       rejectUnauthorized: false
     }
   } : {},
