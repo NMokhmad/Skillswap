@@ -8,6 +8,10 @@ Review.init(
     rate:{
       type: DataTypes.INTEGER,
       allowNull: false,
+      validate: {
+        min: 1,
+        max: 5,
+      },
     },
     content:{
       type: DataTypes.STRING,

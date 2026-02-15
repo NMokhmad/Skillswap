@@ -1,9 +1,5 @@
 import { User } from "../models/User.js";
 import { userUpdateSchema } from "../schemas/userUpdateSchema.js";
-import { Review } from "../models/Review.js";
-import { Message } from "../models/Message.js";
-import { sequelize } from "../database.js";
-import { Notification } from "../models/Notification.js";
 
 const profilController = {
   // Route protégée par verifyJWT → req.user est garanti
@@ -58,29 +54,8 @@ const profilController = {
     }
 
     try {
-      // Supprimer les relations dans les tables de jonction
-      await sequelize.query('DELETE FROM user_has_follow WHERE follower_id = :userId OR followed_id = :userId', {
-        replacements: { userId },
-        type: sequelize.QueryTypes.DELETE
-      });
-
-      await sequelize.query('DELETE FROM user_has_skill WHERE user_id = :userId', {
-        replacements: { userId },
-        type: sequelize.QueryTypes.DELETE
-      });
-
-      // Supprimer les avis envoyés et reçus
-      await Review.destroy({ where: { reviewer_id: userId } });
-      await Review.destroy({ where: { reviewed_id: userId } });
-
-      // Supprimer les messages envoyés et reçus
-      await Message.destroy({ where: { sender_id: userId } });
-      await Message.destroy({ where: { receiver_id: userId } });
-
-      // Supprimer les notifications
-      await Notification.destroy({ where: { user_id: userId } });
-
-      // Supprimer l'utilisateur
+      // ON DELETE CASCADE sur toutes les FK supprime automatiquement
+      // les reviews, messages, notifications, follows et skills liés
       await User.destroy({ where: { id: userId } });
 
       // Nettoyer les cookies et rediriger

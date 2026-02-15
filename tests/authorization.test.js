@@ -5,6 +5,33 @@ import { verifyJWT } from '../app/middlewares/jwtVerify.js';
 const JWT_SECRET = 'test-secret';
 process.env.JWT_SECRET = JWT_SECRET;
 
+// ─── Mock de Sequelize et des modèles AVANT d'importer le controller ───
+
+// Mock du modèle User
+const mockUser = {
+  id: 5,
+  firstname: 'Jean',
+  lastname: 'Dupont',
+  email: 'jean@test.com',
+  update: jest.fn().mockResolvedValue(true),
+};
+
+jest.unstable_mockModule('../app/models/User.js', () => ({
+  User: {
+    findByPk: jest.fn().mockResolvedValue(mockUser),
+    destroy: jest.fn().mockResolvedValue(1),
+  },
+}));
+
+jest.unstable_mockModule('../app/schemas/userUpdateSchema.js', () => ({
+  userUpdateSchema: {
+    validateAsync: jest.fn().mockResolvedValue({}),
+  },
+}));
+
+// Import dynamique APRÈS les mocks
+const { default: profilController } = await import('../app/controllers/profilController.js');
+
 function mockReq(overrides = {}) {
   return { cookies: {}, method: 'GET', params: {}, body: {}, ...overrides };
 }
@@ -28,10 +55,10 @@ function mockRes() {
 }
 
 // ─── Vérification d'identité sur les routes protégées ───
+// Ces tests appellent les VRAIS controllers pour détecter toute régression
 
-describe('Autorisation - vérification d\'identité', () => {
+describe('Autorisation - vérification d\'identité (vrais controllers)', () => {
   test('updateProfile refuse si req.user.id !== userId (403)', async () => {
-    // Simule ce que fait profilController.updateProfile
     const req = mockReq({
       method: 'POST',
       user: { id: 1, email: 'user1@test.com' },
@@ -40,11 +67,7 @@ describe('Autorisation - vérification d\'identité', () => {
     });
     const res = mockRes();
 
-    // Logique extraite du controller
-    const userId = parseInt(req.params.id);
-    if (req.user.id !== userId) {
-      res.status(403).json({ error: 'Vous ne pouvez modifier que votre propre profil' });
-    }
+    await profilController.updateProfile(req, res);
 
     expect(res.statusCode).toBe(403);
     expect(res.jsonData.error).toContain('votre propre profil');
@@ -53,19 +76,20 @@ describe('Autorisation - vérification d\'identité', () => {
   test('updateProfile accepte si req.user.id === userId', async () => {
     const req = mockReq({
       method: 'POST',
-      user: { id: 5, email: 'user@test.com' },
+      user: { id: 5, email: 'jean@test.com' },
       params: { id: '5' },
       body: { firstname: 'Jean', lastname: 'Dupont', email: 'jean@test.com' },
     });
     const res = mockRes();
 
-    const userId = parseInt(req.params.id);
-    const authorized = req.user.id === userId;
+    await profilController.updateProfile(req, res);
 
-    expect(authorized).toBe(true);
+    // Pas de 403, le profil est mis à jour et on redirige
+    expect(res.statusCode).not.toBe(403);
+    expect(res.redirectUrl).toBe('/user/5/profil');
   });
 
-  test('deleteProfile refuse si req.user.id !== userId (403)', () => {
+  test('deleteProfile refuse si req.user.id !== userId (403)', async () => {
     const req = mockReq({
       method: 'POST',
       user: { id: 10 },
@@ -73,23 +97,26 @@ describe('Autorisation - vérification d\'identité', () => {
     });
     const res = mockRes();
 
-    const userId = parseInt(req.params.id);
-    if (req.user.id !== userId) {
-      res.status(403).json({ error: 'Vous ne pouvez supprimer que votre propre compte' });
-    }
+    await profilController.deleteProfile(req, res);
 
     expect(res.statusCode).toBe(403);
     expect(res.jsonData.error).toContain('votre propre compte');
   });
 
-  test('deleteProfile accepte si req.user.id === userId', () => {
+  test('deleteProfile accepte si req.user.id === userId', async () => {
     const req = mockReq({
-      user: { id: 7 },
-      params: { id: '7' },
+      user: { id: 5 },
+      params: { id: '5' },
     });
+    const res = mockRes();
 
-    const userId = parseInt(req.params.id);
-    expect(req.user.id === userId).toBe(true);
+    await profilController.deleteProfile(req, res);
+
+    // Pas de 403, le compte est supprimé et on redirige
+    expect(res.statusCode).not.toBe(403);
+    expect(res.redirectUrl).toBe('/');
+    expect(res.clearedCookies).toContain('token');
+    expect(res.clearedCookies).toContain('userInfo');
   });
 });
 
@@ -132,30 +159,35 @@ describe('Protection des routes - verifyJWT comme garde', () => {
 });
 
 // ─── Protection contre le mass assignment ───
+// Teste que le VRAI controller n'utilise que les champs autorisés
 
-describe('Protection contre le mass assignment', () => {
-  test('seuls firstname, lastname, email sont extraits du body', () => {
-    const body = {
-      firstname: 'Jean',
-      lastname: 'Dupont',
-      email: 'jean@test.com',
-      role_id: 1,         // tentative d'escalade de privilège
-      password: 'hack',   // tentative de changement de mot de passe
-      is_admin: true,      // champ inventé
-    };
+describe('Protection contre le mass assignment (vrai controller)', () => {
+  test('seuls firstname, lastname, email sont passés à user.update()', async () => {
+    mockUser.update.mockClear();
 
-    // Whitelist comme dans profilController.updateProfile
-    const { firstname, lastname, email } = body;
-    const safeData = { firstname, lastname, email };
+    const req = mockReq({
+      method: 'POST',
+      user: { id: 5, email: 'jean@test.com' },
+      params: { id: '5' },
+      body: {
+        firstname: 'Jean',
+        lastname: 'Dupont',
+        email: 'jean@test.com',
+        role_id: 1,         // tentative d'escalade de privilège
+        password: 'hack',   // tentative de changement de mot de passe
+        is_admin: true,      // champ inventé
+      },
+    });
+    const res = mockRes();
 
-    expect(safeData).toEqual({
+    await profilController.updateProfile(req, res);
+
+    // Vérifie que user.update() a été appelé SANS les champs dangereux
+    expect(mockUser.update).toHaveBeenCalledWith({
       firstname: 'Jean',
       lastname: 'Dupont',
       email: 'jean@test.com',
     });
-    expect(safeData.role_id).toBeUndefined();
-    expect(safeData.password).toBeUndefined();
-    expect(safeData.is_admin).toBeUndefined();
   });
 });
 

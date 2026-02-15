@@ -166,6 +166,19 @@ module.exports = {
       },
     });
 
+    // CHECK constraint : rate doit être entre 1 et 5
+    await queryInterface.addConstraint('review', {
+      fields: ['rate'],
+      type: 'check',
+      where: {
+        rate: {
+          [Sequelize.Op.gte]: 1,
+          [Sequelize.Op.lte]: 5,
+        },
+      },
+      name: 'review_rate_check_1_5',
+    });
+
     // Contrainte unique sur review
     await queryInterface.addConstraint('review', {
       fields: ['reviewer_id', 'reviewed_id', 'skill_id'],
