@@ -9,10 +9,19 @@ export const sequelize = new Sequelize(process.env.DATABASE_URL, {
     createdAt: 'created_at',
   },
   dialectOptions: {
-    ssl: process.env.NODE_ENV === 'production' ? {
+    ssl: {
       require: true,
-      rejectUnauthorized: false
-    } : false
+      rejectUnauthorized: false  // Toujours false pour DigitalOcean
+    }
   },
   logging: false
 });
+
+// Test de connexion
+try {
+  await sequelize.authenticate();
+  console.log('✅ Database connected successfully');
+} catch (error) {
+  console.error('❌ Database connection failed:', error.message);
+  process.exit(1);
+}
