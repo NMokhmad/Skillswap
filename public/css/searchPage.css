@@ -1,0 +1,90 @@
+
+.navbar-item:hover{
+    background-color: #825e9e;
+    color: white;
+}
+
+form{
+    display: flex;
+    flex-direction: row;
+    width: 30vw;
+}
+#search-bar{
+    display: flex;
+    justify-content: center;
+}
+.search-bar-container{
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.profil-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.profil-picture{
+    border-radius: 50%;
+    margin-top: 1rem;
+}
+.profil{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.description{
+    margin-left: 1rem;
+}
+.picture-container{
+    display: inline;
+    margin-left: 1rem;
+    width: 16rem;
+}
+.profil{
+    display: flex;
+}
+
+.navbar-item:hover{
+    background-color: purple;
+    color: white;
+    transition-delay: 0.1s;
+}
+#burger{
+    color: purple;
+}
+body{
+    background-color: white;
+}
+.navbar-brand{
+    background-color: rgb(238, 207, 238);
+}
+#nav-links{
+    background-color: rgb(238, 207, 238);
+}
+.navbar-item{
+    text-align: center;
+}
+
+.loupe{
+    width: 1.2rem;
+
+}
+
+#search{
+    width: 50%;
+    margin-left: 25%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+form{
+    display: flex;
+    align-items: center;
+}
+#svg{
+    padding-top: 1rem;
+}
+svg{
+    width: 1.5rem;
+    height: 1.5rem;
+}

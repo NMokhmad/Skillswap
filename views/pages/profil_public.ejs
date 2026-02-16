@@ -1,0 +1,68 @@
+<%- include('../partials/header.ejs') %>
+<main>
+        <div class="container_informations">
+    
+            <section class="section_profil">
+    
+                <img src="../public/img/pexels-3motional-studio-407102-1081685.jpg" alt="photo de profil" class="pp">
+                <h2 class="name_profil"><%= profil.firstname %> <%= profil.lastname %></h2>
+                <p>Note</p>
+                <div class="container_buttons">
+                    <button  class="button button_follow">Ne plus suivre</button>
+                    <button class="button button_contact">Contacter</button>
+                </div>
+        
+            </section>
+    
+            <div class="container_presentation">
+                <h1 class="title_presentation">Présentation</h1>
+                <p><%=  %></p>
+            </div>
+    
+            <div class="container_skills">
+                <h2 class="title_skills">Compétences et intérêts</h2>
+                <ul>
+                    <li class="tag"><%= profil.interest %></li>
+                    
+                </ul>
+            </div>
+    
+            <div class="container_review">
+                <h2 class="title_review">Avis et partages</h2>
+                
+                <div class="card">
+            
+                    <div class="card-content">
+                      <div class="media">
+                        <div class="media-left">
+                          <figure class="image is-48x48">
+                            <img
+                              src="../public/img/pexels-italo-melo-881954-2379004.jpg"
+                              alt="photo de profil"
+                            />
+                          </figure>
+                        </div>
+                        
+                        <div class="media-content">
+                          <p class="title is-4">John Smith</p>
+                          <p class="subtitle is-6">@johnsmith</p>
+                        </div>
+                      </div>
+                  
+                      <div class="content">
+                         <%= review.content %>  
+                        <br />
+                        <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+        </div>
+    
+
+</main>
+
+<%- include('../partials/footer.ejs') %>
+
+</body>
+</html>

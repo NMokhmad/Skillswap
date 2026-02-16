@@ -1,0 +1,78 @@
+        /* Animations des boutons profil */
+        .profile-edit-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(107, 125, 179, 0.35);
+            background-color: #a8b7e5 !important;
+        }
+        
+        .profile-delete-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(255, 107, 157, 0.25);
+            background-color: #ff6b9d !important;
+            color: white !important;
+        }
+        
+        /* Animation des boxes d'infos */
+        .content .box {
+            transition: all 0.3s ease;
+        }
+        
+        .content .box:hover {
+            transform: translateX(8px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Inputs focus */
+        .input:focus, .textarea:focus {
+            border-color: #6b7db3 !important;
+            box-shadow: 0 0 0 3px rgba(107, 125, 179, 0.1) !important;
+        }
+        
+        /* Boutons du formulaire */
+        form .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        form .button[type="submit"]:hover {
+            background-color: #a8b7e5 !important;
+        }
+        
+        form .button#cancelEdit:hover {
+            background-color: #30293d !important;
+            color: white !important;
+        }
+        
+        /* Dialog de confirmation */
+        #delete-confirmation button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        #delete-confirmation button[type="submit"]:hover {
+            background-color: #e07b91 !important;
+        }
+        
+        #cancelDelete:hover {
+            background-color: #30293d !important;
+            color: white !important;
+        }
+        
+        /* Upload d'avatar */
+        .file-cta:hover {
+            background-color: #ff6b9d !important;
+        }
+        
+        /* Animation de l'icône principale */
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+        
+        .box .icon.is-large {
+            animation: float 3s ease-in-out infinite;
+        }

@@ -1,0 +1,288 @@
+<%- include('../partials/header.ejs') %>
+<script src="/js/onboarding.js" defer></script>
+</head>
+
+<body>
+    <main class="section onboard-main">
+        <div class="container">
+
+            <!-- En-tête de bienvenue -->
+            <div class="box has-text-centered mb-6 p-6 onboard-header">
+
+                <!-- Effet de brillance -->
+                <div class="onboard-shine"></div>
+
+                <div class="onboard-header-content">
+                    <h1 class="title is-1 has-text-light has-text-weight-bold mb-2">
+                        Bienvenue <%= user.firstname %> !
+                    </h1>
+                    <p class="subtitle is-4 has-text-light onboard-subtitle-light">
+                        Complétez votre profil pour commencer à échanger vos compétences
+                    </p>
+                </div>
+            </div>
+
+            <!-- Barre de progression -->
+            <div class="box mb-5 p-4 onboard-progress-box">
+                <div class="is-flex is-justify-content-space-between is-align-items-center mb-3">
+                    <p class="has-text-weight-semibold onboard-text-dark">
+                        <span class="icon-text">
+                            <span class="icon onboard-icon-blue">
+                                <i class="fa-solid fa-list-check"></i>
+                            </span>
+                            <span>Progression du profil</span>
+                        </span>
+                    </p>
+                    <span id="progress-text" class="tag is-medium onboard-progress-tag">
+                        0/4 étapes
+                    </span>
+                </div>
+                <progress id="profile-progress" class="progress is-large onboard-progress-bar" value="0" max="4"></progress>
+            </div>
+
+            <!-- Formulaire d'onboarding -->
+            <form id="onboarding-form" action="/onboarding" method="POST" enctype="multipart/form-data">
+
+                <div class="columns is-centered">
+                    <div class="column is-10-desktop">
+
+                        <!-- Étape 1 : Photo de profil -->
+                        <div class="box step-card mb-5 onboard-step-card onboard-step-photo">
+                            <div class="is-flex is-justify-content-space-between is-align-items-start mb-4">
+                                <div>
+                                    <h2 class="title is-4 has-text-weight-bold mb-2 onboard-text-dark">
+                                        <span class="icon-text">
+                                            <span class="icon onboard-icon-pink">
+                                                <i class="fa-solid fa-camera"></i>
+                                            </span>
+                                            <span>1. Photo de profil</span>
+                                        </span>
+                                    </h2>
+                                    <p class="subtitle is-6 onboard-text-muted">Ajoutez une photo pour personnaliser votre profil (optionnel)</p>
+                                </div>
+                                <span class="tag is-medium onboard-tag-optional-pink">
+                                    Optionnel
+                                </span>
+                            </div>
+
+                            <div class="has-text-centered p-5">
+                                <!-- Prévisualisation de l'avatar -->
+                                <figure class="image is-128x128 is-inline-block mb-4">
+                                    <div id="avatar-preview">
+                                        <span class="icon is-large has-text-light onboard-avatar-icon" id="default-icon">
+                                            <i class="fa-solid fa-user"></i>
+                                        </span>
+                                        <img id="preview-img" src="" alt="Avatar preview" style="display: none;">
+                                    </div>
+                                </figure>
+
+                                <div class="file has-name is-centered is-large mb-3">
+                                    <label class="file-label">
+                                        <input class="file-input" type="file" name="avatar" id="avatar-input" accept="image/*">
+                                        <span class="file-cta onboard-file-cta">
+                                            <span class="file-icon">
+                                                <i class="fa-solid fa-upload"></i>
+                                            </span>
+                                            <span class="file-label has-text-weight-semibold">
+                                                Choisir une photo
+                                            </span>
+                                        </span>
+                                        <span class="file-name onboard-file-name" id="file-name">
+                                            Aucun fichier sélectionné
+                                        </span>
+                                    </label>
+                                </div>
+
+                                <p class="help onboard-text-muted">
+                                    <span class="icon-text">
+                                        <span class="icon">
+                                            <i class="fa-solid fa-info-circle"></i>
+                                        </span>
+                                        <span>Format accepté : JPG, PNG, GIF (max 5Mo)</span>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Étape 2 : Bio -->
+                        <div class="box step-card mb-5 onboard-step-card onboard-step-bio">
+                            <div class="is-flex is-justify-content-space-between is-align-items-start mb-4">
+                                <div>
+                                    <h2 class="title is-4 has-text-weight-bold mb-2 onboard-text-dark">
+                                        <span class="icon-text">
+                                            <span class="icon onboard-icon-blue">
+                                                <i class="fa-solid fa-pen-fancy"></i>
+                                            </span>
+                                            <span>2. Parlez-nous de vous</span>
+                                        </span>
+                                    </h2>
+                                    <p class="subtitle is-6 onboard-text-muted">Décrivez-vous en quelques mots (optionnel)</p>
+                                </div>
+                                <span class="tag is-medium onboard-tag-optional-blue">
+                                    Optionnel
+                                </span>
+                            </div>
+
+                            <div class="field">
+                                <div class="control">
+                                    <textarea class="textarea is-medium onboard-textarea" name="bio" id="bio" rows="5" maxlength="500" placeholder="Ex: Passionné de développement web et de design, j'aime partager mes connaissances et apprendre de nouvelles compétences..."></textarea>
+                                </div>
+                                <p class="help has-text-right onboard-text-muted">
+                                    <span id="bio-count">0</span>/500 caractères
+                                </p>
+                            </div>
+
+                            <div class="box onboard-tip-box">
+                                <p class="has-text-weight-semibold onboard-tip-text">
+                                    <span class="icon">
+                                        <i class="fa-solid fa-lightbulb"></i>
+                                    </span>
+                                    Conseil : Une bio accrocheuse augmente vos chances d'être contacté !
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Étape 3 : Compétences existantes -->
+                        <div class="box step-card mb-5 onboard-step-card onboard-step-skills">
+                            <div class="is-flex is-justify-content-space-between is-align-items-start mb-4">
+                                <div>
+                                    <h2 class="title is-4 has-text-weight-bold mb-2 onboard-text-dark">
+                                        <span class="icon-text">
+                                            <span class="icon onboard-icon-purple">
+                                                <i class="fa-solid fa-star"></i>
+                                            </span>
+                                            <span>3. Vos compétences</span>
+                                        </span>
+                                    </h2>
+                                    <p class="subtitle is-6 onboard-text-muted">Sélectionnez au moins une compétence que vous maîtrisez</p>
+                                </div>
+                                <span class="tag is-medium onboard-tag-required">
+                                    <span class="icon">
+                                        <i class="fa-solid fa-star"></i>
+                                    </span>
+                                    <span>Requis</span>
+                                </span>
+                            </div>
+
+                            <!-- Barre de recherche -->
+                            <div class="field mb-4">
+                                <div class="control has-icons-left">
+                                    <input class="input is-medium onboard-input" type="text" id="skill-search" placeholder="Rechercher une compétence...">
+                                    <span class="icon is-left onboard-icon-purple-sm">
+                                        <i class="fa-solid fa-search"></i>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Grille de compétences -->
+                            <div class="content">
+                                <p class="has-text-weight-semibold mb-3 onboard-text-dark">Compétences disponibles :</p>
+                                <div id="skills-grid" class="is-flex is-flex-wrap-wrap onboard-skills-grid">
+                                    <!-- Les compétences seront générées ici -->
+                                    <% if (skills && skills.length > 0) { %>
+                                        <% skills.forEach((skill, index) => { %>
+                                            <label class="skill-checkbox-label onboard-skill-label">
+                                                <input type="checkbox" name="skills[]" value="<%= skill.id %>" class="is-hidden skill-checkbox">
+                                                <div class="skill-tag onboard-skill-tag onboard-color-<%= index % 4 %>" data-skill-name="<%= skill.label.toLowerCase() %>">
+                                                    <span class="icon is-small">
+                                                        <i class="fa-solid <%= skill.icon %>"></i>
+                                                    </span>
+                                                    <span><%= skill.label %></span>
+                                                    <span class="icon is-small checkmark-icon onboard-checkmark" style="display: none;">
+                                                        <i class="fa-solid fa-circle-check"></i>
+                                                    </span>
+                                                </div>
+                                            </label>
+                                        <% }) %>
+                                    <% } else { %>
+                                        <p class="onboard-empty-msg">Aucune compétence disponible pour le moment.</p>
+                                    <% } %>
+                                </div>
+
+                                <div id="selected-skills-display" class="mt-4 is-hidden">
+                                    <p class="has-text-weight-semibold mb-2 onboard-text-dark">Compétences sélectionnées :</p>
+                                    <div id="selected-count" class="tag is-medium onboard-selected-count">
+                                        0 sélectionnée(s)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Étape 4 : Nouvelle compétence -->
+                        <div class="box step-card mb-5 onboard-step-card onboard-step-newskill">
+                            <div class="is-flex is-justify-content-space-between is-align-items-start mb-4">
+                                <div>
+                                    <h2 class="title is-4 has-text-weight-bold mb-2 onboard-text-dark">
+                                        <span class="icon-text">
+                                            <span class="icon onboard-icon-magenta">
+                                                <i class="fa-solid fa-plus-circle"></i>
+                                            </span>
+                                            <span>4. Proposer une nouvelle compétence</span>
+                                        </span>
+                                    </h2>
+                                    <p class="subtitle is-6 onboard-text-muted">Votre compétence n'est pas dans la liste ? Proposez-la ! (optionnel)</p>
+                                </div>
+                                <span class="tag is-medium onboard-tag-optional-newskill">
+                                    Optionnel
+                                </span>
+                            </div>
+
+                            <div class="field">
+                                <label class="label onboard-label">
+                                    <span class="icon-text">
+                                        <span class="icon onboard-icon-magenta-sm">
+                                            <i class="fa-solid fa-tag"></i>
+                                        </span>
+                                        <span>Nom de la compétence</span>
+                                    </span>
+                                </label>
+                                <div class="control has-icons-left">
+                                    <input class="input is-medium onboard-input" type="text" name="new_skill" id="new-skill" placeholder="Ex: Photographie culinaire, Arduino, Origami..." maxlength="50">
+                                    <span class="icon is-left onboard-icon-magenta-sm">
+                                        <i class="fa-solid fa-sparkles"></i>
+                                    </span>
+                                </div>
+                                <p class="help onboard-help">Cette compétence sera soumise pour validation avant d'être ajoutée au catalogue</p>
+                            </div>
+                        </div>
+
+                        <!-- Boutons d'action -->
+                        <div class="box has-text-centered p-5 onboard-action-box">
+                            <div class="buttons is-centered">
+                                <button type="submit" id="complete-btn" class="button is-large onboard-submit-btn" disabled>
+                                    <span class="icon">
+                                        <i class="fa-solid fa-check-circle"></i>
+                                    </span>
+                                    <span>Terminer et explorer SkillSwap</span>
+                                </button>
+                            </div>
+
+                            <div class="mt-4">
+                                <a href="/skills" class="button is-medium is-text onboard-skip-link">
+                                    <span class="icon">
+                                        <i class="fa-solid fa-clock"></i>
+                                    </span>
+                                    <span>Je compléterai mon profil plus tard</span>
+                                </a>
+                            </div>
+
+                            <p class="help mt-3 onboard-help">
+                                <span class="icon-text">
+                                    <span class="icon">
+                                        <i class="fa-solid fa-info-circle"></i>
+                                    </span>
+                                    <span>Vous devez sélectionner au moins une compétence pour continuer</span>
+                                </span>
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+    </main>
+    <%- include('../partials/footer.ejs') %>
+</body>
+</html>

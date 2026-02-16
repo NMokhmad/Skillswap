@@ -1,0 +1,128 @@
+/* ============================================
+   SKILLSWAP - RESPONSIVE GLOBAL
+   Charte graphique préservée, structure adaptée
+   Breakpoints : 480px (phone), 768px (tablet), 1024px (desktop)
+   ============================================ */
+
+/* ─── Tablette (max 768px) ─── */
+@media screen and (max-width: 768px) {
+
+    /* Titres globaux */
+    .title.is-1, h1.title { font-size: 1.75rem !important; }
+    .title.is-2, h2.title { font-size: 1.5rem !important; }
+    .title.is-3 { font-size: 1.25rem !important; }
+
+    /* Sections : réduire le padding */
+    .section { padding: 2rem 1rem; }
+
+    /* Boutons : zone de clic mobile-friendly (min 44px) */
+    .button.is-medium {
+        padding: 0.75rem 1.25rem;
+        font-size: 0.95rem;
+    }
+
+    .button.is-large {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+    }
+
+    /* Avatars : réduction proportionnelle */
+    .image.is-128x128 {
+        width: 96px !important;
+        height: 96px !important;
+    }
+
+    .image.is-128x128 div {
+        width: 96px !important;
+        height: 96px !important;
+    }
+
+    /* Formulaires : pleine largeur (sauf champs message avec bouton envoi) */
+    .field.has-addons:not(.message-field) {
+        flex-direction: column;
+    }
+
+    .field.has-addons:not(.message-field) .control {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+
+    .field.has-addons:not(.message-field) .control:last-child {
+        margin-bottom: 0;
+    }
+
+    .field.has-addons:not(.message-field) .control .button {
+        width: 100%;
+        border-radius: 12px !important;
+    }
+
+    /* Columns Bulma : forcer l'empilement sur tablette portrait */
+    .columns:not(.is-mobile) {
+        flex-wrap: wrap;
+    }
+
+    /* Tags : taille adaptée */
+    .tags.are-medium .tag {
+        font-size: 0.85rem;
+        padding: 0.5rem 0.75rem;
+    }
+
+    /* Box : padding réduit */
+    .box {
+        padding: 1rem;
+    }
+}
+
+/* ─── Mobile (max 480px) ─── */
+@media screen and (max-width: 480px) {
+
+    /* Titres encore plus compacts */
+    .title.is-1, h1.title { font-size: 1.5rem !important; }
+    .title.is-2, h2.title { font-size: 1.25rem !important; }
+    .title.is-3 { font-size: 1.1rem !important; }
+    .title.is-4 { font-size: 1rem !important; }
+    .title.is-5 { font-size: 0.95rem !important; }
+
+    /* Sections */
+    .section { padding: 1.5rem 0.75rem; }
+
+    /* Container */
+    .container { padding-left: 0.75rem; padding-right: 0.75rem; }
+
+    /* Boutons : plus compacts mais toujours accessibles */
+    .button.is-medium {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .buttons.is-centered {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .buttons.is-centered .button {
+        width: 100%;
+        margin: 0 !important;
+    }
+
+    /* Tags */
+    .tags {
+        gap: 0.35rem;
+    }
+
+    .tag.is-medium, .tag.is-large {
+        font-size: 0.8rem !important;
+        padding: 0.4rem 0.6rem;
+    }
+
+    /* Box */
+    .box {
+        padding: 0.75rem;
+        border-radius: 12px;
+    }
+
+    /* Select fullwidth */
+    .select.is-fullwidth, .select.is-fullwidth select {
+        width: 100%;
+    }
+}

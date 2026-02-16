@@ -1,0 +1,105 @@
+<nav class="navbar">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item has-text-light navbar-logo" href="/">
+                <span class="logo-text">SkillSwap</span>
+            </a>
+
+            <!-- Avatar compact : mobile/tablet uniquement -->
+            <% if (user) { %>
+                <div class="navbar-item has-dropdown is-hidden-desktop" id="userDropdownMobile">
+                    <a class="user-avatar-btn" id="userDropdownMobileToggle">
+                        <i class="fas fa-user-circle"></i>
+                    </a>
+                    <div class="navbar-dropdown is-right user-avatar-dropdown">
+                        <a class="navbar-item" href="/user/<%= user.id %>/profil">
+                            <span class="icon dropdown-icon-profil"><i class="fas fa-user"></i></span>
+                            <span>Mon profil</span>
+                        </a>
+                        <a class="navbar-item" href="/messages">
+                            <span class="icon dropdown-icon-messages"><i class="fas fa-envelope"></i></span>
+                            <span>Messages</span>
+                        </a>
+                        <hr class="navbar-divider dropdown-divider">
+                        <a class="navbar-item dropdown-item-logout" href="/logout">
+                            <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
+                            <span>Déconnexion</span>
+                        </a>
+                    </div>
+                </div>
+            <% } %>
+
+            <a role="button" class="navbar-burger" id="burger">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+
+        <div class="navbar-menu" id="navbarMenu">
+            <div class="navbar-end">
+                <a class="navbar-item has-text-light nav-link" href="/">
+                    <span class="icon icon-home"><i class="fas fa-home"></i></span>
+                    <span>Accueil</span>
+                </a>
+
+                <a class="navbar-item has-text-light nav-link" href="/talents">
+                    <span class="icon icon-talents"><i class="fas fa-users"></i></span>
+                    <span>Talents</span>
+                </a>
+
+                <a class="navbar-item has-text-light nav-link" href="/skills">
+                    <span class="icon icon-skills"><i class="fas fa-star"></i></span>
+                    <span>Compétences</span>
+                </a>
+
+                <a class="navbar-item has-text-light nav-link" href="/search">
+                    <span class="icon icon-search"><i class="fas fa-search"></i></span>
+                    <span>Recherche</span>
+                </a>
+
+                <a class="navbar-item has-text-light nav-link" href="/help">
+                    <span class="icon icon-help"><i class="fas fa-question-circle"></i></span>
+                    <span>Aide</span>
+                </a>
+
+                <!-- Dropdown avec prénom : desktop uniquement -->
+                <% if (user) { %>
+                    <div class="navbar-item has-dropdown is-hidden-touch" id="userDropdownDesktop">
+                        <a class="navbar-link is-arrowless" id="userDropdownDesktopToggle">
+                            <span class="icon"><i class="fas fa-user-circle"></i></span>
+                            <span><%= user.firstname %></span>
+                            <span class="icon is-small chevron-icon"><i class="fas fa-chevron-down"></i></span>
+                        </a>
+                        <div class="navbar-dropdown is-right">
+                            <a class="navbar-item" href="/user/<%= user.id %>/profil">
+                                <span class="icon dropdown-icon-profil"><i class="fas fa-user"></i></span>
+                                <span>Mon profil</span>
+                            </a>
+                            <a class="navbar-item" href="/messages">
+                                <span class="icon dropdown-icon-messages"><i class="fas fa-envelope"></i></span>
+                                <span>Messages</span>
+                            </a>
+                            <hr class="navbar-divider dropdown-divider">
+                            <a class="navbar-item dropdown-item-logout" href="/logout">
+                                <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
+                                <span>Déconnexion</span>
+                            </a>
+                        </div>
+                    </div>
+                <% } else { %>
+                    <a class="navbar-item btn-login" href="/login">
+                        <span class="icon"><i class="fas fa-sign-in-alt"></i></span>
+                        <span>Connexion</span>
+                    </a>
+
+                    <a class="navbar-item btn-register" href="/register">
+                        <span class="icon"><i class="fas fa-user-plus"></i></span>
+                        <span>Inscription</span>
+                    </a>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</nav>

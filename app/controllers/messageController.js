@@ -1,0 +1,154 @@
+import { Op } from 'sequelize';
+import { User, Message } from '../models/index.js';
+import { sequelize } from '../database.js';
+
+const messageController = {
+  // Route protégée par verifyJWT → req.user est garanti
+  async renderMessagesPage(req, res) {
+    try {
+      const userId = req.user.id;
+
+      const messages = await Message.findAll({
+        where: {
+          [Op.or]: [
+            { sender_id: userId },
+            { receiver_id: userId }
+          ]
+        },
+        include: [
+          { model: User, as: 'sender' },
+          { model: User, as: 'receiver' }
+        ],
+        order: [['created_at', 'DESC']]
+      });
+
+      // UNE SEULE requête pour tous les counts de messages non lus
+      // Au lieu de N requêtes dans la boucle (problème N+1)
+      const unreadCounts = await Message.findAll({
+        attributes: [
+          'sender_id',
+          [sequelize.fn('COUNT', sequelize.col('id')), 'count']
+        ],
+        where: {
+          receiver_id: userId,
+          is_read: false
+        },
+        group: ['sender_id'],
+        raw: true
+      });
+
+      // Transformer en Map pour lookup O(1)
+      const unreadMap = new Map();
+      for (const row of unreadCounts) {
+        unreadMap.set(row.sender_id, parseInt(row.count));
+      }
+
+      // Grouper par conversation
+      const conversationsMap = new Map();
+      for (const msg of messages) {
+        const otherId = msg.sender_id === userId ? msg.receiver_id : msg.sender_id;
+        if (!conversationsMap.has(otherId)) {
+          const otherUser = msg.sender_id === userId ? msg.receiver : msg.sender;
+          conversationsMap.set(otherId, {
+            user: otherUser,
+            lastMessage: msg,
+            unreadCount: unreadMap.get(otherId) || 0
+          });
+        }
+      }
+
+      const conversations = Array.from(conversationsMap.values());
+
+      res.render('messages', {
+        conversations,
+        title: 'Messages',
+        cssFile: 'messages'
+      });
+    } catch (error) {
+      console.error('Erreur renderMessagesPage:', error);
+      res.status(500).send('Erreur serveur');
+    }
+  },
+
+  // Route protégée par verifyJWT → req.user est garanti
+  async renderConversation(req, res) {
+    try {
+      const userId = req.user.id;
+      const otherUserId = parseInt(req.params.userId);
+
+      const otherUser = await User.findByPk(otherUserId);
+      if (!otherUser) {
+        return res.status(404).render('404', { title: 'Utilisateur introuvable', cssFile: '404' });
+      }
+
+      const messages = await Message.findAll({
+        where: {
+          [Op.or]: [
+            { sender_id: userId, receiver_id: otherUserId },
+            { sender_id: otherUserId, receiver_id: userId }
+          ]
+        },
+        include: [
+          { model: User, as: 'sender' },
+          { model: User, as: 'receiver' }
+        ],
+        order: [['created_at', 'ASC']]
+      });
+
+      // Marquer les messages reçus comme lus
+      await Message.update(
+        { is_read: true },
+        {
+          where: {
+            sender_id: otherUserId,
+            receiver_id: userId,
+            is_read: false
+          }
+        }
+      );
+
+      res.render('conversation', {
+        messages,
+        otherUser,
+        currentUserId: userId,
+        title: `Conversation avec ${otherUser.firstname}`,
+        cssFile: 'messages'
+      });
+    } catch (error) {
+      console.error('Erreur renderConversation:', error);
+      res.status(500).send('Erreur serveur');
+    }
+  },
+
+  // Route protégée par verifyJWT → req.user est garanti
+  async sendMessage(req, res) {
+    try {
+      const senderId = req.user.id;
+      const receiverId = parseInt(req.params.userId);
+      const { content } = req.body;
+
+      if (!content || !content.trim()) {
+        return res.redirect(`/messages/${receiverId}`);
+      }
+
+      const receiver = await User.findByPk(receiverId);
+      if (!receiver) {
+        return res.status(404).json({ error: 'Utilisateur introuvable' });
+      }
+
+      await Message.create({
+        content: content.trim(),
+        sender_id: senderId,
+        receiver_id: receiverId,
+        is_read: false
+      });
+
+      res.redirect(`/messages/${receiverId}`);
+    } catch (error) {
+      console.error('Erreur sendMessage:', error);
+      res.status(500).send('Erreur serveur');
+    }
+  }
+};
+
+export default messageController;

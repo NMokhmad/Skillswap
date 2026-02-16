@@ -1,0 +1,309 @@
+body {
+    background-color: #f3e8f3;
+}
+
+/* ─── Search page styles ─── */
+
+.search-main {
+    background: linear-gradient(135deg, #f3e8f3 0%, #ffeef8 100%);
+    min-height: 80vh;
+}
+
+.search-header {
+    background: linear-gradient(135deg, #30293d, #5a4a6f, #7d6b93);
+    padding: 3rem 1.5rem;
+    border-radius: 0 0 24px 24px;
+    box-shadow: 0 8px 24px rgba(48, 41, 61, 0.15);
+}
+
+.search-title {
+    font-weight: 700;
+    font-size: 2.5rem;
+}
+
+.search-title-icon {
+    color: #ffd700;
+}
+
+.search-subtitle {
+    color: #ffa8c5;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+}
+
+.search-form-row {
+    align-items: stretch;
+}
+
+.search-input {
+    color: #333333;
+    border-radius: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.95);
+}
+.search-input::placeholder {
+    color: #999999;
+    opacity: 1;
+    font-size: medium;
+    font-weight: 400; /* moins gras que le texte saisi */
+    font-style: italic; /* en italique (optionnel) */
+}
+
+.search-input-icon {
+    color: #7d6b93;
+}
+
+.search-select {
+    border-radius: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.search-submit-btn {
+    background-color: #e07b91;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    height: 100%;
+}
+
+.search-results {
+    padding: 3rem 1.5rem;
+}
+
+.search-results-count {
+    color: #30293d;
+    font-size: 1.1rem;
+}
+
+/* Empty state */
+.search-empty-box {
+    border-radius: 16px;
+    padding: 3rem;
+}
+
+.search-empty-icon {
+    font-size: 3rem;
+}
+
+.search-empty-title {
+    color: #7d6b93;
+}
+
+/* ─── User cards ─── */
+
+.search-card {
+    background-color: white;
+    border-radius: 16px;
+    height: 100%;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.search-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 32px rgba(48, 41, 61, 0.2);
+}
+
+.search-card-topbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+}
+
+.search-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.search-avatar-initials {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: white;
+}
+
+.search-user-link {
+    color: #30293d;
+    font-size: 1.1rem;
+    text-decoration: none;
+}
+
+.search-skills-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.search-skill-tag {
+    background: rgba(48, 41, 61, 0.05);
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-decoration: none;
+}
+
+.search-profile-btn {
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+/* ─── Color variants (6 variants based on loop index) ─── */
+
+/* Variant 1 - #ff6b9d */
+.search-card-variant-1 {
+    border: 3px solid #ff6b9d;
+}
+.search-topbar-variant-1 {
+    background: linear-gradient(135deg, #ff6b9d, #ffa8c5);
+}
+.search-avatar-variant-1 {
+    background: linear-gradient(135deg, #ff6b9d, #ffa8c5);
+}
+.search-skill-tag-variant-1 {
+    color: #ff6b9d;
+}
+.search-profile-btn-variant-1 {
+    background-color: #ff6b9d;
+}
+
+/* Variant 2 - #6b7db3 */
+.search-card-variant-2 {
+    border: 3px solid #6b7db3;
+}
+.search-topbar-variant-2 {
+    background: linear-gradient(135deg, #6b7db3, #a8b7e5);
+}
+.search-avatar-variant-2 {
+    background: linear-gradient(135deg, #6b7db3, #a8b7e5);
+}
+.search-skill-tag-variant-2 {
+    color: #6b7db3;
+}
+.search-profile-btn-variant-2 {
+    background-color: #6b7db3;
+}
+
+/* Variant 3 - #ffd700 */
+.search-card-variant-3 {
+    border: 3px solid #ffd700;
+}
+.search-topbar-variant-3 {
+    background: linear-gradient(135deg, #ffd700, #ffed4e);
+}
+.search-avatar-variant-3 {
+    background: linear-gradient(135deg, #ffd700, #ffed4e);
+}
+.search-skill-tag-variant-3 {
+    color: #ffd700;
+}
+.search-profile-btn-variant-3 {
+    background-color: #ffd700;
+}
+
+/* Variant 4 - #7d6b93 / #5a4a6f */
+.search-card-variant-4 {
+    border: 3px solid #7d6b93;
+}
+.search-topbar-variant-4 {
+    background: linear-gradient(135deg, #5a4a6f, #7d6b93);
+}
+.search-avatar-variant-4 {
+    background: linear-gradient(135deg, #5a4a6f, #7d6b93);
+}
+.search-skill-tag-variant-4 {
+    color: #7d6b93;
+}
+.search-profile-btn-variant-4 {
+    background-color: #7d6b93;
+}
+
+/* Variant 5 - #e07b91 */
+.search-card-variant-5 {
+    border: 3px solid #e07b91;
+}
+.search-topbar-variant-5 {
+    background: linear-gradient(135deg, #e07b91, #ff6b9d);
+}
+.search-avatar-variant-5 {
+    background: linear-gradient(135deg, #e07b91, #ff6b9d);
+}
+.search-skill-tag-variant-5 {
+    color: #e07b91;
+}
+.search-profile-btn-variant-5 {
+    background-color: #e07b91;
+}
+
+/* Variant 6 - #a8b7e5 */
+.search-card-variant-6 {
+    border: 3px solid #a8b7e5;
+}
+.search-topbar-variant-6 {
+    background: linear-gradient(135deg, #a8b7e5, #6b7db3);
+}
+.search-avatar-variant-6 {
+    background: linear-gradient(135deg, #a8b7e5, #6b7db3);
+}
+.search-skill-tag-variant-6 {
+    color: #a8b7e5;
+}
+.search-profile-btn-variant-6 {
+    background-color: #a8b7e5;
+}
+
+/* ─── Tablette (max 768px) ─── */
+@media screen and (max-width: 768px) {
+    .search-header {
+        padding: 2rem 1rem;
+    }
+
+    .search-title {
+        font-size: 2rem;
+    }
+
+    .search-form-row {
+        flex-direction: column;
+    }
+
+    .search-form-row .column {
+        width: 100%;
+        padding-bottom: 0.25rem;
+    }
+
+    .search-results {
+        padding: 2rem 1rem;
+    }
+}
+
+/* ─── Mobile (max 480px) ─── */
+@media screen and (max-width: 480px) {
+    .search-header {
+        padding: 1.5rem 0.75rem;
+        border-radius: 0 0 16px 16px;
+    }
+
+    .search-title {
+        font-size: 1.6rem;
+    }
+
+    .search-subtitle {
+        font-size: 0.95rem;
+    }
+
+    .search-results {
+        padding: 1.5rem 0.75rem;
+    }
+}

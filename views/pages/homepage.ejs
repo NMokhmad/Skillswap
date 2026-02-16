@@ -1,0 +1,255 @@
+<!-- header -->
+<%- include('../partials/header.ejs') %>
+    <script src="https://kit.fontawesome.com/626daf36fc.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <!-- Navbar -->
+    <%- include('../partials/navbar.ejs') %>
+
+    <!-- Hero (Bannière) -->
+    <section class="hero is-large home-hero">
+        <!-- Formes décoratives en arrière-plan -->
+        <div class="home-hero-shape-right"></div>
+        <div class="home-hero-shape-left"></div>
+
+        <div class="hero-body has-text-centered home-hero-body">
+            <div class="container">
+
+                <h1 class="title is-1 has-text-weight-bold mb-4 home-hero-title">
+                    Bienvenue sur <span class="home-hero-brand">SkillSwap</span>
+                </h1>
+
+                <p class="subtitle is-3 mb-6 home-hero-subtitle">
+                    Votre aventure d'apprentissage commence ici.
+                </p>
+
+                <!-- Boutons CTA -->
+                <div class="buttons is-centered mb-6">
+                    <a href="/skills" class="button is-large hero-cta-primary">
+                        <span>Explorer les compétences</span>
+                    </a>
+
+                    <a href="/talents" class="button is-large hero-cta-primary">
+                        <span class="icon">
+                            <i class="fa-solid fa-users"></i>
+                        </span>
+                        <span>Découvrir les talents</span>
+                    </a>
+                </div>
+
+                <!-- Icônes défilantes cliquables -->
+                <div class="mt-6">
+                    <p class="subtitle is-6 mb-3 home-popular-label">
+                        Compétences populaires
+                    </p>
+                    <div class="icon-slider">
+                        <div class="home-icon-track">
+                            <% skills.forEach((skill, index) => { %>
+                                <a href="/skills/<%= skill.slug %>" class="home-icon-link">
+                                    <div class="home-skill-icon home-skill-icon-<%= index % 6 %>">
+                                        <span class="icon is-large home-skill-icon-text">
+                                            <i class="fa-solid <%= skill.icon %>"></i>
+                                        </span>
+                                    </div>
+                                </a>
+                            <% }) %>
+                            <!-- Dupliquer pour animation infinie -->
+                            <% skills.forEach((skill, index) => { %>
+                                <a href="/skills/<%= skill.slug %>" class="home-icon-link">
+                                    <div class="home-skill-icon home-skill-icon-<%= index % 6 %>">
+                                        <span class="icon is-large home-skill-icon-text">
+                                            <i class="fa-solid <%= skill.icon %>"></i>
+                                        </span>
+                                    </div>
+                                </a>
+                            <% }) %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section "À propos" -->
+    <section id="about" class="section home-about">
+        <!-- Effet de brillance -->
+        <div class="home-about-glow"></div>
+
+        <div class="container home-about-content">
+            <div class="columns is-vcentered">
+                <div class="column is-half">
+                    <div class="mb-4">
+                        <span class="tag is-medium is-rounded home-about-tag">
+                            <span class="icon">
+                                <i class="fa-solid fa-info-circle"></i>
+                            </span>
+                            <span>À propos</span>
+                        </span>
+                    </div>
+
+                    <h2 class="title is-2 has-text-light has-text-weight-bold mb-4">
+                        Qui sommes-nous ?
+                    </h2>
+
+                    <div class="content has-text-light home-about-text">
+                        <p><strong class="home-about-brand">Skill Swap</strong> est une plateforme innovante conçue pour permettre l'échange de compétences et de connaissances au sein d'une communauté. Elle repose sur l'idée que chacun possède quelque chose d'unique à offrir, que ce soit des compétences professionnelles, des talents artistiques, des connaissances linguistiques ou des passe-temps.</p>
+
+                        <p>Skill Swap vise à encourager l'apprentissage mutuel, la collaboration et l'établissement de relations dans un environnement convivial et enrichissant.</p>
+                    </div>
+
+                    <!-- Statistiques -->
+                    <div class="columns is-mobile mt-5">
+                        <div class="column">
+                            <div class="home-stat-card">
+                                <p class="title is-3 has-text-light mb-2">500+</p>
+                                <p class="subtitle is-6 has-text-light mb-0 home-stat-subtitle">Membres</p>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="home-stat-card">
+                                <p class="title is-3 has-text-light mb-2">1200+</p>
+                                <p class="subtitle is-6 has-text-light mb-0 home-stat-subtitle">Échanges</p>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="home-stat-card">
+                                <p class="title is-3 has-text-light mb-2"><%= skills.length %></p>
+                                <p class="subtitle is-6 has-text-light mb-0 home-stat-subtitle">Compétences</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="column is-half">
+                    <figure class="image home-about-image">
+                        <img src="/img/shutterstock_1521006890.png" alt="À propos" class="home-about-img">
+                    </figure>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section "Profils" -->
+    <section id="profiles" class="section home-profiles">
+        <div class="container">
+            <!-- En-tête de section -->
+            <div class="has-text-centered mb-6">
+                <span class="tag is-large is-rounded mb-3 home-profiles-tag">
+                    <span class="icon">
+                        <i class="fa-solid fa-trophy"></i>
+                    </span>
+                    <span>Talents d'exception</span>
+                </span>
+
+                <h2 class="title is-2 has-text-weight-bold home-profiles-title">
+                    Nos Meilleurs Profils
+                </h2>
+
+                <p class="subtitle is-5 home-profiles-subtitle">
+                    Découvrez les talents les mieux notés de notre communauté
+                </p>
+            </div>
+
+            <div class="columns is-multiline is-mobile">
+                <% topUsers.forEach((user, index) => { %>
+                    <div class="column is-6-mobile is-4-tablet">
+                        <div class="card profile-card home-profile-border-<%= index % 3 %>">
+
+                            <!-- Badge Top -->
+                            <% if (index < 3) { %>
+                                <div class="home-top-badge-wrapper">
+                                    <span class="tag is-medium home-top-badge">
+                                        <span class="icon">
+                                            <i class="fa-solid fa-crown"></i>
+                                        </span>
+                                        <span>Top <%= index + 1 %></span>
+                                    </span>
+                                </div>
+                            <% } %>
+
+                            <!-- Image avec overlay gradient -->
+                            <div class="card-image home-card-image">
+                                <figure class="image is-4by3">
+                                    <img class="profiles home-profile-img" src="./img/<%= user.image %>" alt="Profil <%= user.firstname %>">
+                                </figure>
+
+                                <!-- Overlay gradient -->
+                                <div class="profile-overlay"></div>
+                            </div>
+
+                            <!-- Contenu de la carte -->
+                            <div class="card-content home-card-content">
+                                <!-- Avatar circulaire qui chevauche l'image -->
+                                <div class="home-avatar-wrapper">
+                                    <div class="home-avatar home-profile-gradient-<%= index % 3 %>">
+                                        <span class="icon is-large has-text-light home-avatar-icon">
+                                            <i class="fa-solid fa-user"></i>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="mt-5 has-text-centered">
+                                    <!-- Nom -->
+                                    <h3>
+                                        <a href="/talents/<%= user.id %>" class="title is-5 user-name has-text-weight-bold home-user-name">
+                                            <%= user.firstname %> <%= user.lastname %>
+                                        </a>
+                                    </h3>
+
+                                    <!-- Intérêt/Spécialité -->
+                                    <h4 class="subtitle is-6 mb-3 home-user-interest">
+                                        <span class="icon-text is-justify-content-center">
+                                            <span class="icon home-interest-icon-<%= index % 3 %>">
+                                                <i class="fa-solid fa-briefcase"></i>
+                                            </span>
+                                            <span><%= user.interest %></span>
+                                        </span>
+                                    </h4>
+
+                                    <!-- Note avec étoiles -->
+                                    <div class="rating mb-4">
+                                        <% if (user.avg_reviews > 0) { %>
+                                            <div class="mb-2">
+                                                <% for (let i = 0; i < 5; i++) { %>
+                                                    <% if (i < user.avg_reviews) { %>
+                                                        <i class="fas fa-star home-star-filled"></i>
+                                                    <% } else { %>
+                                                        <i class="fas fa-star home-star-empty"></i>
+                                                    <% } %>
+                                                <% } %>
+                                            </div>
+                                            <span class="has-text-weight-semibold home-rating-text"><%= user.avg_reviews.toFixed(1) %>/5</span>
+                                        <% } else { %>
+                                            <p class="is-size-7 home-no-rating">Pas encore de note</p>
+                                        <% } %>
+                                    </div>
+
+                                    <!-- Bouton -->
+                                    <a href="/talents/<%= user.id %>" class="button is-fullwidth profil-button home-profile-btn-<%= index % 3 %>">
+                                        <span>Voir le Profil</span>
+                                        <span class="icon">
+                                            <i class="fa-solid fa-arrow-right"></i>
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+
+            <!-- Bouton voir tous les profils -->
+            <div class="has-text-centered mt-6">
+                <a href="/talents" class="button is-large home-see-all">
+                    <span>Voir tous les talents</span>
+                    <span class="icon">
+                        <i class="fa-solid fa-users"></i>
+                    </span>
+                </a>
+            </div>
+        </div>
+    </section>
+    <!-- Footer -->
+    <%- include('../partials/footer.ejs') %>
+</body>
+</html>

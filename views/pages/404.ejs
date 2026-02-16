@@ -1,0 +1,92 @@
+<%- include('../partials/header.ejs') %>
+</head>
+<body>
+    <%- include('../partials/navbar.ejs') %>
+
+    <section class="error-section">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column is-8-desktop is-10-tablet is-12-mobile">
+                    <div class="error-card">
+                        <!-- Grand 404 animé -->
+                        <h1 class="error-number">404</h1>
+
+                        <!-- Messages d'erreur -->
+                        <h2 class="error-title">
+                            <span class="icon error-icon-accent">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </span>
+                            Oups ! Page introuvable
+                        </h2>
+
+                        <p class="error-subtitle">
+                            Désolé, la page que vous recherchez n'existe pas ou a été déplacée.<br>
+                            Mais ne vous inquiétez pas, nous allons vous aider à retrouver votre chemin !
+                        </p>
+
+                        <!-- GIF John Travolta -->
+                        <div class="gif-container">
+                            <img src="/img/icons/giphy.gif" alt="john-travolta-lost-meme">
+                        </div>
+
+                        <!-- Message sympathique -->
+                        <div class="fun-message">
+                            <span class="icon">
+                                <i class="fas fa-lightbulb"></i>
+                            </span>
+                            <p>Vous êtes aussi perdu que John Travolta !</p>
+                        </div>
+
+                        <!-- Boutons principaux -->
+                        <div class="main-buttons">
+                            <a href="/" class="btn-primary-404">
+                                <span class="icon">
+                                    <i class="fas fa-home"></i>
+                                </span>
+                                <span>Retour à l'accueil</span>
+                            </a>
+
+                            <a href="/skills" class="btn-secondary-404">
+                                <span class="icon">
+                                    <i class="fas fa-compass"></i>
+                                </span>
+                                <span>Explorer les compétences</span>
+                            </a>
+                        </div>
+
+                        <!-- Séparateur -->
+                        <div class="separator"></div>
+
+                        <!-- Liens rapides -->
+                        <div class="quick-links">
+                            <p class="quick-links-title">Liens utiles :</p>
+                            <div class="quick-links-buttons">
+                                <a href="/talents" class="quick-link-btn">
+                                    <span class="icon is-small">
+                                        <i class="fas fa-users"></i>
+                                    </span>
+                                    <span>Talents</span>
+                                </a>
+                                <a href="/review" class="quick-link-btn">
+                                    <span class="icon is-small">
+                                        <i class="fas fa-star"></i>
+                                    </span>
+                                    <span>Avis</span>
+                                </a>
+                                <a href="/help" class="quick-link-btn">
+                                    <span class="icon is-small">
+                                        <i class="fas fa-question-circle"></i>
+                                    </span>
+                                    <span>Aide</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <%- include('../partials/footer.ejs') %>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<%- include('../partials/header.ejs') %>
+<script src="https://kit.fontawesome.com/626daf36fc.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+<%- include('../partials/navbar.ejs') %>
+
+<main class="search-main">
+
+    <!-- En-tete avec recherche -->
+    <div class="search-header">
+        <div class="container has-text-centered">
+            <h1 class="title has-text-white search-title">
+                <span class="icon is-large search-title-icon">
+                    <i class="fas fa-search fa-lg"></i>
+                </span>
+                <br>
+                Rechercher un talent
+            </h1>
+            <p class="search-subtitle">Trouvez le talent ideal par competence ou par nom</p>
+
+            <!-- Formulaire de recherche -->
+            <div class="columns is-centered">
+                <div class="column is-8">
+                    <form action="/search" method="GET">
+                        <div class="columns is-vcentered search-form-row">
+                            <div class="column is-5">
+                                <div class="control has-icons-left">
+                                    <input class="input is-medium search-input" type="text" name="q" placeholder="Nom, prenom ou compétence..." value="<%= query %>">
+                                    <span class="icon is-left search-input-icon">
+                                        <i class="fas fa-user"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="column is-4">
+                                <div class="control has-icons-left">
+                                    <div class="select is-medium is-fullwidth">
+                                        <select name="skill" class="search-select">
+                                            <option value="">Toutes les competences</option>
+                                            <% skills.forEach(s => { %>
+                                                <option value="<%= s.id %>" <%= selectedSkill == s.id ? 'selected' : '' %>><%= s.label %></option>
+                                            <% }) %>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column is-3">
+                                <button type="submit" class="button is-medium is-fullwidth search-submit-btn">
+                                    <span class="icon">
+                                        <i class="fas fa-search"></i>
+                                    </span>
+                                    <span>Rechercher</span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resultats -->
+    <div class="container search-results">
+
+        <!-- Compteur de resultats -->
+        <div class="mb-5">
+            <p class="has-text-weight-semibold search-results-count">
+                <% if (query || selectedSkill) { %>
+                    <%= users.length %> resultat<%= users.length > 1 ? 's' : '' %>
+                    <% if (query) { %> pour "<%= query %>"<% } %>
+                    <% if (selectedSkill) { %>
+                        <% const selectedSkillObj = skills.find(s => s.id == selectedSkill); %>
+                        <% if (selectedSkillObj) { %> en <strong><%= selectedSkillObj.label %></strong><% } %>
+                    <% } %>
+                <% } else { %>
+                    Tous les talents (<%= users.length %>)
+                <% } %>
+            </p>
+        </div>
+
+        <% if (users.length === 0) { %>
+            <div class="box has-text-centered search-empty-box">
+                <span class="icon is-large has-text-grey-light search-empty-icon">
+                    <i class="fas fa-search"></i>
+                </span>
+                <p class="title is-5 mt-4 search-empty-title">Aucun resultat trouve</p>
+                <p class="has-text-grey">Essayez de modifier vos criteres de recherche.</p>
+            </div>
+        <% } else { %>
+            <div class="columns is-multiline">
+                <% users.forEach((user, index) => { %>
+                    <% const variant = (index % 6) + 1; %>
+                    <div class="column is-12-mobile is-6-tablet is-4-desktop">
+                        <div class="box search-card search-card-variant-<%= variant %>">
+                            <div class="search-card-topbar search-topbar-variant-<%= variant %>"></div>
+
+                            <!-- Avatar -->
+                            <div class="has-text-centered">
+                                <div class="search-avatar search-avatar-variant-<%= variant %>">
+                                    <span class="search-avatar-initials">
+                                        <%= user.firstname.charAt(0).toUpperCase() %><%= user.lastname.charAt(0).toUpperCase() %>
+                                    </span>
+                                </div>
+
+                                <a href="/talents/<%= user.id %>" class="has-text-weight-bold search-user-link">
+                                    <%= user.firstname %> <%= user.lastname %>
+                                </a>
+
+                                <!-- Etoiles -->
+                                <div class="mt-2 mb-3">
+                                    <% const fullS = Math.floor(user.averageRating || 0); %>
+                                    <% const halfS = (user.averageRating || 0) % 1 >= 0.5; %>
+                                    <% for (let i = 0; i < fullS; i++) { %>
+                                        <i class="fas fa-star has-text-warning"></i>
+                                    <% } %>
+                                    <% if (halfS) { %>
+                                        <i class="fas fa-star-half-alt has-text-warning"></i>
+                                    <% } %>
+                                    <% for (let i = fullS + (halfS ? 1 : 0); i < 5; i++) { %>
+                                        <i class="far fa-star has-text-grey-light"></i>
+                                    <% } %>
+                                    <br>
+                                    <span class="has-text-grey is-size-7">(<%= (user.averageRating || 0).toFixed(1) %>/5)</span>
+                                </div>
+
+                                <!-- Tags competences -->
+                                <div class="search-skills-tags">
+                                    <% user.skills.forEach(skill => { %>
+                                        <a href="/skills/<%= skill.slug %>" class="tag search-skill-tag search-skill-tag-variant-<%= variant %>">
+                                            <span class="icon is-small"><i class="fas fa-star"></i></span>
+                                            <span><%= skill.label %></span>
+                                        </a>
+                                    <% }) %>
+                                </div>
+
+                                <a href="/talents/<%= user.id %>" class="button is-small search-profile-btn search-profile-btn-variant-<%= variant %>">
+                                    Voir le profil
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        <% } %>
+    </div>
+</main>
+
+<%- include('../partials/footer.ejs') %>
+</body>
+</html>

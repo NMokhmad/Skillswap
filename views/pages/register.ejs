@@ -1,0 +1,154 @@
+<%- include('../partials/header.ejs') %>
+</head>
+
+<body>
+    <%- include('../partials/navbar.ejs') %>
+
+    <section class="register-section">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column is-5-desktop is-6-tablet is-12-mobile">
+                    <div class="register-card">
+                        <!-- En-tête avec gradient -->
+                        <div class="register-header">
+                            <div class="icon-circle">
+                                <span class="icon is-large">
+                                    <i class="fas fa-user-plus fa-2x register-icon-header"></i>
+                                </span>
+                            </div>
+                            <h1 class="title">Rejoignez SkillSwap</h1>
+                            <p class="subtitle">Créez votre compte en quelques secondes</p>
+                        </div>
+
+                        <!-- Corps du formulaire -->
+                        <div class="register-body">
+                            <!-- Badge de sécurité -->
+                            <div class="security-badge">
+                                <span class="icon">
+                                    <i class="fas fa-shield-alt"></i>
+                                </span>
+                                <span>Vos données sont sécurisées et protégées</span>
+                            </div>
+
+                            <!-- Formulaire -->
+                            <form action="/register" method="POST">
+                                <!-- Nom -->
+                                <div class="field">
+                                    <label class="label">
+                                        <span class="icon is-small register-icon-lastname">
+                                            <i class="fas fa-user"></i>
+                                        </span>
+                                        Nom
+                                    </label>
+                                    <div class="control has-icons-left">
+                                        <input class="input" type="text" name="lastname" placeholder="Votre nom de famille" value="<%= formData.lastname || '' %>">
+                                        <span class="icon is-left">
+                                            <i class="fas fa-user"></i>
+                                        </span>
+                                    </div>
+                                    <% if (errors && errors.lastname) { %>
+                                        <p class="error"><i class="fas fa-exclamation-circle"></i> <%= errors.lastname %></p>
+                                    <% } %>
+                                </div>
+
+                                <!-- Prénom -->
+                                <div class="field">
+                                    <label class="label">
+                                        <span class="icon is-small register-icon-firstname">
+                                            <i class="fas fa-user"></i>
+                                        </span>
+                                        Prénom
+                                    </label>
+                                    <div class="control has-icons-left">
+                                        <input class="input" type="text" name="firstname" placeholder="Votre prénom" value="<%= formData.firstname || '' %>">
+                                        <span class="icon is-left">
+                                            <i class="fas fa-user"></i>
+                                        </span>
+                                    </div>
+                                    <% if (errors && errors.firstname) { %>
+                                        <p class="error"><i class="fas fa-exclamation-circle"></i> <%= errors.firstname %></p>
+                                    <% } %>
+                                </div>
+
+                                <!-- Email -->
+                                <div class="field">
+                                    <label class="label">
+                                        <span class="icon is-small register-icon-email">
+                                            <i class="fas fa-envelope"></i>
+                                        </span>
+                                        Email
+                                    </label>
+                                    <div class="control has-icons-left">
+                                        <input class="input" type="email" name="email" placeholder="votre.email@exemple.com" value="<%= formData.email || '' %>">
+                                        <span class="icon is-left">
+                                            <i class="fas fa-envelope"></i>
+                                        </span>
+                                    </div>
+                                    <% if (errors && errors.email) { %>
+                                        <p class="error"><i class="fas fa-exclamation-circle"></i> <%= errors.email %></p>
+                                    <% } %>
+                                </div>
+
+                                <!-- Mot de passe -->
+                                <div class="field">
+                                    <label class="label">
+                                        <span class="icon is-small register-icon-password">
+                                            <i class="fas fa-lock"></i>
+                                        </span>
+                                        Mot de passe
+                                    </label>
+                                    <div class="control has-icons-left">
+                                        <input class="input" type="password" name="password" placeholder="Minimum 8 caractères">
+                                        <span class="icon is-left">
+                                            <i class="fas fa-lock"></i>
+                                        </span>
+                                    </div>
+                                    <% if (errors && errors.password) { %>
+                                        <p class="error"><i class="fas fa-exclamation-circle"></i> <%= errors.password %></p>
+                                    <% } %>
+                                </div>
+
+                                <!-- Confirmation du mot de passe -->
+                                <div class="field">
+                                    <label class="label">
+                                        <span class="icon is-small register-icon-confirm">
+                                            <i class="fas fa-lock"></i>
+                                        </span>
+                                        Confirmer le mot de passe
+                                    </label>
+                                    <div class="control has-icons-left">
+                                        <input class="input" type="password" name="confirmPassword" placeholder="Retapez votre mot de passe">
+                                        <span class="icon is-left">
+                                            <i class="fas fa-lock"></i>
+                                        </span>
+                                    </div>
+                                    <% if (errors && errors.confirmPassword) { %>
+                                        <p class="error"><i class="fas fa-exclamation-circle"></i> <%= errors.confirmPassword %></p>
+                                    <% } %>
+                                </div>
+
+                                <!-- Bouton d'inscription -->
+                                <div class="field register-submit-field">
+                                    <button type="submit" class="btn-register1">
+                                        <span class="icon">
+                                            <i class="fas fa-rocket"></i>
+                                        </span>
+                                        <span>Créer mon compte</span>
+                                    </button>
+                                </div>
+                            </form>
+
+                            <!-- Lien vers la connexion -->
+                            <div class="login-link">
+                                <p>Vous avez déjà un compte ? <a href="/login">Connectez-vous ici</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <%- include('../partials/footer.ejs') %>
+</body>
+</html>

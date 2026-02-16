@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html class="has-background-light" lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillSwap | <%= title %></title>
+    <link rel="icon" href="data:image/x-icon;base64,AAABAAEAAQAAAAAAAAAAA..." />
+    
+    <!-- Bulma -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Style de la navbar -->
+    <link rel="stylesheet" href="/css/navbar.css">
+
+    <!-- Style footer -->
+    <link rel="stylesheet" href="/css/footer.css">
+
+    <!-- Responsive global -->
+    <link rel="stylesheet" href="/css/responsive.css">
+    
+    <!-- Page-specific CSS (si défini) -->
+    <% if (typeof cssFile !== 'undefined' && cssFile) { %>
+        <link rel="stylesheet" href="/css/<%= cssFile %>.css">
+    <% } %>
+    
+    <script src="/js/burgerMenu.js" defer></script>
+    

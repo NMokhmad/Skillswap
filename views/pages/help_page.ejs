@@ -1,0 +1,122 @@
+<%- include('../partials/header.ejs') %>
+<script src="/js/faqToggle.js" defer></script>
+</head>
+
+<body>
+    <%- include('../partials/navbar.ejs') %>
+
+    <!-- En-tête avec gradient -->
+    <div class="help-header">
+        <div class="icon-circle">
+            <span class="icon is-large">
+                <i class="fas fa-question-circle fa-2x help-icon-header"></i>
+            </span>
+        </div>
+        <h1 class="title">Besoin d'aide ?</h1>
+        <p class="subtitle">Nous sommes là pour vous accompagner</p>
+    </div>
+
+    <section class="section">
+        <div class="container help-container">
+            <!-- Badge d'aide rapide -->
+            <div class="quick-help-badge">
+                <span class="icon">
+                    <i class="fas fa-lightbulb"></i>
+                </span>
+                <div class="text">
+                    <strong>Astuce :</strong> Consultez d'abord notre FAQ ci-dessous, vous y trouverez peut-être la réponse à votre question !
+                </div>
+            </div>
+
+            <!-- Section FAQ -->
+            <section class="faq-section">
+                <h2 class="section-title">
+                    <span class="icon">
+                        <i class="fas fa-comments"></i>
+                    </span>
+                    Questions fréquentes
+                </h2>
+
+                <div class="faq-content">
+                    <!-- Question 1 -->
+                    <div class="question-card">
+                        <div class="question-header">
+                            <p class="question-text">Comment puis-je créer un compte ?</p>
+                            <button class="toggle-btn" data-target="answer-1">+</button>
+                        </div>
+                        <div class="answer is-hidden" id="answer-1">
+                            <p>Pour créer un compte sur SkillSwap, clique simplement sur le bouton "S'inscrire" en haut à droite de la page d'accueil. Tu peux t'inscrire avec ton adresse e-mail. Une fois ton compte créé, tu pourras compléter ton profil, proposer des compétences, et commencer à échanger avec la communauté !</p>
+                        </div>
+                    </div>
+
+                    <!-- Question 2 -->
+                    <div class="question-card">
+                        <div class="question-header">
+                            <p class="question-text">Comment modifier mes informations personnelles ?</p>
+                            <button class="toggle-btn" data-target="answer-2">+</button>
+                        </div>
+                        <div class="answer is-hidden" id="answer-2">
+                            <p>Pour modifier tes informations personnelles, connecte-toi à ton compte, puis rends-toi dans la section "Profil" depuis le menu utilisateur. Tu pourras y mettre à jour ton nom, ta bio, tes disponibilités, tes compétences proposées et toutes les autres informations visibles par la communauté. N'oublie pas d'enregistrer les modifications !</p>
+                        </div>
+                    </div>
+
+                    <!-- Question 3 -->
+                    <div class="question-card">
+                        <div class="question-header">
+                            <p class="question-text">Est-ce que tout est vraiment gratuit ?</p>
+                            <button class="toggle-btn" data-target="answer-3">+</button>
+                        </div>
+                        <div class="answer is-hidden" id="answer-3">
+                            <p>Oui, SkillSwap est entièrement gratuit ! Notre objectif est de permettre aux utilisateurs de partager leurs compétences et d'en apprendre d'autres, sans échange d'argent. Il suffit de proposer une compétence pour en apprendre une autre en retour — tout est basé sur l'échange et l'entraide, sans frais.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section Contact -->
+            <section class="contact-section">
+                <h2 class="section-title">
+                    <span class="icon">
+                        <i class="fas fa-envelope"></i>
+                    </span>
+                    Contactez-nous
+                </h2>
+
+                <div class="columns is-centered">
+                    <div class="column is-half">
+                        <div class="contact-card">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contact-label">Par email</div>
+                            <a href="mailto:contact@skillswap.fr" class="contact-link">
+                                contact@skillswap.fr
+                            </a>
+                            <p class="contact-subtext">
+                                Réponse sous 24-48h
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="column is-half">
+                        <div class="contact-card">
+                            <div class="contact-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="contact-label">Par téléphone</div>
+                            <a href="tel:+33123456789" class="contact-link">
+                                01 23 45 67 89
+                            </a>
+                            <p class="contact-subtext">
+                                Lun-Ven : 9h-18h
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </section>
+
+    <%- include('../partials/footer.ejs') %>
+</body>
+</html>

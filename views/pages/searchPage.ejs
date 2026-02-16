@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skillswap</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Outfit:wght@100..900&family=Young+Serif&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/searchPage.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <script src="./js/searchPage.js" defer></script>
+</head>
+<nav class="navbar has-shadow is-white">
+    <div class="navbar-brand purple">
+        <a href="/" class="navbar-item">
+            <h1>Skillswap</h1>
+        </a>
+        <a href=""class="navbar-burger" id="burger">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+    <div class="navbar-menu" id="nav-links" >
+        <div class="navbar-end">
+            <a href="/" class="navbar-item">Accueil</a>
+            <a href="login" class="navbar-item">Connexion</a>
+            <a href="register" class="navbar-item">Inscription</a>
+            <a href="/search" class="navbar-item">Talents</a>
+            <a href="review" class="navbar-item">Avis</a>
+            <a href="help" class="navbar-item">Aide</a>
+        </div>
+    </div>
+</nav>
+
+<body class="has-background-white">
+        <main>
+            <section class="search-bar-container">
+                <h2>Trouvez la compétence</h2>
+                <!--Barre de recherche-->
+                <div id="search-bar">
+                    <form action="">
+                        <input type="text" id="search" class="input has-background-white" placeholder="Rechercher la compétence désirer ...">
+                        <button type="submit" id="svg" class="button is-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor" width="16" height="16">
+                                <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+                    <!--Bouton qui active un filtre (formulaire)-->
+                    <button>Filtrer</button>
+                </section>
+                <section class="profil-container">
+                    <article class="profil">
+                        <div class="picture-container">
+                            <img class="profil-picture" src="./img/pexels-vinicius-wiesehofer-289347-1130626.jpg" alt="photo de profil">
+                            <h3>Nom Prénom</h3>
+                        </div>
+                        <div class="description">
+                            <p>Rating</p>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae, consequatur blanditiis. Vitae molestiae pariatur eius fuga sint iusto sit, distinctio, dolorum natus fugit incidunt nam sunt voluptates deserunt laborum? Deleniti.</p>
+                            <p>interet</p>
+                            <button><a href="">Voir profil</a></button>
+                        </div>
+                    </article>
+                    <article class="profil">
+                        <div class="picture-container">
+                            <img class="profil-picture" src="./img/pexels-vinicius-wiesehofer-289347-1130626.jpg" alt="photo de profil">
+                            <h3>Nom Prénom</h3>
+                        </div>
+                        <div class="description">
+                            <p>Rating</p>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi, recusandae cum. Laudantium voluptatum velit, enim molestias illo necessitatibus optio. Earum libero dolor sint dolorem error labore cum corporis voluptates omnis!</p>
+                            <p>interet</p>
+                            <button><a href="">Voir profil</a></button>
+                        </div>
+                    </article>
+                    <article class="profil">
+                        <div class="picture-container">
+                            <img class="profil-picture" src="./img/pexels-vinicius-wiesehofer-289347-1130626.jpg" alt="photo de profil">
+                            <h3>Nom Prénom</h3>
+                        </div>
+                        <div class="description">
+                            <p>Rating</p>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, fugit officiis? Veniam vero perspiciatis fugit cupiditate delectus saepe quae dicta. Amet sed laborum ea, nihil id quaerat non. Ipsam, necessitatibus.</p>
+                            <p>interet</p>
+                            <button><a href="">Voir profil</a></button>
+                        </div>
+                    </article>
+                    <article  class="profil">
+                        <div class="picture-container">
+                            <img class="profil-picture" src="./img/pexels-vinicius-wiesehofer-289347-1130626.jpg" alt="photo de profil">
+                            <h3>Nom Prénom</h3>
+                        </div>
+                        <div class="description">
+                            <p>Rating</p>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut eos quo magni corrupti mollitia dignissimos perspiciatis doloremque natus. Voluptate exercitationem ipsa nisi. Quisquam adipisci eligendi ad minima, nesciunt vel? Accusamus.</p>
+                            <p>interet</p>
+                            <button><a href="">Voir profil</a></button>
+                        </div>
+                    </article>
+                    <article class="profil">
+                        <div class="picture-container">
+                            <img class="profil-picture" src="./img/pexels-vinicius-wiesehofer-289347-1130626.jpg" alt="photo de profil">
+                            <h3>Nom Prénom</h3>
+                        </div>
+                        <div class="description">
+                            <p>Rating</p>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi voluptatum earum quisquam? Fugit obcaecati explicabo aut suscipit illo. Nisi autem iusto cumque ducimus explicabo veritatis placeat laudantium repellat culpa fuga.</p>
+                            <p>interet</p>
+                            <button><a href="">Voir profil</a></button>
+                        </div>
+                    </article>
+                </section>
+        </main>
+        <footer>
+            <p>Suivez-nous </p>
+            <div>
+                <a href="#"><img src="../img/icons/facebook.png" alt="Facebook"></a>
+                <a href="#"><img src="../img/icons/instagram.png" alt="Instagram"></a>
+                <a href="#"><img src="../img/icons/twitter.png" alt="Twitter"></a>
+                <a href="#"><img src="../img/icons/linkedin.png" alt="LinkedIn"></a>
+            </div>
+            <div>
+                <div>
+                    <h3>Assistance</h3>
+                    <a href="#">Centre d'aide</a>
+                </div>
+                <div>
+                    <h3>Recherches</h3>
+                    <a href="#">Talents</a>
+                    <a href="#">Avis</a>
+                </div>
+                <div>
+                    <h3>Ressources</h3>
+                    <a href="#">Mentions légales</a>
+                </div>
+            </div>
+            <p>Copyright &copy; SkillSwap 2025</p>
+        </footer>
+    </body>
+</html>

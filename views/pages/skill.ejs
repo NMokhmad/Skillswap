@@ -1,0 +1,238 @@
+<%- include('../partials/header.ejs') %>
+</head>
+<%- include('../partials/navbar.ejs') %>
+
+<main class="section skill-page-main">
+    <div class="container">
+
+        <!-- En-tete de la competence avec gradient et icone -->
+        <div class="box has-text-centered mb-6 p-6 skill-page-header">
+
+            <!-- Effet de brillance en arriere-plan -->
+            <div class="skill-page-shine-overlay"></div>
+
+            <!-- Icone de la competence -->
+            <div class="mb-4 skill-page-relative">
+                <span class="icon is-large has-text-light skill-page-icon-large">
+                    <i class="fa-solid fa-code"></i>
+                </span>
+            </div>
+
+            <h1 class="title is-1 has-text-light has-text-weight-bold mb-3 skill-page-relative">
+                <%= skill.label %>
+            </h1>
+
+            <!-- Compteur avec style moderne -->
+            <div class="skill-page-counter-badge">
+                <p class="subtitle is-4 has-text-light mb-0 skill-page-counter-text">
+                    <span class="icon-text">
+                        <span class="icon skill-page-icon-gold">
+                            <i class="fa-solid fa-users"></i>
+                        </span>
+                        <span><%= skill.users.length %> <%= skill.users.length > 1 ? 'talents disponibles' : 'talent disponible' %></span>
+                    </span>
+                </p>
+            </div>
+
+            <!-- Tags de categorie -->
+            <div class="mt-4 skill-page-relative">
+                <span class="tag is-medium skill-page-tag-popular">
+                    <span class="icon">
+                        <i class="fa-solid fa-fire"></i>
+                    </span>
+                    <span>Populaire</span>
+                </span>
+                <span class="tag is-medium skill-page-tag-demanded">
+                    <span class="icon">
+                        <i class="fa-solid fa-star"></i>
+                    </span>
+                    <span>Demande</span>
+                </span>
+            </div>
+        </div>
+
+        <% if (skill.users.length > 0) { %>
+            <!-- En-tete de section -->
+            <div class="box mb-5 p-5 skill-page-section-header">
+                <h2 class="title is-4 has-text-weight-semibold mb-2 skill-page-title-dark">
+                    <span class="icon-text">
+                        <span class="icon skill-page-icon-accent">
+                            <i class="fa-solid fa-user-check"></i>
+                        </span>
+                        <span>Talents maitrisant cette competence</span>
+                    </span>
+                </h2>
+                <p class="subtitle is-6 skill-page-subtitle-muted">
+                    Decouvrez les professionnels certifies dans ce domaine
+                </p>
+            </div>
+
+            <!-- Grille des talents -->
+            <div class="columns is-multiline is-mobile">
+                <% skill.users.forEach((user, index) => {
+                    const colorIndex = index % 6;
+                %>
+                    <div class="column is-one-quarter-desktop is-one-third-tablet is-half-mobile">
+                        <a href="/talents/<%= user.id %>" class="skill-page-talent-link">
+                            <div class="box profile-card has-text-centered p-5 skill-page-card skill-page-card-border-<%= colorIndex %>">
+
+                                <!-- Effet de fond au hover -->
+                                <div class="card-bg-effect skill-page-card-bg skill-page-gradient-<%= colorIndex %>"></div>
+
+                                <!-- Contenu de la carte -->
+                                <div class="skill-page-card-content">
+                                    <!-- Badge position (si premier) -->
+                                    <% if (index < 3) { %>
+                                        <div class="skill-page-top-badge-wrapper">
+                                            <span class="tag is-medium skill-page-top-badge">
+                                                <span class="icon">
+                                                    <i class="fa-solid fa-crown"></i>
+                                                </span>
+                                                <span>Top <%= index + 1 %></span>
+                                            </span>
+                                        </div>
+                                    <% } %>
+
+                                    <!-- Avatar -->
+                                    <div class="profile-avatar mb-4">
+                                        <figure class="image is-96x96 is-inline-block">
+                                            <div class="avatar-circle skill-page-avatar skill-page-gradient-<%= colorIndex %>">
+                                                <span class="icon is-large has-text-light skill-page-avatar-icon">
+                                                    <i class="fa-solid fa-user"></i>
+                                                </span>
+                                            </div>
+                                        </figure>
+                                    </div>
+
+                                    <!-- Nom du talent -->
+                                    <h3 class="title is-5 has-text-weight-bold mb-3 talent-name skill-page-talent-name">
+                                        <%= user.firstname %>
+                                    </h3>
+
+                                    <!-- Note -->
+                                    <div class="mb-3">
+                                        <span class="icon-text">
+                                            <span class="skill-page-rating-stars">
+                                                <i class="fa-solid fa-star"></i>
+                                                <i class="fa-solid fa-star"></i>
+                                                <i class="fa-solid fa-star"></i>
+                                                <i class="fa-solid fa-star"></i>
+                                                <i class="fa-solid fa-star-half-stroke"></i>
+                                            </span>
+                                            <span class="has-text-weight-semibold skill-page-rating-score">4.5</span>
+                                        </span>
+                                    </div>
+
+                                    <!-- Badge de competence -->
+                                    <span class="tag is-medium skill-badge skill-page-skill-tag skill-page-skill-tag-border-<%= colorIndex %>">
+                                        <span class="icon is-small">
+                                            <i class="fa-solid fa-certificate"></i>
+                                        </span>
+                                        <span>Expert</span>
+                                    </span>
+
+                                    <!-- Stats rapides -->
+                                    <div class="mt-4 pt-3 skill-page-stats-row">
+                                        <div>
+                                            <p class="has-text-weight-bold skill-page-stat-value">42</p>
+                                            <p class="is-size-7 skill-page-stat-label">Projets</p>
+                                        </div>
+                                        <div class="skill-page-stats-divider">
+                                            <p class="has-text-weight-bold skill-page-stat-value">89%</p>
+                                            <p class="is-size-7 skill-page-stat-label">Succes</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                <% }) %>
+            </div>
+        <% } else { %>
+            <!-- Message si aucun talent -->
+            <div class="box has-text-centered p-6 skill-page-empty-state">
+                <div class="mb-5">
+                    <span class="icon skill-page-empty-icon">
+                        <i class="fa-solid fa-users-slash"></i>
+                    </span>
+                </div>
+                <h3 class="title is-4 has-text-weight-bold skill-page-title-dark">Aucun talent disponible pour le moment</h3>
+                <p class="subtitle is-5 mb-5 skill-page-empty-subtitle">
+                    Cette competence n'a pas encore de talents inscrits. Soyez le premier !
+                </p>
+
+                <!-- Suggestions -->
+                <div class="box skill-page-suggestions-box">
+                    <p class="has-text-weight-semibold mb-3 skill-page-title-dark">
+                        <span class="icon-text">
+                            <span class="icon skill-page-icon-accent">
+                                <i class="fa-solid fa-lightbulb"></i>
+                            </span>
+                            <span>Que faire en attendant ?</span>
+                        </span>
+                    </p>
+                    <div class="content has-text-left skill-page-suggestion-text">
+                        <ul class="skill-page-suggestion-list">
+                            <li class="mb-2">
+                                <span class="icon-text">
+                                    <span class="icon skill-page-icon-blue">
+                                        <i class="fa-solid fa-bell"></i>
+                                    </span>
+                                    <span>Activez les notifications pour cette competence</span>
+                                </span>
+                            </li>
+                            <li class="mb-2">
+                                <span class="icon-text">
+                                    <span class="icon skill-page-icon-blue">
+                                        <i class="fa-solid fa-share-nodes"></i>
+                                    </span>
+                                    <span>Partagez cette competence avec votre reseau</span>
+                                </span>
+                            </li>
+                            <li>
+                                <span class="icon-text">
+                                    <span class="icon skill-page-icon-blue">
+                                        <i class="fa-solid fa-compass"></i>
+                                    </span>
+                                    <span>Explorez des competences similaires</span>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="buttons is-centered">
+                    <a href="/skills" class="button is-large skill-page-btn-dark">
+                        <span class="icon">
+                            <i class="fa-solid fa-arrow-left"></i>
+                        </span>
+                        <span>Voir toutes les competences</span>
+                    </a>
+
+                    <button class="button is-large skill-page-btn-alert">
+                        <span class="icon">
+                            <i class="fa-solid fa-bell"></i>
+                        </span>
+                        <span>M'alerter</span>
+                    </button>
+                </div>
+            </div>
+        <% } %>
+
+        <!-- Bouton retour stylise -->
+        <div class="has-text-centered mt-6">
+            <a href="/skills" class="button is-large back-button skill-page-btn-back">
+                <span class="icon">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </span>
+                <span>Retour aux competences</span>
+            </a>
+        </div>
+
+    </div>
+</main>
+
+<%- include('../partials/footer.ejs') %>
+
+</body>
+</html>

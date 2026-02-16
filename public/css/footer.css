@@ -1,0 +1,182 @@
+/* ===== Footer base ===== */
+.footer-main {
+    background: linear-gradient(135deg, #30293d, #5a4a6f, #7d6b93);
+    padding: 3rem 1.5rem 2rem;
+}
+
+/* ===== Logo section ===== */
+.footer-logo-title {
+    font-weight: 700;
+}
+
+.footer-logo-skill {
+    background: linear-gradient(135deg, #ff6b9d, #ffd700);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.footer-logo-swap {
+    color: #ffa8c5;
+}
+
+.footer-slogan {
+    opacity: 0.9;
+}
+
+/* ===== Social section ===== */
+.footer-social-title {
+    font-weight: 600;
+}
+
+.footer-social-row {
+    gap: 1rem;
+}
+
+.social-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    border: 2px solid rgba(255, 168, 197, 0.3);
+    transition: all 0.3s ease;
+}
+
+.footer-social-img {
+    width: 32px;
+    height: 32px;
+    filter: brightness(0) invert(1);
+}
+
+/* Effets hover pour les icones sociales */
+.social-icon:hover {
+    transform: translateY(-8px) scale(1.05);
+    background: rgba(255, 168, 197, 0.2) !important;
+    border-color: #ffa8c5 !important;
+    box-shadow: 0 8px 16px rgba(255, 107, 157, 0.3);
+}
+
+.social-icon:hover img {
+    filter: brightness(0) invert(1) sepia(1) saturate(5) hue-rotate(290deg) !important;
+}
+
+/* ===== Footer section cards ===== */
+.footer-section-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 1.5rem;
+    height: 100%;
+}
+
+.footer-section-card-assistance {
+    border: 2px solid rgba(255, 168, 197, 0.2);
+}
+
+.footer-section-card-recherches {
+    border: 2px solid rgba(255, 107, 157, 0.2);
+}
+
+.footer-section-card-ressources {
+    border: 2px solid rgba(255, 215, 0, 0.2);
+}
+
+/* ===== Section icon boxes ===== */
+.footer-section-icon-box {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+}
+
+.footer-icon-box-assistance {
+    background: linear-gradient(135deg, #6b7db3, #a8b7e5);
+}
+
+.footer-icon-box-recherches {
+    background: linear-gradient(135deg, #e07b91, #ff6b9d);
+}
+
+.footer-icon-box-ressources {
+    background: linear-gradient(135deg, #ffd700, #ffed4e);
+}
+
+.footer-icon-white {
+    color: white;
+}
+
+.footer-icon-dark {
+    color: #30293d;
+}
+
+/* ===== Section titles ===== */
+.footer-section-title-assistance {
+    font-weight: 600;
+    color: #a8b7e5;
+}
+
+.footer-section-title-recherches {
+    font-weight: 600;
+    color: #ffa8c5;
+}
+
+.footer-section-title-ressources {
+    font-weight: 600;
+    color: #ffd700;
+}
+
+/* ===== Footer links ===== */
+.footer-link {
+    color: rgba(255, 255, 255, 0.8);
+    transition: all 0.3s ease;
+    display: block;
+    padding: 0.5rem;
+    border-radius: 8px;
+}
+
+/* Effets hover pour les liens du footer */
+.footer-link:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: white !important;
+    transform: translateX(5px);
+}
+
+/* ===== Separator ===== */
+.footer-separator {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(255, 168, 197, 0.3), transparent);
+    margin: 2rem 0;
+}
+
+/* ===== Copyright ===== */
+.footer-copyright {
+    opacity: 0.8;
+    font-size: 0.95rem;
+}
+
+.footer-copyright-brand {
+    color: #ffa8c5;
+}
+
+/* ===== Animation des sections du footer ===== */
+.footer-section:hover > div {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(48, 41, 61, 0.3);
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+    .footer-main .columns {
+        margin-bottom: 2rem !important;
+    }
+
+    .footer-section {
+        margin-bottom: 1rem;
+    }
+}

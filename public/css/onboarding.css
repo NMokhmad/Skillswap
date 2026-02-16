@@ -1,0 +1,536 @@
+/* ===========================================
+   ONBOARDING PAGE STYLES
+   =========================================== */
+
+/* Main background */
+.onboard-main {
+    background: linear-gradient(135deg, #f3e8f3 0%, #ffeef8 100%);
+    min-height: 100vh;
+}
+
+/* Welcome header box */
+.onboard-header {
+    background: linear-gradient(135deg, #30293d 0%, #5a4a6f 50%, #7d6b93 100%);
+    border-radius: 16px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 12px 32px rgba(48, 41, 61, 0.25);
+}
+
+/* Shine effect overlay */
+.onboard-shine {
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+/* Content above shine */
+.onboard-header-content {
+    position: relative;
+    z-index: 1;
+}
+
+/* Subtitle opacity */
+.onboard-subtitle-light {
+    opacity: 0.95;
+}
+
+/* Progress bar section */
+.onboard-progress-box {
+    background-color: white;
+    border-radius: 12px;
+    border: 2px solid #e8dce8;
+}
+
+/* Dark text color */
+.onboard-text-dark {
+    color: #30293d;
+}
+
+/* Icon accent blue */
+.onboard-icon-blue {
+    color: #6b7db3;
+}
+
+/* Progress tag */
+.onboard-progress-tag {
+    background-color: #e07b91;
+    color: white;
+    font-weight: bold;
+    border-radius: 20px;
+    padding: 0.5rem 1.5rem;
+}
+
+/* Progress bar dimensions */
+.onboard-progress-bar {
+    height: 12px;
+    border-radius: 10px;
+}
+
+/* Step card base */
+.onboard-step-card {
+    background-color: white;
+    border-radius: 16px;
+    transition: all 0.3s ease;
+}
+
+/* Step card - photo (pink) */
+.onboard-step-photo {
+    border: 3px solid #e07b91;
+    box-shadow: 0 8px 24px rgba(224, 123, 145, 0.15);
+}
+
+/* Step card - bio (blue) */
+.onboard-step-bio {
+    border: 3px solid #6b7db3;
+    box-shadow: 0 8px 24px rgba(107, 125, 179, 0.15);
+}
+
+/* Step card - skills (purple) */
+.onboard-step-skills {
+    border: 3px solid #7d6b93;
+    box-shadow: 0 8px 24px rgba(125, 107, 147, 0.15);
+}
+
+/* Step card - new skill (pink light) */
+.onboard-step-newskill {
+    border: 3px solid #ffa8c5;
+    box-shadow: 0 8px 24px rgba(255, 168, 197, 0.15);
+}
+
+/* Icon accent pink */
+.onboard-icon-pink {
+    color: #e07b91;
+    font-size: 1.5rem;
+}
+
+/* Subtitle muted purple */
+.onboard-text-muted {
+    color: #7d6b93;
+}
+
+/* Tag optional pink */
+.onboard-tag-optional-pink {
+    background-color: #ffeef8;
+    color: #e07b91;
+    border: 2px solid #e07b91;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+/* Tag optional blue */
+.onboard-tag-optional-blue {
+    background-color: #f0f4ff;
+    color: #6b7db3;
+    border: 2px solid #6b7db3;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+/* Tag optional new-skill */
+.onboard-tag-optional-newskill {
+    background-color: #fff5f7;
+    color: #ff6b9d;
+    border: 2px solid #ff6b9d;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+/* Tag required */
+.onboard-tag-required {
+    background-color: #ff6b9d;
+    color: white;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+/* Avatar preview circle */
+#avatar-preview {
+    width: 128px;
+    height: 128px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #e07b91, #ff6b9d);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 5px solid white;
+    box-shadow: 0 8px 20px rgba(224, 123, 145, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Default avatar icon size */
+.onboard-avatar-icon {
+    font-size: 3.5rem;
+}
+
+/* Preview image (hidden by default, toggled by JS) */
+#preview-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* File upload CTA button */
+.onboard-file-cta {
+    background-color: #e07b91;
+    color: white;
+    border: none;
+    border-radius: 10px;
+}
+
+/* File name display */
+.onboard-file-name {
+    border: 2px solid #e8dce8;
+    border-radius: 10px;
+}
+
+/* Standard input border */
+.onboard-input {
+    border: 2px solid #e8dce8;
+    border-radius: 10px;
+}
+
+/* Textarea styling */
+.onboard-textarea {
+    border: 2px solid #e8dce8;
+    border-radius: 10px;
+    font-size: 1rem;
+}
+
+/* Tip box (bio) */
+.onboard-tip-box {
+    background-color: #f0f4ff;
+    border-radius: 12px;
+    border: 2px solid #a8b7e5;
+}
+
+/* Tip box text */
+.onboard-tip-text {
+    color: #6b7db3;
+    font-size: 0.9rem;
+}
+
+/* Icon purple */
+.onboard-icon-purple {
+    color: #7d6b93;
+    font-size: 1.5rem;
+}
+
+/* Icon purple (no size) */
+.onboard-icon-purple-sm {
+    color: #7d6b93;
+}
+
+/* Skills grid container */
+.onboard-skills-grid {
+    gap: 0.75rem;
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 1rem;
+    background-color: #f9f5f9;
+    border-radius: 12px;
+}
+
+/* Skill checkbox label */
+.onboard-skill-label {
+    cursor: pointer;
+}
+
+/* Skill tag - color variants based on loop index % 4 */
+.onboard-color-0 {
+    background-color: #ffa8c5;
+    color: #8d1450;
+}
+
+.onboard-color-1 {
+    background-color: #a8b7e5;
+    color: #1a2f5f;
+}
+
+.onboard-color-2 {
+    background-color: #e8dce8;
+    color: #30293d;
+}
+
+.onboard-color-3 {
+    background-color: #ffd7a8;
+    color: #8d4a00;
+}
+
+/* Skill tag base */
+.onboard-skill-tag {
+    border: 3px solid transparent;
+    border-radius: 12px;
+    padding: 0.75rem 1.25rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    user-select: none;
+}
+
+/* Checkmark spacing */
+.onboard-checkmark {
+    margin-left: 0.5rem;
+}
+
+/* Empty skills message */
+.onboard-empty-msg {
+    color: #7d6b93;
+}
+
+/* Selected skills count tag */
+.onboard-selected-count {
+    background-color: #7d6b93;
+    color: white;
+    font-weight: bold;
+    border-radius: 20px;
+}
+
+/* Icon new skill (magenta) */
+.onboard-icon-magenta {
+    color: #ff6b9d;
+    font-size: 1.5rem;
+}
+
+/* Icon magenta (no size) */
+.onboard-icon-magenta-sm {
+    color: #ff6b9d;
+}
+
+/* Label bold dark */
+.onboard-label {
+    color: #30293d;
+    font-weight: 600;
+}
+
+/* Help text */
+.onboard-help {
+    color: #7d6b93;
+}
+
+/* Action box at bottom */
+.onboard-action-box {
+    background: linear-gradient(135deg, #ffeef8 0%, #f9f5f9 100%);
+    border-radius: 16px;
+    border: 3px dashed #e07b91;
+}
+
+/* Submit button */
+.onboard-submit-btn {
+    background-color: #30293d;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    padding: 1.5rem 3rem;
+    transition: all 0.3s ease;
+}
+
+/* Skip link */
+.onboard-skip-link {
+    color: #7d6b93;
+    font-weight: 600;
+}
+
+/* ===========================================
+   PROGRESS BAR CUSTOM STYLES
+   =========================================== */
+
+#profile-progress::-webkit-progress-value {
+    background: linear-gradient(90deg, #e07b91 0%, #6b7db3 50%, #7d6b93 100%);
+    border-radius: 10px;
+    transition: width 0.5s ease;
+}
+
+#profile-progress::-moz-progress-bar {
+    background: linear-gradient(90deg, #e07b91 0%, #6b7db3 50%, #7d6b93 100%);
+    border-radius: 10px;
+    transition: width 0.5s ease;
+}
+
+#profile-progress::-webkit-progress-bar {
+    background-color: #e8dce8;
+    border-radius: 10px;
+}
+
+/* ===========================================
+   INTERACTIVE STATES
+   =========================================== */
+
+/* Hover on step cards */
+.step-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(48, 41, 61, 0.2) !important;
+}
+
+/* Checkbox de compétences */
+.skill-checkbox:checked + .skill-tag {
+    border-color: currentColor !important;
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.skill-checkbox:checked + .skill-tag .checkmark-icon {
+    display: inline-block !important;
+}
+
+.skill-tag:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Upload d'image */
+.file-cta:hover {
+    background-color: #ff6b9d !important;
+}
+
+/* Textarea focus */
+#bio:focus {
+    border-color: #6b7db3 !important;
+    box-shadow: 0 0 0 3px rgba(107, 125, 179, 0.1) !important;
+}
+
+/* Bouton terminer */
+#complete-btn:not(:disabled):hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(48, 41, 61, 0.35);
+    background-color: #5a4a6f !important;
+}
+
+#complete-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ===========================================
+   ANIMATIONS
+   =========================================== */
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-15px) rotate(10deg);
+    }
+}
+
+.icon.is-large i {
+    animation: float 3s ease-in-out infinite;
+}
+
+/* ===========================================
+   SCROLLBAR
+   =========================================== */
+
+#skills-grid::-webkit-scrollbar {
+    width: 8px;
+}
+
+#skills-grid::-webkit-scrollbar-track {
+    background: #e8dce8;
+    border-radius: 10px;
+}
+
+#skills-grid::-webkit-scrollbar-thumb {
+    background: #7d6b93;
+    border-radius: 10px;
+}
+
+#skills-grid::-webkit-scrollbar-thumb:hover {
+    background: #5a4a6f;
+}
+
+/* ===========================================
+   RESPONSIVE - TABLET
+   =========================================== */
+
+@media screen and (max-width: 768px) {
+    .step-card .is-flex.is-justify-content-space-between {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .file.has-name.is-large {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .file.has-name.is-large .file-name {
+        max-width: 100%;
+        width: 100%;
+        text-align: center;
+    }
+
+    #skills-grid {
+        max-height: 300px !important;
+    }
+
+    #complete-btn {
+        padding: 1.25rem 2rem !important;
+        font-size: 1rem !important;
+    }
+}
+
+/* ===========================================
+   RESPONSIVE - MOBILE
+   =========================================== */
+
+@media screen and (max-width: 480px) {
+    .onboard-header {
+        padding: 1.5rem !important;
+    }
+
+    .onboard-header .title.is-1 {
+        font-size: 1.5rem !important;
+    }
+
+    .onboard-header .subtitle.is-4 {
+        font-size: 1rem !important;
+    }
+
+    .step-card {
+        padding: 1rem !important;
+    }
+
+    .step-card .title.is-4 {
+        font-size: 1.1rem !important;
+    }
+
+    .step-card .subtitle.is-6 {
+        font-size: 0.85rem !important;
+    }
+
+    #skills-grid {
+        gap: 0.5rem !important;
+        padding: 0.75rem !important;
+        max-height: 250px !important;
+    }
+
+    .skill-tag {
+        padding: 0.5rem 0.9rem !important;
+        font-size: 0.85rem !important;
+    }
+
+    #avatar-preview {
+        width: 96px !important;
+        height: 96px !important;
+    }
+
+    .onboard-action-box {
+        padding: 1.25rem !important;
+    }
+
+    #complete-btn {
+        padding: 1rem 1.5rem !important;
+        font-size: 0.95rem !important;
+    }
+
+    .button.is-medium.is-text {
+        font-size: 0.85rem !important;
+    }
+}

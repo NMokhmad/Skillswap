@@ -1,0 +1,452 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+footer {
+    width: 100%;
+    margin-top: auto;
+}
+
+/* =============================================
+   SKILL PAGE STYLES
+   ============================================= */
+
+/* Main section background */
+.skill-page-main {
+    background: linear-gradient(135deg, #f3e8f3 0%, #ffeef8 100%);
+}
+
+/* Header box with gradient */
+.skill-page-header {
+    background: linear-gradient(135deg, #30293d 0%, #5a4a6f 50%, #7d6b93 100%);
+    border-radius: 16px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 12px 32px rgba(48, 41, 61, 0.25);
+}
+
+/* Shine overlay effect behind header */
+.skill-page-shine-overlay {
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+/* Relative positioning for stacking context */
+.skill-page-relative {
+    position: relative;
+}
+
+/* Main skill icon */
+.skill-page-icon-large {
+    font-size: 5rem;
+    filter: drop-shadow(0 8px 16px rgba(0,0,0,0.3));
+}
+
+/* Counter badge (users count) */
+.skill-page-counter-badge {
+    display: inline-block;
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 0.75rem 2rem;
+    border-radius: 25px;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Counter text */
+.skill-page-counter-text {
+    font-weight: 600;
+}
+
+/* Gold-colored icon (users icon, stars) */
+.skill-page-icon-gold {
+    color: #ffd700;
+}
+
+/* Tag: popular */
+.skill-page-tag-popular {
+    background-color: #e07b91;
+    color: white;
+    border-radius: 20px;
+    padding: 0.5rem 1.5rem;
+    font-weight: 600;
+    margin: 0.25rem;
+}
+
+/* Tag: demanded */
+.skill-page-tag-demanded {
+    background-color: #6b7db3;
+    color: white;
+    border-radius: 20px;
+    padding: 0.5rem 1.5rem;
+    font-weight: 600;
+    margin: 0.25rem;
+}
+
+/* Section header box */
+.skill-page-section-header {
+    background-color: white;
+    border-radius: 12px;
+    border-left: 5px solid #e07b91;
+    box-shadow: 0 4px 12px rgba(48, 41, 61, 0.08);
+}
+
+/* Section title color */
+.skill-page-title-dark {
+    color: #30293d;
+}
+
+/* Section title icon accent */
+.skill-page-icon-accent {
+    color: #e07b91;
+}
+
+/* Section subtitle muted */
+.skill-page-subtitle-muted {
+    color: #7d6b93;
+    margin-bottom: 0;
+}
+
+/* Talent link (no decoration) */
+.skill-page-talent-link {
+    text-decoration: none;
+}
+
+/* Profile card base styling */
+.skill-page-card {
+    background-color: white;
+    border-radius: 16px;
+    transition: all 0.3s ease;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(48, 41, 61, 0.1);
+}
+
+/* Border color variants for cards (by index) */
+.skill-page-card-border-0 { border: 3px solid #ff6b9d; }
+.skill-page-card-border-1 { border: 3px solid #6b7db3; }
+.skill-page-card-border-2 { border: 3px solid #7d6b93; }
+.skill-page-card-border-3 { border: 3px solid #e07b91; }
+.skill-page-card-border-4 { border: 3px solid #a8b7e5; }
+.skill-page-card-border-5 { border: 3px solid #ffa8c5; }
+
+/* Card background hover effect overlay */
+.skill-page-card-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 0;
+}
+
+/* Gradient variants for card backgrounds and avatars */
+.skill-page-gradient-0 { background: linear-gradient(135deg, #ff6b9d, #ffa8c5); }
+.skill-page-gradient-1 { background: linear-gradient(135deg, #6b7db3, #a8b7e5); }
+.skill-page-gradient-2 { background: linear-gradient(135deg, #7d6b93, #5a4a6f); }
+.skill-page-gradient-3 { background: linear-gradient(135deg, #e07b91, #ff6b9d); }
+.skill-page-gradient-4 { background: linear-gradient(135deg, #a8b7e5, #6b7db3); }
+.skill-page-gradient-5 { background: linear-gradient(135deg, #ffa8c5, #ff6b9d); }
+
+/* Card content wrapper (above bg effect) */
+.skill-page-card-content {
+    position: relative;
+    z-index: 1;
+}
+
+/* Top badge positioning */
+.skill-page-top-badge-wrapper {
+    position: absolute;
+    top: -1rem;
+    right: -1rem;
+}
+
+/* Crown/top badge styling */
+.skill-page-top-badge {
+    background-color: #ffd700;
+    color: #8d4a00;
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
+}
+
+/* Avatar circle */
+.skill-page-avatar {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 4px solid white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: all 0.3s ease;
+}
+
+/* Avatar icon size */
+.skill-page-avatar-icon {
+    font-size: 2.5rem;
+}
+
+/* Talent name */
+.skill-page-talent-name {
+    color: #30293d;
+    transition: color 0.3s ease;
+}
+
+/* Star rating icon */
+.skill-page-rating-stars {
+    color: #ffd700;
+    font-size: 0.9rem;
+}
+
+/* Rating score text */
+.skill-page-rating-score {
+    color: #7d6b93;
+    font-size: 0.9rem;
+}
+
+/* Skill badge on card */
+.skill-page-skill-tag {
+    background-color: #f3e8f3;
+    color: #30293d;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+/* Skill badge border color variants */
+.skill-page-skill-tag-border-0 { border: 2px solid #ff6b9d; }
+.skill-page-skill-tag-border-1 { border: 2px solid #6b7db3; }
+.skill-page-skill-tag-border-2 { border: 2px solid #7d6b93; }
+.skill-page-skill-tag-border-3 { border: 2px solid #e07b91; }
+.skill-page-skill-tag-border-4 { border: 2px solid #a8b7e5; }
+.skill-page-skill-tag-border-5 { border: 2px solid #ffa8c5; }
+
+/* Stats row */
+.skill-page-stats-row {
+    border-top: 2px solid #f3e8f3;
+    display: flex;
+    justify-content: space-around;
+}
+
+/* Stat value */
+.skill-page-stat-value {
+    color: #30293d;
+    font-size: 1.1rem;
+}
+
+/* Stat label */
+.skill-page-stat-label {
+    color: #7d6b93;
+}
+
+/* Stats divider */
+.skill-page-stats-divider {
+    border-left: 2px solid #f3e8f3;
+    padding-left: 1rem;
+}
+
+/* Empty state box */
+.skill-page-empty-state {
+    background: linear-gradient(135deg, white 0%, #ffeef8 100%);
+    border-radius: 16px;
+    border: 3px dashed #e07b91;
+    box-shadow: 0 8px 24px rgba(48, 41, 61, 0.08);
+}
+
+/* Empty state large icon */
+.skill-page-empty-icon {
+    font-size: 6rem;
+    color: #7d6b93;
+    opacity: 0.3;
+}
+
+/* Empty state subtitle */
+.skill-page-empty-subtitle {
+    color: #7d6b93;
+}
+
+/* Suggestions box */
+.skill-page-suggestions-box {
+    background-color: white;
+    border-radius: 12px;
+    max-width: 500px;
+    margin: 0 auto 2rem auto;
+    border: 2px solid #ffa8c5;
+}
+
+/* Suggestion list (no bullets) */
+.skill-page-suggestion-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+/* Suggestion text color */
+.skill-page-suggestion-text {
+    color: #7d6b93;
+}
+
+/* Suggestion icon color (blue) */
+.skill-page-icon-blue {
+    color: #6b7db3;
+}
+
+/* Button: see all skills */
+.skill-page-btn-dark {
+    background-color: #30293d;
+    color: white;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+/* Button: alert me */
+.skill-page-btn-alert {
+    background-color: #e07b91;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+/* Back button */
+.skill-page-btn-back {
+    background-color: white;
+    border: 3px solid #30293d;
+    color: #30293d;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(48, 41, 61, 0.1);
+}
+
+/* =============================================
+   HOVER & ANIMATION STYLES (from <style> block)
+   ============================================= */
+
+/* Profile cards with advanced hover effect */
+.profile-card {
+    min-height: 320px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.profile-card:hover {
+    transform: translateY(-12px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(48, 41, 61, 0.2) !important;
+}
+
+.profile-card:hover .card-bg-effect {
+    opacity: 0.1;
+}
+
+.profile-card:hover .talent-name {
+    color: white !important;
+}
+
+.profile-card:hover .skill-badge {
+    background-color: white !important;
+    transform: scale(1.05);
+}
+
+/* Avatar animation */
+.profile-avatar {
+    transition: transform 0.3s ease;
+}
+
+.profile-card:hover .profile-avatar {
+    transform: scale(1.15) rotate(5deg);
+}
+
+.profile-card:hover .avatar-circle {
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25) !important;
+    border-width: 5px !important;
+}
+
+/* Back button hover */
+.back-button:hover {
+    background-color: #30293d !important;
+    color: white !important;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(48, 41, 61, 0.25) !important;
+}
+
+/* Empty state buttons hover */
+.buttons .button:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.buttons .button:first-child:hover {
+    background-color: #5a4a6f !important;
+}
+
+.buttons .button:last-child:hover {
+    background-color: #ff6b9d !important;
+}
+
+/* Pulsation animation for popular tags */
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.tag.is-medium {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* Shine effect on header */
+@keyframes shine {
+    0% {
+        background-position: -200% center;
+    }
+    100% {
+        background-position: 200% center;
+    }
+}
+
+/* Floating icon parallax effect */
+@keyframes float-icon {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-15px) rotate(5deg);
+    }
+}
+
+.icon.is-large {
+    animation: float-icon 4s ease-in-out infinite;
+}
+
+/* Smooth transitions for all interactive elements */
+* {
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ─── Mobile (max 480px) ─── */
+@media screen and (max-width: 480px) {
+    .skill-page-main .columns > .column {
+        flex: none;
+        width: 100%;
+    }
+}

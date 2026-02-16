@@ -1,0 +1,371 @@
+<%- include('../partials/header') %>
+<script src="/js/editProfil.js" defer></script>
+<script src="/js/deleteProfil.js" defer></script>
+<script src="/js/previsualition.js" defer></script>
+</head>
+<!-- Navbar -->
+<%- include('../partials/navbar.ejs') %>
+
+<body>
+    <main class="section profil-main">
+        <div class="container">
+
+            <!-- En-tete de page -->
+            <div class="box has-text-centered mb-6 p-6 profil-header-banner">
+
+                <!-- Effet de brillance -->
+                <div class="profil-header-shine"></div>
+
+                <div class="profil-header-content">
+                    <div class="mb-4">
+                        <span class="icon is-large has-text-light profil-header-icon">
+                            <i class="fa-solid fa-user-gear"></i>
+                        </span>
+                    </div>
+                    <h1 class="title is-1 has-text-light has-text-weight-bold mb-2">Mon Profil</h1>
+                    <p class="subtitle is-5 has-text-light profil-subtitle-light">Gerez vos informations personnelles</p>
+                </div>
+            </div>
+
+            <div class="columns is-centered">
+                <div class="column is-8-desktop is-10-tablet">
+
+                    <!-- Bloc d'affichage du profil -->
+                    <div id="profil-view" class="box profil-view-card">
+
+                        <!-- Avatar circulaire en haut -->
+                        <div class="has-text-centered mb-5 pb-4 profil-avatar-section">
+                            <figure class="image is-128x128 is-inline-block mb-4">
+                                <% if (user.image) { %>
+                                    <!-- Photo de profil uploadee -->
+                                    <img src="<%= user.image %>" alt="Avatar de <%= user.firstname %>" class="profil-avatar-img">
+                                <% } else { %>
+                                    <!-- Avatar par defaut -->
+                                    <div class="profil-avatar-default">
+                                        <span class="icon is-large has-text-light profil-avatar-default-icon">
+                                            <i class="fa-solid fa-user"></i>
+                                        </span>
+                                    </div>
+                                <% } %>
+                            </figure>
+
+                            <!-- Badge membre -->
+                            <div class="profil-member-badge">
+                                <span class="tag is-medium profil-badge-tag">
+                                    <span class="icon">
+                                        <i class="fa-solid fa-circle-check"></i>
+                                    </span>
+                                    <span>Membre actif</span>
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Informations du profil -->
+                        <div class="content px-5 pb-4">
+                            <div class="box mb-4 profil-info-firstname">
+                                <div class="is-flex is-align-items-center">
+                                    <span class="icon is-medium mr-3 profil-icon-pink">
+                                        <i class="fa-solid fa-id-card"></i>
+                                    </span>
+                                    <div class="profil-info-flex">
+                                        <p class="has-text-weight-semibold profil-label">Prenom</p>
+                                        <p class="title is-5 mb-0 profil-value"><%= user.firstname %></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="box mb-4 profil-info-lastname">
+                                <div class="is-flex is-align-items-center">
+                                    <span class="icon is-medium mr-3 profil-icon-blue">
+                                        <i class="fa-solid fa-user"></i>
+                                    </span>
+                                    <div class="profil-info-flex">
+                                        <p class="has-text-weight-semibold profil-label">Nom</p>
+                                        <p class="title is-5 mb-0 profil-value"><%= user.lastname %></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="box mb-4 profil-info-email">
+                                <div class="is-flex is-align-items-center">
+                                    <span class="icon is-medium mr-3 profil-icon-purple">
+                                        <i class="fa-solid fa-envelope"></i>
+                                    </span>
+                                    <div class="profil-info-flex">
+                                        <p class="has-text-weight-semibold profil-label">Email</p>
+                                        <p class="title is-6 mb-0 profil-value-email"><%= user.email %></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Bio -->
+                            <% if (user.bio) { %>
+                                <div class="box mb-4 profil-info-bio">
+                                    <div class="is-flex is-align-items-start">
+                                        <span class="icon is-medium mr-3 profil-icon-rose">
+                                            <i class="fa-solid fa-pen-fancy"></i>
+                                        </span>
+                                        <div class="profil-info-flex">
+                                            <p class="has-text-weight-semibold profil-label-bio">A propos de moi</p>
+                                            <p class="profil-bio-text"><%= user.bio %></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% } %>
+
+                            <!-- Competences -->
+                            <% if (user.skills && user.skills.length > 0) { %>
+                                <div class="box mb-4 profil-info-skills">
+                                    <div>
+                                        <p class="has-text-weight-semibold mb-3 profil-skills-title">
+                                            <span class="icon-text">
+                                                <span class="icon profil-icon-skills">
+                                                    <i class="fa-solid fa-certificate"></i>
+                                                </span>
+                                                <span>Mes competences</span>
+                                            </span>
+                                        </p>
+                                        <div class="tags">
+                                            <% user.skills.forEach((skill, index) => { %>
+                                                <span class="tag is-medium profil-skill-tag profil-color-<%= index % 4 %>">
+                                                    <span class="icon is-small">
+                                                        <i class="fa-solid <%= skill.icon || 'fa-star' %>"></i>
+                                                    </span>
+                                                    <span><%= skill.label %></span>
+                                                </span>
+                                            <% }) %>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% } %>
+                        </div>
+
+                        <!-- Boutons d'action -->
+                        <div class="px-5 pb-5">
+                            <div class="buttons is-centered">
+                                <button id="editBtn" class="button is-large profile-edit-btn profil-edit-btn">
+                                    <span class="icon">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </span>
+                                    <span>Modifier mon profil</span>
+                                </button>
+                                <button id="deleteBtn" class="button is-large profile-delete-btn profil-delete-btn">
+                                    <span class="icon">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </span>
+                                    <span>Supprimer mon compte</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bloc de confirmation de suppression -->
+                    <div id="delete-confirmation" class="modal">
+                        <div class="modal-background"></div>
+                        <div class="modal-content">
+                            <div class="box profil-modal-box">
+                                <div class="has-text-centered">
+                                    <div class="mb-4">
+                                        <span class="icon profil-warning-icon">
+                                            <i class="fa-solid fa-triangle-exclamation"></i>
+                                        </span>
+                                    </div>
+
+                                    <h3 class="title is-4 has-text-weight-bold mb-3 profil-modal-title">Confirmer la suppression</h3>
+                                    <p class="subtitle is-5 mb-5 profil-modal-subtitle">Etes-vous vraiment sur de vouloir supprimer votre profil ? Cette action est irreversible.</p>
+
+                                    <div class="box mb-4 profil-warning-box">
+                                        <p class="has-text-weight-semibold profil-warning-text">
+                                            <span class="icon">
+                                                <i class="fa-solid fa-exclamation-circle"></i>
+                                            </span>
+                                            Toutes vos donnees seront definitivement perdues
+                                        </p>
+                                    </div>
+
+                                    <div class="buttons is-centered">
+                                        <form action="/user/<%= user.id %>/profil?_method=DELETE" method="post" class="profil-delete-form">
+                                            <button type="submit" class="button is-large profil-confirm-delete-btn">
+                                                <span class="icon">
+                                                    <i class="fa-solid fa-trash-can"></i>
+                                                </span>
+                                                <span>Oui, supprimer definitivement</span>
+                                            </button>
+                                        </form>
+                                        <button id="cancelDelete" class="button is-large profil-cancel-btn">
+                                            <span class="icon">
+                                                <i class="fa-solid fa-xmark"></i>
+                                            </span>
+                                            <span>Annuler</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="modal-close is-large" aria-label="close" id="closeModal"></button>
+                    </div>
+
+                    <!-- Bloc de formulaire d'edition -->
+                    <div id="profil-edit" class="box is-hidden profil-edit-card">
+
+                        <!-- En-tete du formulaire -->
+                        <div class="has-text-centered mb-5 pb-4 profil-edit-header">
+                            <span class="icon is-large mb-3 profil-edit-header-icon">
+                                <i class="fa-solid fa-user-pen"></i>
+                            </span>
+                            <h2 class="title is-4 has-text-weight-bold profil-edit-title">Modifier mes informations</h2>
+                            <p class="subtitle is-6 profil-edit-subtitle">Mettez a jour vos informations personnelles</p>
+                        </div>
+
+                        <form action="/user/<%= user.id %>/profil" method="POST" enctype="multipart/form-data" class="px-4 pb-4">
+
+                            <!-- Champ Photo de profil -->
+                            <div class="field mb-5">
+                                <label class="label profil-form-label">
+                                    <span class="icon-text">
+                                        <span class="icon profil-form-label-icon-pink">
+                                            <i class="fa-solid fa-camera"></i>
+                                        </span>
+                                        <span>Photo de profil</span>
+                                    </span>
+                                </label>
+                                <div class="has-text-centered mb-3">
+                                    <figure class="image is-96x96 is-inline-block">
+                                        <% if (user.image) { %>
+                                            <img id="avatar-preview-edit" src="<%= user.image %>" alt="Avatar" class="profil-avatar-edit-img">
+                                        <% } else { %>
+                                            <div id="avatar-preview-edit" class="profil-avatar-edit-default">
+                                                <span class="icon is-large has-text-light">
+                                                    <i class="fa-solid fa-user"></i>
+                                                </span>
+                                            </div>
+                                        <% } %>
+                                    </figure>
+                                </div>
+                                <div class="file has-name is-fullwidth">
+                                    <label class="file-label">
+                                        <input class="file-input" type="file" name="avatar" id="avatar-edit" accept="image/*">
+                                        <span class="file-cta profil-file-cta">
+                                            <span class="file-icon">
+                                                <i class="fa-solid fa-upload"></i>
+                                            </span>
+                                            <span class="file-label">
+                                                Changer la photo
+                                            </span>
+                                        </span>
+                                        <span class="file-name profil-file-name" id="file-name-edit">
+                                            <%= user.image ? 'Photo actuelle' : 'Aucune photo' %>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Champ Prenom -->
+                            <div class="field mb-5">
+                                <label class="label profil-form-label">
+                                    <span class="icon-text">
+                                        <span class="icon profil-form-label-icon-pink">
+                                            <i class="fa-solid fa-id-card"></i>
+                                        </span>
+                                        <span>Prenom</span>
+                                    </span>
+                                </label>
+                                <div class="control has-icons-left">
+                                    <input class="input is-medium profil-input" type="text" name="firstname" value="<%= user.firstname %>" required>
+                                    <span class="icon is-left profil-icon-left-pink">
+                                        <i class="fa-solid fa-id-card"></i>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Champ Nom -->
+                            <div class="field mb-5">
+                                <label class="label profil-form-label">
+                                    <span class="icon-text">
+                                        <span class="icon profil-form-label-icon-blue">
+                                            <i class="fa-solid fa-user"></i>
+                                        </span>
+                                        <span>Nom</span>
+                                    </span>
+                                </label>
+                                <div class="control has-icons-left">
+                                    <input class="input is-medium profil-input" type="text" name="lastname" value="<%= user.lastname %>" required>
+                                    <span class="icon is-left profil-icon-left-blue">
+                                        <i class="fa-solid fa-user"></i>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Champ Email -->
+                            <div class="field mb-5">
+                                <label class="label profil-form-label">
+                                    <span class="icon-text">
+                                        <span class="icon profil-form-label-icon-purple">
+                                            <i class="fa-solid fa-envelope"></i>
+                                        </span>
+                                        <span>Email</span>
+                                    </span>
+                                </label>
+                                <div class="control has-icons-left">
+                                    <input class="input is-medium profil-input" type="email" name="email" value="<%= user.email %>" required>
+                                    <span class="icon is-left profil-icon-left-purple">
+                                        <i class="fa-solid fa-envelope"></i>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Champ Bio -->
+                            <div class="field mb-5">
+                                <label class="label profil-form-label">
+                                    <span class="icon-text">
+                                        <span class="icon profil-form-label-icon-rose">
+                                            <i class="fa-solid fa-pen-fancy"></i>
+                                        </span>
+                                        <span>A propos de moi</span>
+                                    </span>
+                                </label>
+                                <div class="control">
+                                    <textarea class="textarea is-medium profil-textarea" name="bio" id="bio-edit" rows="4" maxlength="500" placeholder="Parlez-nous de vous..."><%= user.bio || '' %></textarea>
+                                </div>
+                                <p class="help has-text-right profil-bio-help">
+                                    <span id="bio-count-edit"><%= user.bio ? user.bio.length : 0 %></span>/500 caracteres
+                                </p>
+                            </div>
+
+                            <!-- Message d'info -->
+                            <div class="box mb-5 profil-info-message">
+                                <p class="has-text-weight-semibold profil-info-message-text">
+                                    <span class="icon">
+                                        <i class="fa-solid fa-info-circle"></i>
+                                    </span>
+                                    Vos modifications seront prises en compte immediatement
+                                </p>
+                            </div>
+
+                            <!-- Boutons -->
+                            <div class="buttons is-centered mt-5">
+                                <button type="submit" class="button is-large profil-submit-btn">
+                                    <span class="icon">
+                                        <i class="fa-solid fa-floppy-disk"></i>
+                                    </span>
+                                    <span>Enregistrer les modifications</span>
+                                </button>
+                                <button type="button" id="cancelEdit" class="button is-large profil-cancel-edit-btn">
+                                    <span class="icon">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </span>
+                                    <span>Annuler</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <%- include('../partials/footer.ejs') %>
+</body>
+</html>

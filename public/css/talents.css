@@ -1,0 +1,83 @@
+.talents-header-icon { color: #ffd700; }
+.talents-main-content { padding-bottom: 4rem; }
+
+html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #f3e8f3 !important;
+}
+
+footer {
+    width: 100%;
+    margin-top: auto;
+}
+
+.talent-card {
+    height: 100% !important;
+    min-height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+}
+.follow{
+    background-color: #d58bf3 !important;
+    color: #30293d !important;
+    border: none !important;
+    transition: background-color 0.3s ease !important;
+}
+.follow:hover{
+    background-color: #c06ae5 !important;
+    color: white !important;
+}
+.send-message{
+    background-color: #4b3f72 !important;
+    color: white !important;
+    border: none !important;
+    transition: background-color 0.3s ease !important;
+}
+.send-message:hover{
+    background-color: #3a2f5a !important;
+    color: #f3e8f3 !important;
+}
+
+a.skill-link{
+    color: #a64ac9 !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    transition: color 0.2s ease !important; 
+}
+
+a.skill-link:hover{
+    color: #7d3aa0 !important;
+    text-decoration: underline !important;
+}
+
+a.user-name {
+    color: #30293d !important;
+    font-weight: 700 !important;
+    font-size: 1.25rem !important;
+    text-decoration: none !important;
+    transition: color 0.2s ease !important;
+  }
+  
+a.user-name:hover {
+    color: #a64ac9 !important; /* ou un peu plus clair si tu préfères */
+    text-decoration: underline !important;
+  }
+
+.talent-card {
+    background-color: #f9f4fb !important;
+    border: 1px solid #e2d6eb !important;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 5px rgba(48, 41, 61, 0.05) !important;
+    transition: transform 0.2s ease !important;
+  }
+  
+.talent-card:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 4px 10px rgba(48, 41, 61, 0.1) !important;
+  }
+  

@@ -1,0 +1,311 @@
+.card-content{
+    background-color:#30293d !important;
+}
+
+.placeholder{
+    background-color: white !important;
+    color: black !important;
+}
+.placeholder::placeholder{
+    color: rgba(0, 0, 0, 0.400) !important;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+footer {
+    width: 100%;
+    margin-top: auto;
+}
+
+body {
+        background-color: #f3e8f3;
+    }
+
+    /* Container de la page */
+    .register-section {
+        min-height: calc(100vh - 200px);
+        display: flex;
+        align-items: center;
+        padding: 3rem 1.5rem;
+    }
+
+    /* Carte principale avec gradient border */
+    .register-card {
+        background: white;
+        border-radius: 24px;
+        box-shadow: 0 8px 32px rgba(48, 41, 61, 0.15);
+        overflow: hidden;
+        position: relative;
+        border: 3px solid transparent;
+        background-clip: padding-box;
+    }
+
+    .register-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 24px;
+        padding: 3px;
+        background: linear-gradient(135deg, #ff6b9d, #6b7db3, #ffd700);
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        pointer-events: none;
+    }
+
+    /* En-tête avec gradient */
+    .register-header {
+        background: linear-gradient(135deg, #30293d, #5a4a6f, #7d6b93);
+        padding: 2.5rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .register-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255, 168, 197, 0.1) 0%, transparent 70%);
+        animation: pulse 8s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); opacity: 0.5; }
+        50% { transform: scale(1.1); opacity: 0.8; }
+    }
+
+    .register-header .icon-circle {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #ff6b9d, #ffd700);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        box-shadow: 0 8px 24px rgba(255, 107, 157, 0.3);
+        position: relative;
+        z-index: 1;
+    }
+
+    .register-header .title {
+        color: white;
+        font-weight: 700;
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .register-header .subtitle {
+        color: #ffa8c5;
+        font-size: 1rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Corps du formulaire */
+    .register-body {
+        padding: 2.5rem;
+    }
+
+    /* Champs du formulaire */
+    .field {
+        margin-bottom: 1.5rem;
+    }
+
+    .label {
+        color: #30293d;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        font-size: 0.95rem;
+    }
+
+    .input {
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background-color: #fafafa;
+    }
+
+    .input:focus {
+        border-color: #ff6b9d;
+        background-color: white;
+        box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.1);
+    }
+
+    .input::placeholder {
+        color: #bbb;
+    }
+
+    /* Icônes dans les inputs */
+    .control.has-icons-left .input {
+        padding-left: 2.75rem;
+    }
+
+    .control.has-icons-left .icon {
+        height: 100%;
+        width: 2.75rem;
+        color: #ff6b9d;
+    }
+
+    /* Messages d'erreur stylisés */
+    .error {
+        background: linear-gradient(135deg, #ff6b9d, #e07b91);
+        color: white;
+        border-radius: 8px;
+        padding: 0.5rem 1rem !important;
+        margin-top: 0.5rem;
+        font-size: 0.85rem;
+        border: none;
+        box-shadow: 0 4px 12px rgba(255, 107, 157, 0.2);
+    }
+
+    /* Bouton d'inscription */
+    .btn-register1 {
+        background: linear-gradient(135deg, #ff6b9d, #ffd700);
+        border: none;
+        border-radius: 12px;
+        color: white;
+        font-size: 1.1rem;
+        padding: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 6px 20px rgba(255, 107, 157, 0.3);
+        letter-spacing: 0.5px;
+    }
+
+    .btn-register1:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 24px rgba(255, 107, 157, 0.4);
+    }
+
+    .btn-register1:active {
+        transform: translateY(-1px);
+    }
+
+    /* Lien de connexion */
+    .login-link {
+        text-align: center;
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+        border-top: 2px solid #f0f0f0;
+        color: #666;
+    }
+
+    .login-link a {
+        color: #ff6b9d;
+        font-weight: 600;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .login-link a:hover {
+        color: #e07b91;
+        text-decoration: underline;
+    }
+
+    /* Badge sécurité */
+    .security-badge {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        background: rgba(107, 125, 179, 0.1);
+        padding: 0.75rem;
+        border-radius: 12px;
+        margin-bottom: 1.5rem;
+        border: 2px solid rgba(107, 125, 179, 0.2);
+    }
+
+    .security-badge .icon {
+        color: #6b7db3;
+    }
+
+    .security-badge span {
+        color: #6b7db3;
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+
+    /* Icônes de labels */
+    .register-icon-lastname { color: #ff6b9d; }
+    .register-icon-firstname { color: #6b7db3; }
+    .register-icon-email { color: #ffd700; }
+    .register-icon-password { color: #e07b91; }
+    .register-icon-confirm { color: #a8b7e5; }
+    .register-icon-header { color: white; }
+
+    /* Espacement bouton */
+    .register-submit-field { margin-top: 2rem; }
+
+    /* Responsive - Tablette */
+    @media screen and (max-width: 768px) {
+        .register-section {
+            padding: 2rem 1rem;
+        }
+
+        .register-header {
+            padding: 2rem 1.5rem;
+        }
+
+        .register-header .title {
+            font-size: 1.75rem;
+        }
+
+        .register-header .icon-circle {
+            width: 64px;
+            height: 64px;
+        }
+
+        .register-body {
+            padding: 2rem 1.5rem;
+        }
+    }
+
+    /* Responsive - Mobile */
+    @media screen and (max-width: 480px) {
+        .register-section {
+            padding: 1.5rem 0.75rem;
+        }
+
+        .register-header {
+            padding: 1.5rem 1rem;
+        }
+
+        .register-header .title {
+            font-size: 1.5rem;
+        }
+
+        .register-header .subtitle {
+            font-size: 0.9rem;
+        }
+
+        .register-header .icon-circle {
+            width: 56px;
+            height: 56px;
+        }
+
+        .register-body {
+            padding: 1.5rem 1rem;
+        }
+
+        .btn-register1 {
+            font-size: 1rem;
+            padding: 0.85rem;
+        }
+    }
