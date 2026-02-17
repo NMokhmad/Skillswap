@@ -30,7 +30,7 @@ router.post("/register", authController.register);
 router.get("/login", authController.renderloginPage);
 router.post("/login", authController.login);
 
-router.get("/logout", authController.logout);
+router.post("/logout", authController.logout);
 
 router.get("/search", optionalJWT, mainController.searchPage);
 

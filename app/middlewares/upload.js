@@ -1,9 +1,17 @@
 import multer from 'multer';
 import path from 'path';
+import fs from 'fs';
+
+const uploadDir = 'public/uploads/avatars';
+
+// Créer le dossier d'upload s'il n'existe pas (évite ENOENT en production)
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'public/uploads/avatars');
+    cb(null, uploadDir);
   },
   filename: (req, file, cb) => {
     // Nom unique : userId-timestamp.extension
