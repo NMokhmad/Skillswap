@@ -82,10 +82,9 @@
                                 <span>Messages</span>
                             </a>
                             <hr class="navbar-divider dropdown-divider">
-                            <a class="navbar-item dropdown-item-logout" href="/logout">
-                                <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
-                                <span>Déconnexion</span>
-                            </a>
+                            <form action="/logout" class="navbar-item dropdown-item-logout" method="POST" style="display:inline;">
+                                <button type="submit">Déconnexion</button>
+                            </form>
                         </div>
                     </div>
                 <% } else { %>

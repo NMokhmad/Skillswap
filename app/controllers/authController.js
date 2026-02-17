@@ -120,7 +120,7 @@ const authController = {
         lastname: user.lastname,
         email: user.email,
       }), {
-        httpOnly: false,
+        httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'Strict'
       });

@@ -9,6 +9,7 @@
 5. [Architecture et bonnes pratiques](#5-architecture-et-bonnes-pratiques)
 6. [Ce qui est bien fait](#6-ce-qui-est-bien-fait)
 7. [Ce qui doit être amélioré](#7-ce-qui-doit-être-amélioré)
+8. [Suivi des corrections](#8-suivi-des-corrections)
 
 ---
 
@@ -26,37 +27,27 @@
 
 - **Clés étrangères déclarées inline** : `"role_id" INT NOT NULL REFERENCES "role"("id") DEFAULT 1` est clair et lisible.
 
-### Ce qui peut être amélioré
+- ✅ **`CHECK` constraint sur `rate`** : `CHECK (rate >= 1 AND rate <= 5)` empêche les données invalides au niveau de la base, même si quelqu'un contourne l'API. Bien corrigé.
 
-- **Pas d'index explicites** : les colonnes fréquemment recherchées devraient avoir des index. Par exemple :
+- ✅ **`ON DELETE CASCADE`** sur toutes les FK : quand un utilisateur est supprimé, toutes ses reviews, messages, follows, etc. sont automatiquement supprimés. Plus besoin de 6 requêtes manuelles.
+
+- ✅ **`DEFAULT false` pour `is_read`** dans `message` et **`DEFAULT` pour `is_available`** dans `user` : les valeurs par défaut empêchent les NULL inattendus.
+
+### Ce qui peut encore être amélioré
+
+- **Pas d'index explicites** : les colonnes fréquemment recherchées devraient avoir des index. Les colonnes `UNIQUE` créent automatiquement un index, mais les FK simples (comme `reviewed_id`, `sender_id`) n'en ont pas automatiquement :
   ```sql
   CREATE INDEX idx_review_reviewed_id ON review(reviewed_id);
+  CREATE INDEX idx_review_reviewer_id ON review(reviewer_id);
   CREATE INDEX idx_message_sender_id ON message(sender_id);
   CREATE INDEX idx_message_receiver_id ON message(receiver_id);
-  CREATE INDEX idx_user_email ON "user"(email);  -- déjà couvert par UNIQUE, mais bon à savoir
+  CREATE INDEX idx_notification_user_id ON notification(user_id);
   ```
-  Les colonnes `UNIQUE` créent automatiquement un index, mais les FK simples (comme `reviewed_id`, `sender_id`) n'en ont pas automatiquement.
-
-- **Pas de `CHECK` constraints** : la table `review` accepte n'importe quel entier pour `rate`. Il faudrait :
-  ```sql
-  "rate" INT NOT NULL CHECK (rate >= 1 AND rate <= 5)
-  ```
-  La validation Joi côté applicatif ne suffit pas : si quelqu'un contourne l'API, la base doit se protéger elle-même.
-
-- **Pas de `ON DELETE CASCADE`** : quand un utilisateur est supprimé, toutes ses reviews, messages, follows, etc. doivent aussi être supprimés. Actuellement, c'est fait manuellement dans `profilController.deleteProfile` avec 6 requêtes séparées. Avec `ON DELETE CASCADE` sur les FK :
-  ```sql
-  "reviewer_id" INT NOT NULL REFERENCES "user"("id") ON DELETE CASCADE
-  ```
-  Une seule instruction `DELETE FROM "user" WHERE id = X` suffirait.
+  **Pourquoi c'est important** : sans index, chaque recherche par FK fait un "sequential scan" (lecture de TOUTE la table). Avec 10 000 messages, chercher les messages d'un utilisateur prend 100x plus de temps sans index.
 
 - **`DROP TABLE IF EXISTS` au début** : c'est pratique pour le développement mais dangereux si ce script était exécuté en production. En production, on utilise des migrations (pas des scripts de recréation).
 
-- **Pas de valeur par défaut pour `is_read`** dans `message` :
-  ```sql
-  "is_read" BOOLEAN DEFAULT false  -- pas juste BOOLEAN sans valeur par défaut
-  ```
-
-- **Pas de valeur par défaut pour `is_available`** dans `user` : même problème, devrait être `DEFAULT true` ou `DEFAULT false`.
+- **Données de seed invalides** : `seeding_tables.sql` ligne 38 insère un `rate=0` qui viole la contrainte `CHECK (rate >= 1 AND rate <= 5)`. Le seed échouera. Il faut corriger cette valeur.
 
 ---
 
@@ -64,12 +55,12 @@
 
 ### Leçon principale : `sequelize.sync({ alter: true })` n'est PAS une migration
 
-Dans `index.js` ligne 18 :
+Dans `index.js` :
 ```javascript
-sequelize.sync({ alter: true })
+// Dev : sync({ alter: true }), Prod : sync()
 ```
 
-C'est l'erreur la plus courante avec Sequelize. Voici pourquoi c'est problématique :
+C'est mieux qu'avant (séparation dev/prod), mais `sync()` même sans `alter` n'est pas une vraie migration. Voici pourquoi :
 
 | | `sync({ alter: true })` | Vraies migrations |
 |---|---|---|
@@ -106,6 +97,8 @@ C'est l'erreur la plus courante avec Sequelize. Voici pourquoi c'est problémati
 > En staging/production : UNIQUEMENT des migrations versionnées.
 > Ne JAMAIS utiliser `sync({ force: true })` sauf sur une base jetable.
 
+**Note** : les scripts npm pour les migrations existent déjà dans `package.json` (`migrate`, `migrate:undo`, `migrate:undo:all`, `migrate:status`), mais aucune migration n'a été créée. C'est le moment de commencer à les utiliser.
+
 ---
 
 ## 3. Sécurité
@@ -120,70 +113,76 @@ C'est l'erreur la plus courante avec Sequelize. Voici pourquoi c'est problémati
 
 - **Protection contre le mass assignment** : dans `profilController.updateProfile`, seuls `firstname`, `lastname`, `email` sont extraits du `req.body` via déstructuration. Même si un attaquant envoie `role_id: 1` dans le body, ça sera ignoré.
 
-- **Double stratégie JWT** (`verifyJWT` / `optionalJWT`) : bonne séparation entre les routes qui nécessitent absolument une authentification et celles qui s'adaptent.
+- **Double stratégie JWT** (`verifyJWT` / `optionalJWT`) : bonne séparation entre les routes qui nécessitent absolument une authentification et celles qui s'adaptent. Le comportement différent GET vs POST/PUT/DELETE est bien pensé.
+
+- ✅ **Helmet CSP correctement configuré** : les directives CSP sont maintenant bien définies avec les sources externes autorisées (FontAwesome, Google Fonts, etc.). C'est une des protections les plus importantes contre XSS.
+
+- ✅ **Sanitisation HTML globale** : le middleware `sanitizeHtml.js` nettoie récursivement `req.body` et `req.query` en supprimant tous les tags HTML. Excellente protection contre le XSS stocké.
+
+- ✅ **Auth rate limiting amélioré** : passé de 100 000 à 15 tentatives par 15 minutes. C'est raisonnable.
 
 ### Ce qui doit être corrigé
 
-#### Le rate limiting est inutile tel quel
+#### [CRITIQUE] Le rate limiting global est encore trop haut
 
 ```javascript
-// index.js ligne 33 - Le commentaire dit "100 requêtes par minute" mais la valeur est 1 000 000
+// index.js ligne 48
 const globalLimiter = rateLimit({
   windowMs: 60 * 1000,
-  max: 1000000,  // ← Un million de requêtes par minute = pas de limite
-});
-
-// index.js ligne 42 - Le commentaire dit "10 tentatives par 15 min" mais la valeur est 100 000
-const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100000,  // ← Cent mille tentatives = pas de limite
+  max: 1000,  // ← 1000 requêtes par minute = ~16 req/seconde
 });
 ```
 
-Les commentaires disent une chose, le code fait l'inverse. C'est pire que pas de rate limiting du tout car ça donne une fausse impression de sécurité. Valeurs recommandées :
+Le commentaire dit "100 requêtes par minute" mais la valeur est 1000. Un humain normal fait 1-2 requêtes/seconde. À 1000/min, un bot peut encore scraper massivement le site. Valeur recommandée :
 ```javascript
-// Global : 100 requêtes/minute (largement suffisant pour un humain)
-max: 100
-
-// Auth : 10 tentatives/15 min (protège contre le brute force)
-max: 10
+max: 100  // Largement suffisant pour un humain
 ```
 
-#### Helmet CSP désactivé
+#### [CRITIQUE] Le cookie `userInfo` n'est toujours pas `httpOnly`
 
 ```javascript
-app.use(helmet({ contentSecurityPolicy: false }));
-```
-
-Le Content-Security-Policy est l'une des protections les plus importantes contre XSS. Le désactiver entièrement parce que FontAwesome est externe est une mauvaise raison. Solution :
-```javascript
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "https://kit.fontawesome.com"],
-      styleSrc: ["'self'", "'unsafe-inline'", "https://ka-f.fontawesome.com"],
-      fontSrc: ["'self'", "https://ka-f.fontawesome.com"],
-    }
-  }
-}));
-```
-
-#### Le cookie `userInfo` n'est pas `httpOnly`
-
-```javascript
-res.cookie('userInfo', JSON.stringify({...}), {
+// authController.js - Répété dans register ET login
+res.cookie('userInfo', JSON.stringify({id, firstname, lastname, email}), {
   httpOnly: false,  // ← Lisible par JavaScript côté client
 });
 ```
 
-Ce cookie contient l'id, le prénom, le nom et l'email de l'utilisateur. Un attaquant qui exploite une faille XSS peut lire ces données. Solutions possibles :
-- Rendre ce cookie `httpOnly` et passer les infos user via les templates EJS (via `res.locals`)
-- Ou ne stocker que le prénom (pas l'email ni l'id) si c'est juste pour l'affichage
+Ce cookie contient l'id, le prénom, le nom et l'email de l'utilisateur. Un attaquant qui exploite une faille XSS peut lire ces données.
 
-#### Pas de sanitisation HTML
+**Solution** : le middleware `userInfoCookie.js` utilise déjà `res.locals` — il suffit de s'appuyer à 100% dessus et de supprimer le cookie `userInfo` côté client. Les templates EJS accèdent à `user` via `res.locals.user` sans avoir besoin d'un cookie lisible côté client.
 
-Joi valide le format, mais ne sanitise pas le contenu. Si un utilisateur met `<script>alert('XSS')</script>` dans sa bio ou dans un message, ça sera stocké tel quel en base. Il faut utiliser une librairie comme `sanitize-html` ou `DOMPurify` (côté serveur avec jsdom) pour nettoyer les entrées utilisateur.
+#### [IMPORTANT] Logout en GET = vulnérable au CSRF
+
+```javascript
+// router.js ligne 33
+router.get('/logout', authController.logout);
+```
+
+Un simple `<img src="/logout">` injecté dans un message ou un avis pourrait déconnecter un utilisateur sans son consentement. **Règle** : toute action qui modifie un état (déconnexion = suppression de cookie) doit être en POST.
+
+#### [IMPORTANT] Mot de passe minimum trop faible
+
+Le schema Joi accepte un mot de passe de 6 caractères minimum. Les recommandations NIST actuelles sont **8 caractères minimum**. Avec 6 caractères, un brute force offline est réaliste.
+
+#### [IMPORTANT] SSL `rejectUnauthorized: false`
+
+```javascript
+// database.js
+dialectOptions: { ssl: { require: true, rejectUnauthorized: false } }
+```
+
+Ça désactive la vérification du certificat SSL. Un attaquant qui intercepte la connexion entre l'app et la base de données (attaque Man-in-the-Middle) ne sera pas détecté. En production, utiliser `rejectUnauthorized: true` avec le certificat CA du fournisseur.
+
+#### [MINEUR] Timing attack possible au login
+
+```javascript
+// authController.js
+const user = await User.findOne({ where: { email } });
+if (!user) { return res.status(401)... }
+const isValid = await argon2.verify(user.password, password);
+```
+
+Le temps de réponse diffère entre "utilisateur inexistant" (rapide) et "mauvais mot de passe" (lent, car argon2 prend du temps). Un attaquant peut en déduire quels emails existent dans la base. Solution : toujours exécuter `argon2.verify()` même si l'utilisateur n'existe pas (avec un hash factice).
 
 ---
 
@@ -199,24 +198,9 @@ Joi valide le format, mais ne sanitise pas le contenu. Si un utilisateur met `<s
 
 - **`abortEarly: false`** : tester que Joi retourne TOUTES les erreurs d'un coup (pas juste la première) est important pour l'UX.
 
+- ✅ **Tests d'autorisation appellent les vrais controllers** : `authorization.test.js` appelle maintenant `profilController.updateProfile`, `profilController.deleteProfile`, `authController.logout`. Plus de logique dupliquée dans les tests. Excellent.
+
 ### Ce qui peut être amélioré
-
-#### Les tests d'autorisation ne testent pas le vrai code
-
-Dans `authorization.test.js`, la logique est dupliquée dans le test au lieu d'appeler le vrai controller :
-```javascript
-// ❌ Ce que fait le test : réécrire la logique du controller
-const userId = parseInt(req.params.id);
-if (req.user.id !== userId) {
-  res.status(403).json({ error: '...' });
-}
-
-// ✅ Ce que le test devrait faire : appeler le vrai controller
-await profilController.updateProfile(req, res, next);
-expect(res.statusCode).toBe(403);
-```
-
-Si demain quelqu'un retire la vérification d'identité dans le controller, le test passera toujours car il teste sa propre copie du code, pas le vrai code. C'est un faux positif dangereux.
 
 #### Pas de tests d'intégration
 
@@ -248,7 +232,7 @@ Ce qui n'est **pas** testé :
 - Les modèles Sequelize et leurs associations
 - Les cas d'erreur serveur (que se passe-t-il si la DB est down ?)
 
-#### Pas de structure de test standardisée
+#### Structure AAA
 
 Les tests pourraient utiliser le pattern AAA (Arrange, Act, Assert) de manière plus explicite :
 ```javascript
@@ -284,11 +268,31 @@ test('description', () => {
   ```
   C'est plus propre que 3 lignes séparées.
 
-- **Associations Sequelize bidirectionnelles** : `User.hasMany(Review)` ET `Review.belongsTo(User)` sont toujours déclarées ensemble. C'est nécessaire pour que les `include` fonctionnent dans les deux sens.
+- **Associations Sequelize bidirectionnelles** : `User.hasMany(Review)` ET `Review.belongsTo(User)` sont toujours déclarées ensemble. Le fichier `models/index.js` est exemplaire.
 
 - **Helpers réutilisables** : `addAverageRating()` évite la duplication du calcul de moyenne dans chaque controller.
 
+- **Séparation dev/prod** dans `index.js` : `sync({ alter: true })` en dev, `sync()` en prod, `trust proxy` uniquement en production. Bonne pratique.
+
+- **Middleware sanitizeHtml** : récursif, global, et bien placé dans la chaîne de middlewares (avant le router).
+
 ### Ce qui doit être amélioré
+
+#### [CRITIQUE] Pas de pagination
+
+Les routes `/talents` et `/skills` chargent TOUS les utilisateurs/skills d'un coup. Avec 10 utilisateurs c'est OK, avec 10 000 ça crashera par épuisement mémoire. Il faut :
+```javascript
+const page = parseInt(req.query.page) || 1;
+const limit = 20;
+const offset = (page - 1) * limit;
+const users = await User.findAndCountAll({ limit, offset });
+```
+
+**Concept à apprendre** : pagination offset-based vs cursor-based. L'offset est simple mais a des problèmes de performance avec de très gros offsets. Le cursor utilise un point de repère (ex: `WHERE id > lastId LIMIT 20`) et est plus performant.
+
+#### [IMPORTANT] N+1 query dans la recherche
+
+Dans `mainController.searchPage` (lignes 86-96), une seconde requête recharge tous les skills pour les utilisateurs filtrés. C'est un pattern N+1 — pour N résultats de recherche, on fait N+1 requêtes. Solution : utiliser `include` dans la requête initiale.
 
 #### Incohérence de nommage
 
@@ -298,11 +302,6 @@ renderloginPage    // ← 'l' minuscule, devrait être renderLoginPage
 renderRegisterPage // ← correct
 profilController   // ← français
 reviewController   // ← anglais
-
-// Mélange dans les fichiers CSS
-profil_prive.css   // ← snake_case français
-myProfil.css       // ← camelCase franglais
-help_page.css      // ← snake_case anglais
 ```
 
 **Règle** : choisir UNE langue (de préférence l'anglais pour le code) et UN style de nommage, puis s'y tenir partout.
@@ -320,27 +319,9 @@ res.cookie('userInfo', JSON.stringify({...}), { httpOnly: false, secure: ..., sa
 ```javascript
 function setAuthCookies(res, user, token) {
   res.cookie('token', token, { httpOnly: true, secure: ..., sameSite: 'Strict' });
-  res.cookie('userInfo', JSON.stringify({...}), { ... });
+  // Idéalement, supprimer le cookie userInfo et utiliser res.locals
 }
 ```
-
-#### Suppression manuelle au lieu de CASCADE
-
-`profilController.deleteProfile` fait 6 requêtes `DELETE` manuelles avant de supprimer l'utilisateur. C'est fragile : si on ajoute une nouvelle table liée à `user` et qu'on oublie d'ajouter un `DELETE` ici, on aura une erreur de FK. Avec `ON DELETE CASCADE` dans le SQL, une seule requête suffit.
-
-#### Pas de pagination
-
-Les routes `/talents` et `/skills` chargent TOUS les utilisateurs/skills d'un coup. Avec 10 utilisateurs c'est OK, avec 10 000 ça crashera. Il faut :
-```javascript
-const page = parseInt(req.query.page) || 1;
-const limit = 20;
-const offset = (page - 1) * limit;
-const users = await User.findAndCountAll({ limit, offset });
-```
-
-#### `method-override` pour DELETE
-
-L'utilisation de `method-override` avec `?_method=DELETE` dans les formulaires HTML est une solution acceptable pour les formulaires classiques (HTML ne supporte que GET/POST), mais il faut savoir que c'est un pattern legacy. Pour une API moderne, on utiliserait `fetch` avec la méthode DELETE directement.
 
 #### Gestionnaire d'erreurs trop générique
 
@@ -356,66 +337,123 @@ Problèmes :
 - En développement, on veut voir le détail de l'erreur
 - Pas de distinction entre les types d'erreurs
 
+Solution : créer une vue `500.ejs` dédiée et afficher le stack en dev :
+```javascript
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  const status = err.status || 500;
+  res.status(status).render('error', {
+    title: 'Erreur serveur',
+    cssFile: 'error',
+    message: process.env.NODE_ENV === 'development' ? err.message : 'Une erreur est survenue',
+  });
+});
+```
+
+#### Modèle Notification inutilisé
+
+Le modèle `Notification.js` existe avec des associations définies, mais aucun controller ne l'utilise. C'est du code mort. Soit on implémente la fonctionnalité, soit on supprime le modèle pour ne pas confondre les développeurs.
+
+#### `method-override` pour DELETE
+
+L'utilisation de `method-override` avec `?_method=DELETE` dans les formulaires HTML est une solution acceptable pour les formulaires classiques (HTML ne supporte que GET/POST), mais il faut savoir que c'est un pattern legacy. Pour une API moderne, on utiliserait `fetch` avec la méthode DELETE directement.
+
 ---
 
 ## 6. Ce qui est bien fait (résumé)
 
-| Aspect | Détail |
-|--------|--------|
-| Hachage mot de passe | Argon2 (meilleur choix actuel) |
-| Authentification | JWT dans cookie httpOnly + sameSite Strict |
-| Validation | Joi avec schemas dédiés par action |
-| Mass assignment | Whitelist par déstructuration |
-| Architecture | MVC clair avec séparation des couches |
-| Associations Sequelize | Bidirectionnelles, bien nommées avec alias |
-| SQL | Transactions, IDENTITY, TIMESTAMPTZ, contraintes UNIQUE composites |
-| Tests | Focalisés sur la sécurité (le plus important) |
-| Middleware | Double stratégie JWT (strict / optionnel) |
+| Aspect | Détail | Statut |
+|--------|--------|--------|
+| Hachage mot de passe | Argon2 (meilleur choix actuel) | ⭐ Excellent |
+| Authentification | JWT dans cookie httpOnly + sameSite Strict | 🟢 Bon |
+| Validation | Joi avec schemas dédiés par action | 🟢 Bon |
+| Mass assignment | Whitelist par déstructuration | ⭐ Excellent |
+| Architecture | MVC clair avec séparation des couches | 🟢 Bon |
+| Associations Sequelize | Bidirectionnelles, bien nommées avec alias | ⭐ Excellent |
+| SQL | Transactions, IDENTITY, TIMESTAMPTZ, CHECK, CASCADE | 🟢 Bon |
+| Tests | Focalisés sur la sécurité, appellent les vrais controllers | 🟢 Bon |
+| Middleware JWT | Double stratégie (strict / optionnel) | ⭐ Excellent |
+| CSP Helmet | Correctement configuré avec whitelist | 🟢 Bon |
+| Sanitisation HTML | Middleware global récursif | 🟢 Bon |
+| Séparation dev/prod | sync, trust proxy, rate limiting adaptés | 🟢 Bon |
 
 ---
 
 ## 7. Ce qui doit être amélioré (résumé priorisé)
 
-### Priorité haute
+### Priorité haute [CRITIQUE]
 
-| # | Problème | Impact | Solution |
-|---|----------|--------|----------|
-| 1 | Rate limiting = 1M requêtes | Aucune protection brute force | Mettre `max: 100` global et `max: 10` auth |
-| 2 | Tests d'autorisation testent une copie du code | Faux positifs possibles | Appeler les vrais controllers dans les tests |
-| 3 | Pas de `ON DELETE CASCADE` | 6 requêtes manuelles + risque d'oubli | Ajouter CASCADE dans le SQL / migration |
-| 4 | Pas de `CHECK` constraint sur `rate` | Données invalides possibles en base | `CHECK (rate >= 1 AND rate <= 5)` |
-| 5 | CSP désactivé | Vulnérable au XSS | Configurer les directives CSP proprement |
+| # | Problème | Impact | Solution | Statut |
+|---|----------|--------|----------|--------|
+| 1 | Rate limit global = 1000 | Scraping/brute force possible | Mettre `max: 100` | ❌ À corriger |
+| 2 | Cookie `userInfo` non httpOnly | Données user lisibles via XSS | Passer les infos via `res.locals` uniquement | ❌ À corriger |
+| 3 | Pas de pagination | Crash mémoire à l'échelle | `findAndCountAll` avec `limit`/`offset` | ❌ À corriger |
 
-### Priorité moyenne
+### Priorité moyenne [IMPORTANT]
 
-| # | Problème | Impact | Solution |
-|---|----------|--------|----------|
-| 6 | Pas de pagination | Problème de performance à l'échelle | `findAndCountAll` avec `limit`/`offset` |
-| 7 | Cookie `userInfo` non httpOnly | Données user lisibles via XSS | Passer les infos via `res.locals` |
-| 8 | Pas d'index sur les FK | Requêtes lentes sur les jointures | `CREATE INDEX` sur les FK fréquentes |
-| 9 | Pas de sanitisation HTML | XSS via bio, messages, avis | Utiliser `sanitize-html` |
-| 10 | Pas de tests d'intégration | Pas de garantie que le système fonctionne bout en bout | Supertest + base de test |
+| # | Problème | Impact | Solution | Statut |
+|---|----------|--------|----------|--------|
+| 4 | Logout en GET | CSRF via `<img src="/logout">` | Passer en POST + verifyJWT | ❌ À corriger |
+| 5 | Mot de passe min 6 chars | Brute force offline réaliste | Augmenter à 8 minimum | ❌ À corriger |
+| 6 | SSL rejectUnauthorized: false | Vulnérable au MITM | Utiliser le certificat CA du provider | ❌ À corriger |
+| 7 | Pas d'index sur les FK | Requêtes lentes sur les jointures | `CREATE INDEX` sur les FK fréquentes | ❌ À corriger |
+| 8 | N+1 query dans la recherche | Performance dégradée | Utiliser `include` dans la requête initiale | ❌ À corriger |
+| 9 | Pas de tests d'intégration | Pas de garantie bout en bout | Supertest + base de test | ❌ À corriger |
+| 10 | Erreur 500 affiche page 404 | UX confusante | Créer une vraie page erreur 500 | ❌ À corriger |
 
-### Priorité basse
+### Priorité basse [MINEUR]
 
-| # | Problème | Impact | Solution |
-|---|----------|--------|----------|
-| 11 | Nommage incohérent (fr/en) | Lisibilité du code | Choisir une langue et s'y tenir |
-| 12 | Code cookie dupliqué | Maintenance plus difficile | Extraire un helper `setAuthCookies` |
-| 13 | `sync({ alter: true })` en dev | Pas de problème immédiat mais mauvaise habitude | Utiliser les migrations même en dev |
-| 14 | Erreur 500 affiche page 404 | Confusing pour l'utilisateur | Créer une vraie page d'erreur 500 |
-| 15 | `is_read` et `is_available` sans DEFAULT | Valeurs NULL au lieu de false | Ajouter `DEFAULT false` |
+| # | Problème | Impact | Solution | Statut |
+|---|----------|--------|----------|--------|
+| 11 | Nommage incohérent (fr/en) | Lisibilité du code | Choisir une langue et s'y tenir | ❌ À corriger |
+| 12 | Code cookie dupliqué | Maintenance plus difficile | Extraire un helper `setAuthCookies` | ❌ À corriger |
+| 13 | `sync({ alter: true })` en dev | Mauvaise habitude | Utiliser les migrations même en dev | ❌ À corriger |
+| 14 | Timing attack au login | Fuite d'emails existants | Toujours exécuter argon2.verify | ❌ À corriger |
+| 15 | Seed data invalide (rate=0) | Seed échoue | Corriger à rate >= 1 | ❌ À corriger |
+| 16 | Notification model inutilisé | Code mort | Implémenter ou supprimer | ❌ À corriger |
+
+---
+
+## 8. Suivi des corrections
+
+### Corrections effectuées depuis la première revue ✅
+
+| Problème original | Correction | Date |
+|---|---|---|
+| CSP Helmet désactivé | Directives CSP correctement configurées | Février 2025 |
+| Rate limit auth = 100 000 | Réduit à 15 tentatives/15 min | Février 2025 |
+| Pas de CHECK sur rate | `CHECK (rate >= 1 AND rate <= 5)` + validation Sequelize | Février 2025 |
+| Pas de ON DELETE CASCADE | CASCADE sur toutes les FK | Février 2025 |
+| Tests testaient une copie du code | Tests appellent les vrais controllers | Février 2025 |
+| Pas de sanitisation HTML | Middleware sanitizeHtml global et récursif | Février 2025 |
+| Pas de DEFAULT is_read/is_available | DEFAULT ajoutés dans le SQL | Février 2025 |
+
+### Progression globale
+
+- **Première revue** : 15 problèmes identifiés
+- **Problèmes corrigés** : 7/15 (47%)
+- **Nouveaux problèmes découverts** : 5 (timing attack, SSL, logout GET, seed invalide, N+1 query)
+- **Total restant** : 16 problèmes (3 critiques, 7 importants, 6 mineurs)
 
 ---
 
 ## Conclusion
 
-Ce projet montre de **solides fondamentaux en sécurité** (Argon2, JWT httpOnly, mass assignment protection, validation Joi) et une **bonne architecture MVC**. Les principaux axes d'amélioration sont :
+Ce projet montre une **progression significative** depuis la première revue. Les corrections effectuées touchent les points les plus importants : sécurité (CSP, sanitisation, rate limiting auth), intégrité des données (CHECK, CASCADE, DEFAULT), et qualité des tests (vrais controllers appelés).
 
-1. **Aligner le code sur les commentaires** (rate limiting)
-2. **Faire confiance à la base de données** pour les contraintes (`CASCADE`, `CHECK`, `DEFAULT`)
-3. **Tester le vrai code** et pas une copie de la logique
-4. **Penser à l'échelle** (pagination, index)
-5. **Utiliser les migrations** comme système de vérité pour le schéma
+Les principaux axes d'amélioration restants sont :
 
-Le réflexe de tester la sécurité en priorité est excellent — c'est une compétence que beaucoup de développeurs seniors n'ont pas. Continue dans cette direction.
+1. **Finaliser le rate limiting** global (1000 → 100)
+2. **Supprimer le cookie `userInfo`** côté client et utiliser `res.locals`
+3. **Ajouter la pagination** avant que la base grossisse
+4. **Sécuriser le logout** en POST
+5. **Ajouter des index** sur les FK pour la performance
+
+Le réflexe de corriger la sécurité en priorité est le bon. Continue dans cette direction — les problèmes de performance (pagination, index, N+1) sont les prochains sur la liste.
+
+**Note de qualité globale : 🟡 Acceptable → en bonne voie vers 🟢 Bon**
+
+Pour passer au niveau supérieur :
+- Corrige les 3 problèmes critiques restants
+- Ajoute des tests d'intégration
+- Implémente les migrations
