@@ -77,7 +77,6 @@ describe('verifyJWT', () => {
 
     expect(res.redirectUrl).toBe('/login');
     expect(res.clearedCookies).toContain('token');
-    expect(res.clearedCookies).toContain('userInfo');
     expect(next).not.toHaveBeenCalled();
   });
 
@@ -157,7 +156,6 @@ describe('optionalJWT', () => {
 
     expect(req.user).toBeNull();
     expect(res.clearedCookies).toContain('token');
-    expect(res.clearedCookies).toContain('userInfo');
     expect(next).toHaveBeenCalled();
   });
 });

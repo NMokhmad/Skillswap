@@ -35,7 +35,7 @@ VALUES
 (2, 'tu es trop fort', 2, 1, 1),
 (5, 'le meilleur pédagogue ever', 3, 1, 1),
 (4, 'c''est quoi une dérivé ? sinon très bonne mathématicienne !', 2, 1, 2),
-(0, 'test', 4, 1, 2);
+(3, 'test', 4, 1, 2);
 
 INSERT INTO
 "message" ("content", "sender_id", "receiver_id", "is_read")

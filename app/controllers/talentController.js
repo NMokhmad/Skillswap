@@ -11,19 +11,28 @@ const talentController = {
     try {
       const skills = await Skill.findAll();
 
-      const users = await User.findAll({
+      // Pagination : 12 talents par page
+      const page = parseInt(req.query.page) || 1;
+      const limit = 12;
+      const offset = (page - 1) * limit;
+
+      const { count, rows: users } = await User.findAndCountAll({
         include: [
           { model: Skill, as: 'skills' },
           { model: Review, as: 'received_reviews' }
-        ]
+        ],
+        distinct: true, // Évite le count faussé par les jointures
+        limit,
+        offset,
+        order: [['created_at', 'DESC']]
       });
 
       const usersRated = addAverageRating(users);
+      const totalPages = Math.ceil(count / limit);
 
       // Récupère les utilisateurs suivis, si connecté
       let followedUser = null;
       if (req.user) {
-        // req.user vient du JWT vérifié par optionalJWT
         followedUser = await User.findByPk(req.user.id, {
           include: 'followed'
         });
@@ -34,7 +43,10 @@ const talentController = {
         users: usersRated,
         title,
         cssFile,
-        followedUser
+        followedUser,
+        currentPage: page,
+        totalPages,
+        totalUsers: count,
       });
 
     } catch (error) {

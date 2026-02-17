@@ -1,0 +1,51 @@
+<%- include('../partials/header.ejs') %>
+</head>
+<body>
+    <%- include('../partials/navbar.ejs') %>
+
+    <section class="error-section">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column is-8-desktop is-10-tablet is-12-mobile">
+                    <div class="error-card">
+                        <!-- Grand 500 animé -->
+                        <h1 class="error-number">500</h1>
+
+                        <!-- Messages d'erreur -->
+                        <h2 class="error-title">
+                            <span class="icon error-icon-accent">
+                                <i class="fas fa-tools"></i>
+                            </span>
+                            Erreur serveur
+                        </h2>
+
+                        <p class="error-subtitle">
+                            Quelque chose s'est mal passé de notre côté.<br>
+                            Pas de panique, notre équipe est sur le coup !
+                        </p>
+
+                        <!-- Boutons principaux -->
+                        <div class="main-buttons">
+                            <a href="/" class="btn-primary-404">
+                                <span class="icon">
+                                    <i class="fas fa-home"></i>
+                                </span>
+                                <span>Retour à l'accueil</span>
+                            </a>
+
+                            <a href="javascript:history.back()" class="btn-secondary-404">
+                                <span class="icon">
+                                    <i class="fas fa-arrow-left"></i>
+                                </span>
+                                <span>Page précédente</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <%- include('../partials/footer.ejs') %>
+</body>
+</html>

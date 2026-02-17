@@ -46,15 +46,17 @@ const profilController = {
 
       await user.update(updateData);
 
-      // Mettre à jour le cookie d'affichage
-      res.cookie('userInfo', JSON.stringify({
-        id: user.id,
-        firstname: user.firstname,
-        lastname: user.lastname,
-        email: user.email,
-      }), {
-        httpOnly: false,
-        secure: true,
+      // Régénérer le JWT avec les nouvelles infos (prénom, nom, email)
+      // pour que le middleware userInfo ait les données à jour
+      const jwt = await import('jsonwebtoken');
+      const newToken = jwt.default.sign(
+        { id: user.id, email: user.email, firstname: user.firstname, lastname: user.lastname },
+        process.env.JWT_SECRET,
+        { expiresIn: process.env.JWT_EXPIRES }
+      );
+      res.cookie('token', newToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
         sameSite: 'Strict'
       });
 
@@ -81,7 +83,6 @@ const profilController = {
 
       // Nettoyer les cookies et rediriger
       res.clearCookie('token');
-      res.clearCookie('userInfo');
       res.redirect('/');
     } catch (error) {
       console.error('Erreur lors de la suppression du compte :', error);

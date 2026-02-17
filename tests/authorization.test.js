@@ -4,6 +4,7 @@ import { verifyJWT } from '../app/middlewares/jwtVerify.js';
 
 const JWT_SECRET = 'test-secret';
 process.env.JWT_SECRET = JWT_SECRET;
+process.env.JWT_EXPIRES = '24h';
 
 // ─── Mock de Sequelize et des modèles AVANT d'importer le controller ───
 
@@ -116,7 +117,6 @@ describe('Autorisation - vérification d\'identité (vrais controllers)', () => 
     expect(res.statusCode).not.toBe(403);
     expect(res.redirectUrl).toBe('/');
     expect(res.clearedCookies).toContain('token');
-    expect(res.clearedCookies).toContain('userInfo');
   });
 });
 
@@ -205,14 +205,12 @@ describe('Sécurité des cookies', () => {
     expect(cookieOptions.sameSite).toBe('Strict');
   });
 
-  test('le logout efface bien les cookies token et userInfo', () => {
+  test('le logout efface bien le cookie token', () => {
     const res = mockRes();
 
     // Simule le logout
     res.clearCookie('token');
-    res.clearCookie('userInfo');
 
     expect(res.clearedCookies).toContain('token');
-    expect(res.clearedCookies).toContain('userInfo');
   });
 });

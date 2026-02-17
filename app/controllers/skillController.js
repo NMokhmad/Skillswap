@@ -1,4 +1,4 @@
-import { Skill } from '../models/index.js';
+import { Skill, User } from '../models/index.js';
 
 const skillController = {
   // Route publique avec optionalJWT → req.user peut être null
@@ -7,8 +7,10 @@ const skillController = {
     const cssFile = "skills";
 
     try {
-      const skills = await Skill.findAll();
-      res.render("skills", { skills, title, cssFile });
+      // Inclure les users pour compter le nombre de talents par skill
+      const skills = await Skill.findAll({ include: 'users' });
+      const totalUsers = await User.count();
+      res.render("skills", { skills, title, cssFile, totalUsers });
     } catch (error) {
       console.error("Erreur renderSkillsPage:", error);
       res.status(500).send("Erreur serveur");

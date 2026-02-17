@@ -53,17 +53,6 @@ const authController = {
         sameSite: 'Strict'
       });
 
-      res.cookie('userInfo', JSON.stringify({
-        id: user.id,
-        firstname: user.firstname,
-        lastname: user.lastname,
-        email: user.email,
-      }), {
-        httpOnly: false,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'Strict'
-      });
-
       res.redirect('/onboarding');
 
     } catch (error) {
@@ -114,17 +103,6 @@ const authController = {
         sameSite: 'Strict'
       });
 
-      res.cookie('userInfo', JSON.stringify({
-        id: user.id,
-        firstname: user.firstname,
-        lastname: user.lastname,
-        email: user.email,
-      }), {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'Strict'
-      });
-
       res.redirect('/');
 
     } catch (error) {
@@ -135,7 +113,6 @@ const authController = {
 
   logout: (req, res) => {
     res.clearCookie('token');
-    res.clearCookie('userInfo');
     res.redirect('/');
   },
 };

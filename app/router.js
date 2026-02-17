@@ -7,6 +7,7 @@ import skillController from "./controllers/skillController.js";
 import followController from "./controllers/followController.js";
 import reviewController from "./controllers/reviewController.js";
 import messageController from "./controllers/messageController.js";
+import notificationController from "./controllers/notificationController.js";
 import { verifyJWT, optionalJWT } from "./middlewares/jwtVerify.js";
 import { uploadAvatar } from "./middlewares/upload.js";
 
@@ -60,5 +61,13 @@ router.post("/review/:userId", verifyJWT, reviewController.createReview);
 router.get("/messages", verifyJWT, messageController.renderMessagesPage);
 router.get("/messages/:userId", verifyJWT, messageController.renderConversation);
 router.post("/messages/:userId", verifyJWT, messageController.sendMessage);
+
+// Notifications
+router.get("/notifications", verifyJWT, notificationController.renderNotificationsPage);
+router.get("/api/notifications/count", verifyJWT, notificationController.getUnreadCount);
+router.get("/api/notifications/recent", verifyJWT, notificationController.getRecent);
+router.post("/api/notifications/:id/read", verifyJWT, notificationController.markAsRead);
+router.post("/api/notifications/read-all", verifyJWT, notificationController.markAllAsRead);
+router.post("/api/notifications/:id/delete", verifyJWT, notificationController.deleteNotification);
 
 export default router;

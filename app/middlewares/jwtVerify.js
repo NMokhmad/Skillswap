@@ -21,7 +21,6 @@ export const verifyJWT = (req, res, next) => {
     next();
   } catch (error) {
     res.clearCookie('token');
-    res.clearCookie('userInfo');
     if (req.method === 'GET') {
       return res.redirect('/login');
     }
@@ -49,7 +48,6 @@ export const optionalJWT = (req, res, next) => {
   } catch (error) {
     req.user = null;
     res.clearCookie('token');
-    res.clearCookie('userInfo');
   }
 
   next();

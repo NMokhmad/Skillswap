@@ -30,7 +30,7 @@ export const userCreateSchema = Joi.object({
     }),
 
   password: Joi.string()
-    .min(6)
+    .min(8)
     .required()
     .messages({
       "string.min": "Le mot de passe doit contenir au moins {#limit} caractères.",
@@ -48,5 +48,5 @@ export const userCreateSchema = Joi.object({
 
 export const userLoginSchema = Joi.object({
   email: Joi.string().email().required(),
-  password: Joi.string().min(6).required(),
+  password: Joi.string().min(8).required(),
 });

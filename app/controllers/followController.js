@@ -1,5 +1,6 @@
 import { User } from '../models/index.js';
 import { sequelize } from '../database.js';
+import { createNotification } from '../helpers/notificationHelper.js';
 
 const followController = {
   // Route protégée par verifyJWT → req.user est garanti
@@ -25,6 +26,17 @@ const followController = {
       if (!created) {
         return res.status(409).json({ error: 'Vous suivez déjà cet utilisateur' });
       }
+
+      // Notification à l'utilisateur suivi
+      const follower = await User.findByPk(followerId);
+      await createNotification({
+        userId: followedId,
+        type: 'follow',
+        content: `${follower.firstname} a commencé à vous suivre`,
+        relatedEntityType: 'follow',
+        relatedEntityId: followerId,
+        actionUrl: `/talents/${followerId}`,
+      });
 
       return res.status(201).json({ message: 'Utilisateur suivi avec succès' });
     } catch (error) {

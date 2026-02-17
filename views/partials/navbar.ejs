@@ -7,6 +7,16 @@
 
             <!-- Avatar compact : mobile/tablet uniquement -->
             <% if (user) { %>
+                <!-- Cloche notifications mobile -->
+                <div class="navbar-item is-hidden-desktop notif-bell-mobile" id="notifBellMobile">
+                    <a href="/notifications" class="notif-bell-link">
+                        <span class="icon has-text-light">
+                            <i class="fa-solid fa-bell"></i>
+                        </span>
+                        <span class="notif-badge" id="notifBadgeMobile" style="display:none;">0</span>
+                    </a>
+                </div>
+
                 <div class="navbar-item has-dropdown is-hidden-desktop" id="userDropdownMobile">
                     <a class="user-avatar-btn" id="userDropdownMobileToggle">
                         <i class="fas fa-user-circle"></i>
@@ -20,11 +30,17 @@
                             <span class="icon dropdown-icon-messages"><i class="fas fa-envelope"></i></span>
                             <span>Messages</span>
                         </a>
-                        <hr class="navbar-divider dropdown-divider">
-                        <a class="navbar-item dropdown-item-logout" href="/logout">
-                            <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
-                            <span>Déconnexion</span>
+                        <a class="navbar-item" href="/notifications">
+                            <span class="icon dropdown-icon-messages"><i class="fas fa-bell"></i></span>
+                            <span>Notifications</span>
                         </a>
+                        <hr class="navbar-divider dropdown-divider">
+                        <form action="/logout" method="POST" class="navbar-item dropdown-item-logout" style="display:inline;">
+                            <button type="submit">
+                                <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
+                                <span>Déconnexion</span>
+                            </button>
+                        </form>
                     </div>
                 </div>
             <% } %>
@@ -66,6 +82,26 @@
 
                 <!-- Dropdown avec prénom : desktop uniquement -->
                 <% if (user) { %>
+                    <!-- Cloche notifications desktop avec dropdown -->
+                    <div class="navbar-item has-dropdown is-hidden-touch" id="notifDropdownDesktop">
+                        <a class="navbar-link is-arrowless notif-bell-link" id="notifBellDesktop">
+                            <span class="icon has-text-light">
+                                <i class="fa-solid fa-bell"></i>
+                            </span>
+                            <span class="notif-badge" id="notifBadgeDesktop" style="display:none;">0</span>
+                        </a>
+                        <div class="navbar-dropdown is-right notif-dropdown-panel" id="notifDropdownPanel">
+                            <div class="notif-dropdown-header">
+                                <strong>Notifications</strong>
+                                <a href="#" id="notifMarkAllDropdown" class="notif-dropdown-mark-all">Tout lire</a>
+                            </div>
+                            <div id="notifDropdownList" class="notif-dropdown-list">
+                                <p class="notif-dropdown-empty">Chargement...</p>
+                            </div>
+                            <a href="/notifications" class="notif-dropdown-footer">Voir toutes les notifications</a>
+                        </div>
+                    </div>
+
                     <div class="navbar-item has-dropdown is-hidden-touch" id="userDropdownDesktop">
                         <a class="navbar-link is-arrowless" id="userDropdownDesktopToggle">
                             <span class="icon"><i class="fas fa-user-circle"></i></span>
@@ -102,3 +138,93 @@
         </div>
     </div>
 </nav>
+
+<% if (user) { %>
+<script>
+  // Charger le badge de notifications non lues
+  async function loadNotifBadge() {
+    try {
+      const res = await fetch('/api/notifications/count');
+      if (!res.ok) return;
+      const data = await res.json();
+      const badges = document.querySelectorAll('.notif-badge');
+      badges.forEach(badge => {
+        if (data.count > 0) {
+          badge.textContent = data.count > 99 ? '99+' : data.count;
+          badge.style.display = '';
+        } else {
+          badge.style.display = 'none';
+        }
+      });
+    } catch (e) { /* silently fail */ }
+  }
+
+  // Charger les notifications récentes dans le dropdown desktop
+  async function loadNotifDropdown() {
+    try {
+      const res = await fetch('/api/notifications/recent');
+      if (!res.ok) return;
+      const data = await res.json();
+      const list = document.getElementById('notifDropdownList');
+      if (!list) return;
+
+      if (data.notifications.length === 0) {
+        list.innerHTML = '<p class="notif-dropdown-empty">Aucune notification</p>';
+        return;
+      }
+
+      list.innerHTML = data.notifications.map(n => {
+        const iconClass = n.type_notification === 'message' ? 'fa-envelope'
+          : n.type_notification === 'review' ? 'fa-star'
+          : n.type_notification === 'follow' ? 'fa-user-plus'
+          : 'fa-bell';
+        const unreadClass = n.is_read ? '' : 'notif-dropdown-item-unread';
+        const date = new Date(n.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
+        const link = n.action_url || '/notifications';
+        return `<a href="${link}" class="notif-dropdown-item ${unreadClass}">
+          <span class="icon is-small"><i class="fa-solid ${iconClass}"></i></span>
+          <span class="notif-dropdown-item-text">${n.content}</span>
+          <span class="notif-dropdown-item-date">${date}</span>
+        </a>`;
+      }).join('');
+    } catch (e) { /* silently fail */ }
+  }
+
+  // Toggle dropdown notifications desktop
+  const notifBell = document.getElementById('notifBellDesktop');
+  const notifPanel = document.getElementById('notifDropdownDesktop');
+  if (notifBell && notifPanel) {
+    notifBell.addEventListener('click', (e) => {
+      e.preventDefault();
+      notifPanel.classList.toggle('is-active');
+      if (notifPanel.classList.contains('is-active')) {
+        loadNotifDropdown();
+      }
+    });
+
+    // Fermer le dropdown en cliquant ailleurs
+    document.addEventListener('click', (e) => {
+      if (!notifPanel.contains(e.target)) {
+        notifPanel.classList.remove('is-active');
+      }
+    });
+  }
+
+  // Tout marquer comme lu depuis le dropdown
+  const markAllDropdown = document.getElementById('notifMarkAllDropdown');
+  if (markAllDropdown) {
+    markAllDropdown.addEventListener('click', async (e) => {
+      e.preventDefault();
+      await fetch('/api/notifications/read-all', { method: 'POST' });
+      loadNotifBadge();
+      loadNotifDropdown();
+    });
+  }
+
+  // Charger le badge au chargement de la page
+  loadNotifBadge();
+
+  // Rafraîchir le badge toutes les 30 secondes (avant Socket.IO)
+  setInterval(loadNotifBadge, 30000);
+</script>
+<% } %>

@@ -393,7 +393,7 @@
         <!-- Stats -->
         <div class="stats-container">
             <div class="stat-box">
-                <div class="stat-number"><%= users.length %></div>
+                <div class="stat-number"><%= totalUsers %></div>
                 <div class="stat-label">Talents disponibles</div>
             </div>
             <div class="stat-box">
@@ -481,6 +481,36 @@
                     </div>
                 <% }) %>
             </div>
+
+            <!-- Pagination -->
+            <% if (totalPages > 1) { %>
+            <nav class="pagination is-centered mt-6" role="navigation" aria-label="pagination">
+                <% if (currentPage > 1) { %>
+                    <a class="pagination-previous" href="/talents?page=<%= currentPage - 1 %>">Précédent</a>
+                <% } else { %>
+                    <a class="pagination-previous" disabled>Précédent</a>
+                <% } %>
+
+                <% if (currentPage < totalPages) { %>
+                    <a class="pagination-next" href="/talents?page=<%= currentPage + 1 %>">Suivant</a>
+                <% } else { %>
+                    <a class="pagination-next" disabled>Suivant</a>
+                <% } %>
+
+                <ul class="pagination-list">
+                    <% for (let i = 1; i <= totalPages; i++) { %>
+                        <li>
+                            <a class="pagination-link <%= i === currentPage ? 'is-current' : '' %>"
+                               href="/talents?page=<%= i %>"
+                               aria-label="Page <%= i %>">
+                                <%= i %>
+                            </a>
+                        </li>
+                    <% } %>
+                </ul>
+            </nav>
+            <% } %>
+
         </div>
     </section>
 </main>

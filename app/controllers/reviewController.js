@@ -1,4 +1,5 @@
 import { Review, User, Skill } from '../models/index.js';
+import { createNotification } from '../helpers/notificationHelper.js';
 
 const reviewController = {
   // Route protégée par verifyJWT → req.user est garanti
@@ -41,12 +42,23 @@ const reviewController = {
         return res.redirect(`/talents/${reviewedId}`);
       }
 
-      await Review.create({
+      const review = await Review.create({
         rate: parsedRate,
         content: content || '',
         reviewer_id: reviewerId,
         reviewed_id: reviewedId,
         skill_id: parseInt(skill_id)
+      });
+
+      // Notification à l'utilisateur évalué
+      const reviewer = await User.findByPk(reviewerId);
+      await createNotification({
+        userId: reviewedId,
+        type: 'review',
+        content: `${reviewer.firstname} vous a donné un avis (${parsedRate}/5) en ${skill.label}`,
+        relatedEntityType: 'review',
+        relatedEntityId: review.id,
+        actionUrl: `/talents/${reviewedId}`,
       });
 
       res.redirect(`/talents/${reviewedId}`);

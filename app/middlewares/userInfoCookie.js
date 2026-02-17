@@ -1,23 +1,22 @@
 // Middleware pour rendre les infos utilisateur accessibles dans les vues EJS.
-// Utilise req.user (peuplé par verifyJWT ou optionalJWT) comme source de vérité,
-// avec fallback sur le cookie userInfo pour l'affichage uniquement.
+// Décode le JWT token (httpOnly) pour extraire les infos user.
+// Plus besoin d'un cookie userInfo non-httpOnly lisible côté client.
+import jwt from 'jsonwebtoken';
+
 export const userInfo = (req, res, next) => {
-  if (req.user) {
-    // Source fiable : le JWT vérifié
-    res.locals.user = req.user;
-  } else {
-    // Fallback pour les pages sans middleware JWT :
-    // on utilise le cookie pour l'affichage (navbar) uniquement
-    const userInfoCookie = req.cookies.userInfo;
-    if (userInfoCookie) {
-      try {
-        res.locals.user = JSON.parse(userInfoCookie);
-      } catch (error) {
-        res.locals.user = null;
-      }
-    } else {
-      res.locals.user = null;
-    }
+  const token = req.cookies.token;
+
+  if (!token) {
+    res.locals.user = null;
+    return next();
   }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    res.locals.user = decoded;
+  } catch {
+    res.locals.user = null;
+  }
+
   next();
 };

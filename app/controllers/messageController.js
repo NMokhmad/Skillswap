@@ -1,6 +1,7 @@
 import { Op } from 'sequelize';
 import { User, Message } from '../models/index.js';
 import { sequelize } from '../database.js';
+import { createNotification } from '../helpers/notificationHelper.js';
 
 const messageController = {
   // Route protégée par verifyJWT → req.user est garanti
@@ -136,11 +137,22 @@ const messageController = {
         return res.status(404).json({ error: 'Utilisateur introuvable' });
       }
 
-      await Message.create({
+      const message = await Message.create({
         content: content.trim(),
         sender_id: senderId,
         receiver_id: receiverId,
         is_read: false
+      });
+
+      // Notification au destinataire
+      const sender = await User.findByPk(senderId);
+      await createNotification({
+        userId: receiverId,
+        type: 'message',
+        content: `${sender.firstname} vous a envoyé un message`,
+        relatedEntityType: 'message',
+        relatedEntityId: message.id,
+        actionUrl: `/messages/${senderId}`,
       });
 
       res.redirect(`/messages/${receiverId}`);
