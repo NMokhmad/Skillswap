@@ -4,6 +4,7 @@ import { Message } from "./Message.js";
 import { Notification } from "./Notification.js";
 import { Skill } from "./Skill.js";
 import { Review } from "./Review.js";
+import { SavedSearch } from "./SavedSearch.js";
 
 User.belongsTo(Role, {
   foreignKey: 'role_id',
@@ -89,4 +90,14 @@ User.belongsToMany(User, {
   as: 'followed'
 });
 
-export { User, Role, Message, Notification, Skill, Review };
+User.hasMany(SavedSearch, {
+  foreignKey: 'user_id',
+  as: 'saved_searches'
+});
+
+SavedSearch.belongsTo(User, {
+  foreignKey: 'user_id',
+  as: 'user'
+});
+
+export { User, Role, Message, Notification, Skill, Review, SavedSearch };

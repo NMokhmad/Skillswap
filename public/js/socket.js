@@ -1,40 +1,38 @@
-// Connexion Socket.IO + notifications toast en temps réel
+// Connexion Socket.IO + notifications/messages temps reel
 (function () {
-  // Ne connecter que si l'utilisateur est authentifié (badge notif présent)
-  if (!document.querySelector('.notif-badge')) return;
-
-  // Vérifier que Socket.IO est chargé
   if (typeof io === 'undefined') return;
+  if (!window.currentUserId) return;
 
-  const socket = io({ withCredentials: true });
+  const socket = window.skillSwapSocket || io({ withCredentials: true });
+  window.skillSwapSocket = socket;
 
-  // Écouter les notifications en temps réel
+  if (window.__skillSwapSocketInitialized) return;
+  window.__skillSwapSocketInitialized = true;
+
   socket.on('notification', (data) => {
-    // Mettre à jour le badge
-    updateNotifBadge(1);
-
-    // Afficher un toast
+    if (typeof window.refreshNotificationBadge === 'function') {
+      window.refreshNotificationBadge();
+    }
+    if (typeof window.refreshNotificationDropdown === 'function') {
+      window.refreshNotificationDropdown();
+    }
     showToast(data);
   });
 
-  // ─── Badge ───
-  function updateNotifBadge(increment) {
-    const badges = document.querySelectorAll('.notif-badge');
-    badges.forEach(badge => {
-      const current = parseInt(badge.textContent) || 0;
-      const newCount = current + increment;
-      if (newCount > 0) {
-        badge.textContent = newCount > 99 ? '99+' : newCount;
-        badge.style.display = '';
-      } else {
-        badge.style.display = 'none';
-      }
-    });
-  }
+  socket.on('message:new', (data) => {
+    if (Number(data.receiverId) !== Number(window.currentUserId)) return;
+    if (typeof window.refreshMessageBadge === 'function') {
+      window.refreshMessageBadge();
+    }
+  });
 
-  // ─── Toast ───
+  socket.on('messages:read:ack', () => {
+    if (typeof window.refreshMessageBadge === 'function') {
+      window.refreshMessageBadge();
+    }
+  });
+
   function showToast(data) {
-    // Créer le conteneur de toasts s'il n'existe pas
     let container = document.getElementById('toast-container');
     if (!container) {
       container = document.createElement('div');
@@ -43,7 +41,6 @@
       document.body.appendChild(container);
     }
 
-    // Icône selon le type
     const iconMap = {
       message: 'fa-envelope',
       review: 'fa-star',
@@ -51,7 +48,6 @@
     };
     const icon = iconMap[data.type] || 'fa-bell';
 
-    // Couleur selon le type
     const colorMap = {
       message: '#6b7db3',
       review: '#ffd700',
@@ -81,22 +77,15 @@
       <span style="color:#7d6b93;font-size:0.8rem;cursor:pointer;" class="toast-close">&times;</span>
     `;
 
-    // Clic sur le toast → naviguer vers l'action
     toast.addEventListener('click', (e) => {
       if (e.target.classList.contains('toast-close')) {
         removeToast(toast);
         return;
       }
-      if (data.actionUrl) {
-        window.location.href = data.actionUrl;
-      } else {
-        window.location.href = '/notifications';
-      }
+      window.location.href = data.actionUrl || '/notifications';
     });
 
     container.appendChild(toast);
-
-    // Auto-dismiss après 5 secondes
     setTimeout(() => removeToast(toast), 5000);
   }
 
@@ -112,7 +101,6 @@
     return div.innerHTML;
   }
 
-  // ─── Animation CSS ───
   const style = document.createElement('style');
   style.textContent = `
     @keyframes toastSlideIn {

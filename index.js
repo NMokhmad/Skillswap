@@ -14,14 +14,15 @@ import methodeOverride from 'method-override';
 import { sanitize } from './app/middlewares/sanitizeHtml.js';
 import { sequelize } from './app/database.js';
 import { setSocketIO } from './app/helpers/notificationHelper.js';
+import { registerMessageHandlers } from './app/sockets/messageHandler.js';
 
-// Sync BDD : alter en dev, sync simple en prod (crée les tables manquantes)
+// Sync BDD sans alter automatique (les changements de schema passent par scripts SQL)
 if (process.env.NODE_ENV === 'production') {
   sequelize.sync()
     .then(() => console.log('Base de donnees synchronisee (prod)'))
     .catch((err) => console.error('Erreur sync DB :', err));
 } else {
-  sequelize.sync({ alter: true })
+  sequelize.sync()
     .then(() => console.log('Base de donnees synchronisee (dev)'))
     .catch((err) => console.error('Erreur sync DB :', err));
 }
@@ -129,6 +130,9 @@ io.use((socket, next) => {
 io.on('connection', (socket) => {
   // Rejoindre la room personnelle pour les notifications
   socket.join(`user_${socket.user.id}`);
+  socket.data.activeConversationUserId = null;
+
+  registerMessageHandlers(io, socket);
 
   socket.on('disconnect', () => {
     socket.leave(`user_${socket.user.id}`);

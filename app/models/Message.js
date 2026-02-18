@@ -12,6 +12,11 @@ Message.init(
     is_read:{
       type: DataTypes.BOOLEAN,
       allowNull: false,
+      defaultValue: false,
+    },
+    read_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
     },
   },
   {

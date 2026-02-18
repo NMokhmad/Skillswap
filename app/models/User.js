@@ -33,6 +33,10 @@ User.init(
       type: DataTypes.STRING,
       allowNull: true,
     },
+    city: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     is_available:{
       type: DataTypes.BOOLEAN,
       allowNull: false,

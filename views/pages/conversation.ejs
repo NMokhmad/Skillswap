@@ -5,7 +5,12 @@
 <body>
 <%- include('../partials/navbar.ejs') %>
 
-<main class="section conv-main">
+<main
+    class="section conv-main"
+    id="conversation-page"
+    data-current-user-id="<%= currentUserId %>"
+    data-other-user-id="<%= otherUser.id %>"
+>
     <div class="container">
         <div class="columns is-centered">
             <div class="column is-8">
@@ -41,7 +46,7 @@
 
                     <% messages.forEach(msg => { %>
                         <% const isMine = msg.sender_id === currentUserId; %>
-                        <div class="mb-4 conv-message-row <%= isMine ? 'conv-message-row-mine' : 'conv-message-row-theirs' %>">
+                        <div class="mb-4 conv-message-row <%= isMine ? 'conv-message-row-mine' : 'conv-message-row-theirs' %>" data-message-id="<%= msg.id %>">
                             <div class="conv-bubble <%= isMine ? 'conv-bubble-mine' : 'conv-bubble-theirs' %>">
                                 <p class="conv-bubble-text"><%= msg.content %></p>
                                 <p class="is-size-7 mt-1 conv-bubble-time">
@@ -51,16 +56,20 @@
                         </div>
                     <% }) %>
                 </div>
+                <div id="typing-indicator" class="conv-typing-indicator" hidden>
+                    <span class="icon is-small"><i class="fas fa-pen"></i></span>
+                    <span><%= otherUser.firstname %> est en train d'ecrire...</span>
+                </div>
 
                 <!-- Formulaire d'envoi -->
                 <div class="box mt-4 conv-send-box">
-                    <form action="/messages/<%= otherUser.id %>" method="POST">
+                    <form action="/messages/<%= otherUser.id %>" method="POST" id="message-form">
                         <div class="field has-addons message-field">
                             <div class="control is-expanded">
-                                <input class="input is-medium conv-message-input" type="text" name="content" placeholder="Ecrire un message..." required autocomplete="off">
+                                <input class="input is-medium conv-message-input" id="message-input" type="text" name="content" placeholder="Ecrire un message..." required autocomplete="off">
                             </div>
                             <div class="control">
-                                <button type="submit" class="button is-medium conv-send-btn">
+                                <button type="submit" class="button is-medium conv-send-btn" id="message-submit">
                                     <span class="icon">
                                         <i class="fas fa-paper-plane"></i>
                                     </span>
@@ -82,6 +91,7 @@
         container.scrollTop = container.scrollHeight;
     }
 </script>
+<script src="/js/chat.js" defer></script>
 
 <%- include('../partials/footer.ejs') %>
 </body>

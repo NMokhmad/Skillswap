@@ -8,6 +8,7 @@ import followController from "./controllers/followController.js";
 import reviewController from "./controllers/reviewController.js";
 import messageController from "./controllers/messageController.js";
 import notificationController from "./controllers/notificationController.js";
+import searchController from "./controllers/searchController.js";
 import { verifyJWT, optionalJWT } from "./middlewares/jwtVerify.js";
 import { uploadAvatar } from "./middlewares/upload.js";
 
@@ -33,7 +34,9 @@ router.post("/login", authController.login);
 
 router.post("/logout", authController.logout);
 
-router.get("/search", optionalJWT, mainController.searchPage);
+router.get("/search", optionalJWT, searchController.getSearchPage);
+router.get("/api/search/talents", searchController.searchTalents);
+router.get("/api/search/autocomplete", searchController.autocomplete);
 
 // ============================================
 // Routes protégées (verifyJWT obligatoire)
@@ -61,6 +64,7 @@ router.post("/review/:userId", verifyJWT, reviewController.createReview);
 router.get("/messages", verifyJWT, messageController.renderMessagesPage);
 router.get("/messages/:userId", verifyJWT, messageController.renderConversation);
 router.post("/messages/:userId", verifyJWT, messageController.sendMessage);
+router.get("/api/messages/unread-count", verifyJWT, messageController.getUnreadCount);
 
 // Notifications
 router.get("/notifications", verifyJWT, notificationController.renderNotificationsPage);
@@ -69,5 +73,10 @@ router.get("/api/notifications/recent", verifyJWT, notificationController.getRec
 router.post("/api/notifications/:id/read", verifyJWT, notificationController.markAsRead);
 router.post("/api/notifications/read-all", verifyJWT, notificationController.markAllAsRead);
 router.post("/api/notifications/:id/delete", verifyJWT, notificationController.deleteNotification);
+
+// Recherches sauvegardees
+router.post("/api/search/save", verifyJWT, searchController.saveSearch);
+router.get("/api/search/saved", verifyJWT, searchController.getSavedSearches);
+router.delete("/api/search/saved/:id", verifyJWT, searchController.deleteSavedSearch);
 
 export default router;

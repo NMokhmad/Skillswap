@@ -14,8 +14,10 @@ Plateforme communautaire d'échange de compétences. Les utilisateurs partagent 
 - **Catalogue de compétences** — Navigation par compétence avec slug URL
 - **Système de reviews** — Notes de 1 à 5 étoiles avec commentaires
 - **Follow / Unfollow** — Suivi des profils intéressants
-- **Messagerie privée** — Conversations entre utilisateurs avec indicateur de messages non lus
-- **Recherche** — Recherche par nom + filtrage par compétence
+- **Notifications** — Badge, dropdown, page dédiée, marquage lu/non lu, temps réel Socket.IO
+- **Messagerie temps réel** — Envoi instantané, indicateur de frappe, messages lus (`read_at`) + fallback HTTP
+- **Recherche avancée** — Filtres dynamiques (texte, compétences, ville, note, tri), autocomplete, pagination
+- **Recherches sauvegardées** — Sauvegarde, listing et suppression des filtres personnalisés
 - **Classement** — Top 3 des profils les mieux notés en page d'accueil
 - **Responsive** — Interface adaptée mobile, tablette et desktop
 
@@ -33,6 +35,7 @@ Plateforme communautaire d'échange de compétences. Les utilisateurs partagent 
 | **Validation** | Joi |
 | **Templating** | EJS |
 | **CSS** | Bulma |
+| **Temps réel** | Socket.IO |
 | **Upload** | Multer |
 | **Tests** | Jest |
 | **Déploiement** | DigitalOcean App Platform |
@@ -55,11 +58,12 @@ Plateforme communautaire d'échange de compétences. Les utilisateurs partagent 
 
 ```
 app/
-├── controllers/       # Logique métier (8 controllers)
-├── models/            # Modèles Sequelize (User, Skill, Review, Message, etc.)
-├── middlewares/        # JWT, upload, sanitisation, contexte utilisateur
+├── controllers/       # Logique métier (auth, profils, messages, notifications, recherche...)
+├── models/            # Modèles Sequelize (User, Skill, Review, Message, Notification, SavedSearch...)
+├── middlewares/       # JWT, upload, sanitisation, contexte utilisateur
 ├── schemas/           # Validation Joi (inscription, connexion, mise à jour)
-├── helpers/           # Fonctions utilitaires (calcul de moyenne)
+├── helpers/           # Fonctions utilitaires (rating, notifications)
+├── sockets/           # Handlers Socket.IO (messagerie temps réel)
 ├── database.js        # Connexion Sequelize
 └── router.js          # Définition des routes
 
@@ -69,7 +73,7 @@ views/
 
 public/
 ├── css/               # Feuilles de style
-├── js/                # Scripts client (follow, reviews, messagerie, etc.)
+├── js/                # Scripts client (chat temps réel, socket, recherche dynamique, etc.)
 └── uploads/           # Avatars uploadés
 
 tests/                 # Tests unitaires Jest
@@ -80,7 +84,7 @@ data/                  # Scripts SQL (schéma + données de test)
 
 ## Base de données
 
-8 tables avec intégrité référentielle complète :
+9 tables avec intégrité référentielle complète :
 
 ```
 user ──────── role
@@ -88,8 +92,9 @@ user ──────── role
   ├── user_has_skill ──── skill
   ├── user_has_follow ──── user (self-referential)
   ├── review (reviewer / reviewed / skill)
-  ├── message (sender / receiver)
-  └── notification
+  ├── message (sender / receiver / is_read / read_at)
+  ├── notification (is_read / related_entity_type / action_url)
+  └── saved_search
 ```
 
 - Contraintes `UNIQUE` pour éviter les doublons (email, reviews, follows)
@@ -133,7 +138,7 @@ npm run db:reset
 
 ### 4. Configurer l'environnement
 
-Copier `.env.template` en `.env` et adapter les valeurs :
+Copier `.env.templates` en `.env` et adapter les valeurs :
 
 ```
 PORT=3000
@@ -149,6 +154,18 @@ npm run dev
 ```
 
 L'application est accessible sur `http://localhost:3000`
+
+### 6. Migration d'une base existante (v1 -> v3)
+
+Si ta base existe déjà avec un ancien schéma :
+
+```bash
+psql -U skillswap -d skillswap -f ./data/migration_v2.sql
+psql -U skillswap -d skillswap -f ./data/migration_v3.sql
+```
+
+`migration_v2.sql` couvre les colonnes notifications.  
+`migration_v3.sql` couvre `message.read_at`, `user.city`, et `saved_search`.
 
 ---
 
@@ -172,6 +189,10 @@ Couverture : validation Joi, middleware JWT, contrôles d'autorisation.
 | `npm run db:create` | Créer le schéma SQL |
 | `npm run db:seed` | Insérer les données de test |
 | `npm run db:reset` | Réinitialiser la base complète |
+| `npm run migrate` | Exécuter les migrations Sequelize |
+| `npm run migrate:undo` | Annuler la dernière migration Sequelize |
+| `npm run migrate:undo:all` | Annuler toutes les migrations Sequelize |
+| `npm run migrate:status` | Afficher l'état des migrations |
 
 ---
 

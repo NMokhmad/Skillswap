@@ -2,6 +2,7 @@ import { Op } from 'sequelize';
 import { User, Message } from '../models/index.js';
 import { sequelize } from '../database.js';
 import { createNotification } from '../helpers/notificationHelper.js';
+import { emitMessageToParticipants, isUserActiveInConversation, toMessagePayload } from '../sockets/messageHandler.js';
 
 const messageController = {
   // Route protégée par verifyJWT → req.user est garanti
@@ -97,8 +98,9 @@ const messageController = {
       });
 
       // Marquer les messages reçus comme lus
+      const readAt = new Date();
       await Message.update(
-        { is_read: true },
+        { is_read: true, read_at: readAt },
         {
           where: {
             sender_id: otherUserId,
@@ -107,6 +109,17 @@ const messageController = {
           }
         }
       );
+
+      const io = req.app.get('io');
+      if (io) {
+        const payload = {
+          readerId: userId,
+          otherUserId,
+          readAt: readAt.toISOString(),
+        };
+        io.to(`user_${otherUserId}`).emit('messages:read:ack', payload);
+        io.to(`user_${userId}`).emit('messages:read:ack', payload);
+      }
 
       res.render('conversation', {
         messages,
@@ -144,21 +157,44 @@ const messageController = {
         is_read: false
       });
 
-      // Notification au destinataire
-      const sender = await User.findByPk(senderId);
-      await createNotification({
-        userId: receiverId,
-        type: 'message',
-        content: `${sender.firstname} vous a envoyé un message`,
-        relatedEntityType: 'message',
-        relatedEntityId: message.id,
-        actionUrl: `/messages/${senderId}`,
-      });
+      const io = req.app.get('io');
+      if (io) {
+        emitMessageToParticipants(io, toMessagePayload(message));
+      }
+
+      // Notification au destinataire uniquement s'il n'est pas actif sur la conversation
+      const receiverActive = io ? isUserActiveInConversation(io, receiverId, senderId) : false;
+      if (!receiverActive) {
+        const sender = await User.findByPk(senderId);
+        await createNotification({
+          userId: receiverId,
+          type: 'message',
+          content: `${sender.firstname} vous a envoye un message`,
+          relatedEntityType: 'message',
+          relatedEntityId: message.id,
+          actionUrl: `/messages/${senderId}`,
+        });
+      }
 
       res.redirect(`/messages/${receiverId}`);
     } catch (error) {
       console.error('Erreur sendMessage:', error);
       res.status(500).send('Erreur serveur');
+    }
+  },
+
+  async getUnreadCount(req, res) {
+    try {
+      const count = await Message.count({
+        where: {
+          receiver_id: req.user.id,
+          is_read: false,
+        }
+      });
+      res.json({ count });
+    } catch (error) {
+      console.error('Erreur getUnreadCount messages:', error);
+      res.status(500).json({ error: 'Erreur serveur' });
     }
   }
 };

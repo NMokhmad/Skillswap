@@ -10,6 +10,7 @@
 6. [Ce qui est bien fait](#6-ce-qui-est-bien-fait)
 7. [Ce qui doit être amélioré](#7-ce-qui-doit-être-amélioré)
 8. [Suivi des corrections](#8-suivi-des-corrections)
+9. [Mise à jour Phase 2/3](#9-mise-à-jour-phase-23)
 
 ---
 
@@ -53,14 +54,9 @@
 
 ## 2. Migrations
 
-### Leçon principale : `sequelize.sync({ alter: true })` n'est PAS une migration
+### Leçon principale : `sequelize.sync()` n'est PAS une migration
 
-Dans `index.js` :
-```javascript
-// Dev : sync({ alter: true }), Prod : sync()
-```
-
-C'est mieux qu'avant (séparation dev/prod), mais `sync()` même sans `alter` n'est pas une vraie migration. Voici pourquoi :
+Dans `index.js`, l'application tourne maintenant en `sequelize.sync()` (sans `alter`) en dev et en prod. C'est plus sûr que `alter`, mais ça reste insuffisant pour un vrai pilotage de schéma. Voici pourquoi :
 
 | | `sync({ alter: true })` | Vraies migrations |
 |---|---|---|
@@ -93,11 +89,11 @@ C'est mieux qu'avant (séparation dev/prod), mais `sync()` même sans `alter` n'
 
 ### Règle d'or
 
-> En développement : `sync({ alter: true })` est tolérable pour prototyper.
+> En développement : éviter `sync({ alter: true })` sur une base partagée.
 > En staging/production : UNIQUEMENT des migrations versionnées.
 > Ne JAMAIS utiliser `sync({ force: true })` sauf sur une base jetable.
 
-**Note** : les scripts npm pour les migrations existent déjà dans `package.json` (`migrate`, `migrate:undo`, `migrate:undo:all`, `migrate:status`), mais aucune migration n'a été créée. C'est le moment de commencer à les utiliser.
+**État actuel** : les migrations SQL existent (`migration_v2.sql`, `migration_v3.sql`) et doivent être exécutées sur toute base déjà existante.
 
 ---
 
@@ -123,46 +119,39 @@ C'est mieux qu'avant (séparation dev/prod), mais `sync()` même sans `alter` n'
 
 ### Ce qui doit être corrigé
 
-#### [CRITIQUE] Le rate limiting global est encore trop haut
+#### [CORRIGÉ] Rate limiting global
 
 ```javascript
-// index.js ligne 48
+// index.js
 const globalLimiter = rateLimit({
   windowMs: 60 * 1000,
-  max: 1000,  // ← 1000 requêtes par minute = ~16 req/seconde
+  max: 100,
 });
 ```
 
-Le commentaire dit "100 requêtes par minute" mais la valeur est 1000. Un humain normal fait 1-2 requêtes/seconde. À 1000/min, un bot peut encore scraper massivement le site. Valeur recommandée :
-```javascript
-max: 100  // Largement suffisant pour un humain
-```
+Statut : corrigé.
 
-#### [CRITIQUE] Le cookie `userInfo` n'est toujours pas `httpOnly`
+#### [CORRIGÉ] Cookie `userInfo` non `httpOnly`
 
 ```javascript
-// authController.js - Répété dans register ET login
-res.cookie('userInfo', JSON.stringify({id, firstname, lastname, email}), {
-  httpOnly: false,  // ← Lisible par JavaScript côté client
-});
+// Plus de cookie userInfo non-httpOnly
+// Les vues reçoivent l'utilisateur via res.locals.user (middleware userInfoCookie.js)
 ```
 
-Ce cookie contient l'id, le prénom, le nom et l'email de l'utilisateur. Un attaquant qui exploite une faille XSS peut lire ces données.
+Statut : corrigé.
 
-**Solution** : le middleware `userInfoCookie.js` utilise déjà `res.locals` — il suffit de s'appuyer à 100% dessus et de supprimer le cookie `userInfo` côté client. Les templates EJS accèdent à `user` via `res.locals.user` sans avoir besoin d'un cookie lisible côté client.
-
-#### [IMPORTANT] Logout en GET = vulnérable au CSRF
+#### [CORRIGÉ] Logout en GET
 
 ```javascript
-// router.js ligne 33
-router.get('/logout', authController.logout);
+// router.js
+router.post('/logout', authController.logout);
 ```
 
-Un simple `<img src="/logout">` injecté dans un message ou un avis pourrait déconnecter un utilisateur sans son consentement. **Règle** : toute action qui modifie un état (déconnexion = suppression de cookie) doit être en POST.
+Statut : corrigé (route POST + formulaires).
 
-#### [IMPORTANT] Mot de passe minimum trop faible
+#### [CORRIGÉ] Mot de passe minimum
 
-Le schema Joi accepte un mot de passe de 6 caractères minimum. Les recommandations NIST actuelles sont **8 caractères minimum**. Avec 6 caractères, un brute force offline est réaliste.
+Le minimum est maintenant à 8 caractères. Statut : corrigé.
 
 #### [IMPORTANT] SSL `rejectUnauthorized: false`
 
@@ -272,7 +261,7 @@ test('description', () => {
 
 - **Helpers réutilisables** : `addAverageRating()` évite la duplication du calcul de moyenne dans chaque controller.
 
-- **Séparation dev/prod** dans `index.js` : `sync({ alter: true })` en dev, `sync()` en prod, `trust proxy` uniquement en production. Bonne pratique.
+- **Séparation dev/prod** dans `index.js` : `sync()` sans `alter` et migrations SQL explicites (`migration_v2.sql`, `migration_v3.sql`). Cette approche évite les surprises de schéma en base existante.
 
 - **Middleware sanitizeHtml** : récursif, global, et bien placé dans la chaîne de middlewares (avant le router).
 
@@ -290,9 +279,9 @@ const users = await User.findAndCountAll({ limit, offset });
 
 **Concept à apprendre** : pagination offset-based vs cursor-based. L'offset est simple mais a des problèmes de performance avec de très gros offsets. Le cursor utilise un point de repère (ex: `WHERE id > lastId LIMIT 20`) et est plus performant.
 
-#### [IMPORTANT] N+1 query dans la recherche
+#### [CORRIGÉ] N+1 query dans la recherche
 
-Dans `mainController.searchPage` (lignes 86-96), une seconde requête recharge tous les skills pour les utilisateurs filtrés. C'est un pattern N+1 — pour N résultats de recherche, on fait N+1 requêtes. Solution : utiliser `include` dans la requête initiale.
+La recherche avancée a été déplacée dans `searchController` avec construction SQL dynamique (`where/include/group/having/order`) et endpoints dédiés. Le pattern N+1 initial de `mainController.searchPage` n'est plus le chemin principal.
 
 #### Incohérence de nommage
 
@@ -350,9 +339,9 @@ app.use((err, req, res, next) => {
 });
 ```
 
-#### Modèle Notification inutilisé
+#### [CORRIGÉ] Modèle Notification désormais actif
 
-Le modèle `Notification.js` existe avec des associations définies, mais aucun controller ne l'utilise. C'est du code mort. Soit on implémente la fonctionnalité, soit on supprime le modèle pour ne pas confondre les développeurs.
+Le modèle `Notification.js` est maintenant utilisé par `notificationController` et `notificationHelper` (création, marquage lu, suppression, émission temps réel Socket.IO).
 
 #### `method-override` pour DELETE
 
@@ -393,11 +382,11 @@ L'utilisation de `method-override` avec `?_method=DELETE` dans les formulaires H
 
 | # | Problème | Impact | Solution | Statut |
 |---|----------|--------|----------|--------|
-| 4 | Logout en GET | CSRF via `<img src="/logout">` | Passer en POST + verifyJWT | ❌ À corriger |
+| 4 | Logout en GET | CSRF via `<img src="/logout">` | Passer en POST + verifyJWT | ✅ Corrigé |
 | 5 | Mot de passe min 6 chars | Brute force offline réaliste | Augmenter à 8 minimum | ✅ Corrigé |
 | 6 | SSL rejectUnauthorized: false | Vulnérable au MITM | Utiliser le certificat CA du provider | ❌ À corriger |
 | 7 | Pas d'index sur les FK | Requêtes lentes sur les jointures | `CREATE INDEX` sur les FK fréquentes | ✅ Corrigé |
-| 8 | N+1 query dans la recherche | Performance dégradée | Utiliser `include` dans la requête initiale | ❌ À corriger |
+| 8 | N+1 query dans la recherche | Performance dégradée | Utiliser `include` dans la requête initiale | ✅ Corrigé |
 | 9 | Pas de tests d'intégration | Pas de garantie bout en bout | Supertest + base de test | ❌ À corriger |
 | 10 | Erreur 500 affiche page 404 | UX confusante | Créer une vraie page erreur 500 | ✅ Corrigé |
 
@@ -407,10 +396,10 @@ L'utilisation de `method-override` avec `?_method=DELETE` dans les formulaires H
 |---|----------|--------|----------|--------|
 | 11 | Nommage incohérent (fr/en) | Lisibilité du code | Choisir une langue et s'y tenir | ❌ À corriger |
 | 12 | Code cookie dupliqué | Maintenance plus difficile | Extraire un helper `setAuthCookies` | ❌ À corriger |
-| 13 | `sync({ alter: true })` en dev | Mauvaise habitude | Utiliser les migrations même en dev | ❌ À corriger |
+| 13 | `sync({ alter: true })` en dev | Mauvaise habitude | Utiliser les migrations même en dev | ✅ Corrigé |
 | 14 | Timing attack au login | Fuite d'emails existants | Toujours exécuter argon2.verify | ❌ À corriger |
 | 15 | Seed data invalide (rate=0) | Seed échoue | Corriger à rate >= 1 | ✅ Corrigé |
-| 16 | Notification model inutilisé | Code mort | Implémenter ou supprimer | ❌ À corriger |
+| 16 | Notification model inutilisé | Code mort | Implémenter ou supprimer | ✅ Corrigé |
 
 ---
 
@@ -449,24 +438,41 @@ L'utilisation de `method-override` avec `?_method=DELETE` dans les formulaires H
 - **Corrigés en première passe** : 7/15 (47%)
 - **Nouveaux problèmes découverts** : 5 (timing attack, SSL, logout GET, seed invalide, N+1 query)
 - **Corrigés en deuxième passe** : 10 problèmes supplémentaires
-- **Total corrigé** : 17 problèmes sur 20
-- **Total restant** : 6 problèmes (0 critique, 3 importants, 3 mineurs)
+- **Corrigés en troisième passe (phase 2/3)** : logout POST, recherche avancée, notifications actives, abandon de `sync({ alter: true })`
+- **Total restant** : 5 problèmes (0 critique, 2 importants, 3 mineurs)
 
 ---
 
 ## Conclusion
 
-Ce projet a atteint un **bon niveau de qualité** après deux revues. La majorité des problèmes de sécurité sont résolus, les performances sont couvertes avec la pagination et les index, et le code mort a été nettoyé.
+Ce projet a atteint un **bon niveau de qualité** après trois passes de correction. Les fonctionnalités phase 2/3 sont en place (Socket.IO messagerie, notifications, recherche avancée, recherches sauvegardées) et les principaux points de robustesse ont été traités.
 
 Les axes d'amélioration restants sont :
 
-1. **Logout en POST** (déjà fait dans le router, vérifier toutes les vues)
-2. **SSL `rejectUnauthorized: true`** en production
-3. **N+1 query dans la recherche** (utiliser `include`)
-4. **Tests d'intégration** (Supertest + base de test)
-5. **Nommage cohérent** (choisir une langue)
-6. **Timing attack au login** (risque faible)
+1. **SSL `rejectUnauthorized: true`** en production
+2. **Tests d'intégration** (Supertest + base de test)
+3. **Nommage cohérent** (choisir une langue)
+4. **Code cookie JWT dupliqué** (factoriser un helper)
+5. **Timing attack au login** (risque faible)
 
 **Note de qualité globale : 🟢 Bon**
 
-Prêt pour la v2 : messagerie WebSocket, notifications, recherche avancée. Les fondations (sécurité, performance, architecture) sont solides pour construire dessus.
+La v2 (messagerie WebSocket, notifications, recherche avancée) est désormais implémentée.
+
+---
+
+## 9. Mise à jour Phase 2/3
+
+### Fonctionnalités livrées
+
+- Notifications complètes : badge, dropdown, page `/notifications`, API read/delete/count/recent.
+- Temps réel Socket.IO : notifications live + chat live (`message:send`, `message:typing`, `message:read`).
+- Messagerie : `read_at`, unread count API, UI conversation dynamique via `public/js/chat.js`.
+- Recherche avancée : `searchController`, filtres combinés, autocomplete, pagination, tri `popular`.
+- Recherches sauvegardées : modèle `SavedSearch` + API save/list/delete.
+
+### Leçons opérationnelles importantes
+
+- Une base existante doit recevoir les migrations SQL (`migration_v2.sql`, `migration_v3.sql`) avant d'utiliser les nouveaux modèles.
+- `sequelize.sync({ alter: true })` peut casser en présence de données existantes (cas réel: `role.updated_at` NULL) ; éviter cette stratégie sur environnement partagé.
+- Documenter explicitement l'ordre d'upgrade DB évite les erreurs runtime du type "colonne inexistante".
