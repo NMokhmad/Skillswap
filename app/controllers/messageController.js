@@ -3,6 +3,8 @@ import { User, Message } from '../models/index.js';
 import { sequelize } from '../database.js';
 import { createNotification } from '../helpers/notificationHelper.js';
 import { emitMessageToParticipants, isUserActiveInConversation, toMessagePayload } from '../sockets/messageHandler.js';
+import { sendApiError, sendApiSuccess } from '../helpers/apiResponse.js';
+import { logger } from '../helpers/logger.js';
 
 const messageController = {
   // Route protégée par verifyJWT → req.user est garanti
@@ -67,7 +69,7 @@ const messageController = {
         cssFile: 'messages'
       });
     } catch (error) {
-      console.error('Erreur renderMessagesPage:', error);
+      logger.error('render_messages_page_failed', { error: error?.message || 'Unknown error' });
       res.status(500).send('Erreur serveur');
     }
   },
@@ -129,7 +131,7 @@ const messageController = {
         cssFile: 'messages'
       });
     } catch (error) {
-      console.error('Erreur renderConversation:', error);
+      logger.error('render_conversation_failed', { error: error?.message || 'Unknown error' });
       res.status(500).send('Erreur serveur');
     }
   },
@@ -178,7 +180,7 @@ const messageController = {
 
       res.redirect(`/messages/${receiverId}`);
     } catch (error) {
-      console.error('Erreur sendMessage:', error);
+      logger.error('send_message_failed', { error: error?.message || 'Unknown error' });
       res.status(500).send('Erreur serveur');
     }
   },
@@ -191,10 +193,10 @@ const messageController = {
           is_read: false,
         }
       });
-      res.json({ count });
+      return sendApiSuccess(res, { count });
     } catch (error) {
-      console.error('Erreur getUnreadCount messages:', error);
-      res.status(500).json({ error: 'Erreur serveur' });
+      logger.error('get_unread_messages_count_failed', { error: error?.message || 'Unknown error' });
+      return sendApiError(res, { status: 500, code: 'SERVER_ERROR', message: 'Erreur serveur' });
     }
   }
 };

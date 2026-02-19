@@ -1,4 +1,6 @@
 import { Notification } from '../models/index.js';
+import { sendApiError, sendApiSuccess } from '../helpers/apiResponse.js';
+import { logger } from '../helpers/logger.js';
 
 const notificationController = {
   // Page dédiée : toutes les notifications, paginées
@@ -30,7 +32,7 @@ const notificationController = {
         unreadCount,
       });
     } catch (error) {
-      console.error('Erreur renderNotificationsPage:', error);
+      logger.error('render_notifications_page_failed', { error: error?.message || 'Unknown error' });
       res.status(500).send('Erreur serveur');
     }
   },
@@ -41,10 +43,10 @@ const notificationController = {
       const count = await Notification.count({
         where: { user_id: req.user.id, is_read: false }
       });
-      res.json({ count });
+      return sendApiSuccess(res, { count });
     } catch (error) {
-      console.error('Erreur getUnreadCount:', error);
-      res.status(500).json({ error: 'Erreur serveur' });
+      logger.error('get_notifications_count_failed', { error: error?.message || 'Unknown error' });
+      return sendApiError(res, { status: 500, code: 'SERVER_ERROR', message: 'Erreur serveur' });
     }
   },
 
@@ -56,10 +58,10 @@ const notificationController = {
         order: [['created_at', 'DESC']],
         limit: 5,
       });
-      res.json({ notifications });
+      return sendApiSuccess(res, { notifications });
     } catch (error) {
-      console.error('Erreur getRecent:', error);
-      res.status(500).json({ error: 'Erreur serveur' });
+      logger.error('get_recent_notifications_failed', { error: error?.message || 'Unknown error' });
+      return sendApiError(res, { status: 500, code: 'SERVER_ERROR', message: 'Erreur serveur' });
     }
   },
 
@@ -72,14 +74,14 @@ const notificationController = {
       });
 
       if (!notification) {
-        return res.status(404).json({ error: 'Notification introuvable' });
+        return sendApiError(res, { status: 404, code: 'NOT_FOUND', message: 'Notification introuvable' });
       }
 
       await notification.update({ is_read: true });
-      res.json({ success: true });
+      return sendApiSuccess(res, { success: true });
     } catch (error) {
-      console.error('Erreur markAsRead:', error);
-      res.status(500).json({ error: 'Erreur serveur' });
+      logger.error('mark_notification_read_failed', { error: error?.message || 'Unknown error' });
+      return sendApiError(res, { status: 500, code: 'SERVER_ERROR', message: 'Erreur serveur' });
     }
   },
 
@@ -90,10 +92,10 @@ const notificationController = {
         { is_read: true },
         { where: { user_id: req.user.id, is_read: false } }
       );
-      res.json({ success: true });
+      return sendApiSuccess(res, { success: true });
     } catch (error) {
-      console.error('Erreur markAllAsRead:', error);
-      res.status(500).json({ error: 'Erreur serveur' });
+      logger.error('mark_all_notifications_read_failed', { error: error?.message || 'Unknown error' });
+      return sendApiError(res, { status: 500, code: 'SERVER_ERROR', message: 'Erreur serveur' });
     }
   },
 
@@ -106,13 +108,13 @@ const notificationController = {
       });
 
       if (!deleted) {
-        return res.status(404).json({ error: 'Notification introuvable' });
+        return sendApiError(res, { status: 404, code: 'NOT_FOUND', message: 'Notification introuvable' });
       }
 
-      res.json({ success: true });
+      return sendApiSuccess(res, { success: true });
     } catch (error) {
-      console.error('Erreur deleteNotification:', error);
-      res.status(500).json({ error: 'Erreur serveur' });
+      logger.error('delete_notification_failed', { error: error?.message || 'Unknown error' });
+      return sendApiError(res, { status: 500, code: 'SERVER_ERROR', message: 'Erreur serveur' });
     }
   },
 };

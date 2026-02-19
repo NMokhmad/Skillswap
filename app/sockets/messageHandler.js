@@ -1,9 +1,50 @@
 import { Message, User } from '../models/index.js';
 import { createNotification } from '../helpers/notificationHelper.js';
+import { captureException } from '../helpers/sentry.js';
+import { logger } from '../helpers/logger.js';
 
 function parsePositiveInt(value) {
   const parsed = Number.parseInt(value, 10);
   return Number.isInteger(parsed) && parsed > 0 ? parsed : null;
+}
+
+function parseOptionalClientMessageId(value) {
+  if (value === undefined || value === null) return null;
+  if (typeof value !== 'string') return null;
+  const trimmed = value.trim();
+  if (!trimmed || trimmed.length > 120) return null;
+  return trimmed;
+}
+
+export function validateTypingPayload(payload) {
+  if (!payload || typeof payload !== 'object') return { ok: false, code: 'INVALID_PAYLOAD' };
+  const receiverId = parsePositiveInt(payload.receiverId);
+  if (!receiverId) return { ok: false, code: 'INVALID_RECEIVER' };
+  return { ok: true, receiverId, isTyping: Boolean(payload.isTyping) };
+}
+
+export function validateReadPayload(payload) {
+  if (!payload || typeof payload !== 'object') return { ok: false, code: 'INVALID_PAYLOAD' };
+  const otherUserId = parsePositiveInt(payload.otherUserId);
+  if (!otherUserId) return { ok: false, code: 'INVALID_RECEIVER' };
+  return { ok: true, otherUserId };
+}
+
+export function validateSendPayload(payload) {
+  if (!payload || typeof payload !== 'object') return { ok: false, code: 'INVALID_PAYLOAD' };
+  const receiverId = parsePositiveInt(payload.receiverId);
+  if (!receiverId) return { ok: false, code: 'INVALID_RECEIVER' };
+
+  const cleanedContent = typeof payload.content === 'string' ? payload.content.trim() : '';
+  if (!cleanedContent) return { ok: false, code: 'EMPTY_CONTENT' };
+  if (cleanedContent.length > 3000) return { ok: false, code: 'CONTENT_TOO_LONG' };
+
+  return {
+    ok: true,
+    receiverId,
+    cleanedContent,
+    clientMessageId: parseOptionalClientMessageId(payload.clientMessageId),
+  };
 }
 
 function isUserActiveInConversation(io, userId, otherUserId) {
@@ -52,20 +93,24 @@ export function registerMessageHandlers(io, socket) {
   });
 
   socket.on('message:typing', ({ receiverId, isTyping } = {}) => {
-    const parsedReceiverId = parsePositiveInt(receiverId);
-    if (!parsedReceiverId || parsedReceiverId === socket.user.id) return;
+    const validation = validateTypingPayload({ receiverId, isTyping });
+    if (!validation.ok || validation.receiverId === socket.user.id) return;
 
-    io.to(`user_${parsedReceiverId}`).emit('message:typing', {
+    io.to(`user_${validation.receiverId}`).emit('message:typing', {
       senderId: socket.user.id,
-      receiverId: parsedReceiverId,
-      isTyping: Boolean(isTyping),
+      receiverId: validation.receiverId,
+      isTyping: validation.isTyping,
     });
   });
 
   socket.on('message:read', async ({ otherUserId } = {}) => {
     try {
-      const parsedOtherUserId = parsePositiveInt(otherUserId);
-      if (!parsedOtherUserId) return;
+      const validation = validateReadPayload({ otherUserId });
+      if (!validation.ok) {
+        socket.emit('message:error', { code: validation.code, message: 'Payload invalide.' });
+        return;
+      }
+      const parsedOtherUserId = validation.otherUserId;
 
       const readAt = new Date();
 
@@ -89,23 +134,31 @@ export function registerMessageHandlers(io, socket) {
       io.to(`user_${parsedOtherUserId}`).emit('messages:read:ack', payload);
       io.to(`user_${socket.user.id}`).emit('messages:read:ack', payload);
     } catch (error) {
-      console.error('Erreur Socket message:read:', error);
+      logger.error('socket_message_read_failed', { error: error?.message || 'Unknown error' });
+      captureException(error, { source: 'socket', event: 'message:read', userId: socket.user?.id });
       socket.emit('message:error', { code: 'SERVER_ERROR', message: 'Erreur serveur.' });
     }
   });
 
   socket.on('message:send', async ({ receiverId, content, clientMessageId } = {}) => {
     try {
-      const parsedReceiverId = parsePositiveInt(receiverId);
-      const cleanedContent = typeof content === 'string' ? content.trim() : '';
+      const validation = validateSendPayload({ receiverId, content, clientMessageId });
+      if (!validation.ok) {
+        const messageByCode = {
+          INVALID_PAYLOAD: 'Payload invalide.',
+          INVALID_RECEIVER: 'Destinataire invalide.',
+          EMPTY_CONTENT: 'Le message est vide.',
+          CONTENT_TOO_LONG: 'Le message est trop long.',
+        };
+        socket.emit('message:error', { code: validation.code, message: messageByCode[validation.code] || 'Payload invalide.' });
+        return;
+      }
+      const parsedReceiverId = validation.receiverId;
+      const cleanedContent = validation.cleanedContent;
+      const safeClientMessageId = validation.clientMessageId;
 
       if (!parsedReceiverId || parsedReceiverId === socket.user.id) {
         socket.emit('message:error', { code: 'INVALID_RECEIVER', message: 'Destinataire invalide.' });
-        return;
-      }
-
-      if (!cleanedContent) {
-        socket.emit('message:error', { code: 'EMPTY_CONTENT', message: 'Le message est vide.' });
         return;
       }
 
@@ -122,7 +175,7 @@ export function registerMessageHandlers(io, socket) {
         is_read: false,
       });
 
-      emitMessageToParticipants(io, toMessagePayload(message, clientMessageId || null));
+      emitMessageToParticipants(io, toMessagePayload(message, safeClientMessageId));
 
       const receiverIsActive = isUserActiveInConversation(io, parsedReceiverId, socket.user.id);
       if (!receiverIsActive) {
@@ -136,7 +189,8 @@ export function registerMessageHandlers(io, socket) {
         });
       }
     } catch (error) {
-      console.error('Erreur Socket message:send:', error);
+      logger.error('socket_message_send_failed', { error: error?.message || 'Unknown error' });
+      captureException(error, { source: 'socket', event: 'message:send', userId: socket.user?.id });
       socket.emit('message:error', { code: 'SERVER_ERROR', message: 'Erreur serveur.' });
     }
   });

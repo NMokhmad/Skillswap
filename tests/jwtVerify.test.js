@@ -49,7 +49,13 @@ describe('verifyJWT', () => {
     verifyJWT(req, res, next);
 
     expect(res.statusCode).toBe(401);
-    expect(res.jsonData).toEqual({ error: 'Accès non autorisé' });
+    expect(res.jsonData).toEqual({
+      error: {
+        code: 'UNAUTHORIZED',
+        message: 'Acces non autorise',
+        requestId: null,
+      },
+    });
     expect(next).not.toHaveBeenCalled();
   });
 
@@ -88,7 +94,13 @@ describe('verifyJWT', () => {
     verifyJWT(req, res, next);
 
     expect(res.statusCode).toBe(403);
-    expect(res.jsonData).toEqual({ error: 'Token invalide ou expiré' });
+    expect(res.jsonData).toEqual({
+      error: {
+        code: 'FORBIDDEN',
+        message: 'Token invalide ou expire',
+        requestId: null,
+      },
+    });
     expect(res.clearedCookies).toContain('token');
   });
 

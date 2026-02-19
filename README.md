@@ -4,6 +4,8 @@ Plateforme communautaire d'échange de compétences. Les utilisateurs partagent 
 
 **[Voir la démo en ligne](https://clownfish-app-hy864.ondigitalocean.app/)**
 
+![CI](https://github.com/O-clock-Raclette/skill-swap/actions/workflows/ci.yml/badge.svg)
+
 ---
 
 ## Fonctionnalités
@@ -42,6 +44,18 @@ Plateforme communautaire d'échange de compétences. Les utilisateurs partagent 
 
 ---
 
+## Fiabilité et observabilité
+
+- Contrat d'erreur API homogène: `error.code`, `error.message`, `error.requestId`
+- `requestId` propagé via header `X-Request-Id`
+- Endpoints d'état:
+  - `GET /healthz` (liveness)
+  - `GET /readyz` (readiness + check DB)
+- Logs structurés JSON (requêtes + erreurs)
+- Intégration Sentry optionnelle (Express + Socket.IO)
+
+---
+
 ## Sécurité
 
 - Hachage des mots de passe avec **Argon2** (résistant aux attaques GPU)
@@ -51,6 +65,8 @@ Plateforme communautaire d'échange de compétences. Les utilisateurs partagent 
 - **Sanitisation HTML** sur toutes les entrées utilisateur
 - Vérification d'ownership sur les routes protégées (un utilisateur ne peut modifier que son propre profil)
 - Contraintes d'intégrité côté base de données (UNIQUE, CHECK, FK CASCADE)
+- Mitigation timing attack au login (hash factice si email inconnu)
+- Validation stricte des payloads Socket.IO (`message:send`, `message:typing`, `message:read`)
 
 ---
 
@@ -145,6 +161,13 @@ PORT=3000
 DATABASE_URL=postgres://skillswap:skillswap@localhost:5432/skillswap
 JWT_SECRET=votre_clé_secrète
 JWT_EXPIRES=1h
+ENABLE_SEQUELIZE_SYNC=false
+ENABLE_STRICT_DB_SSL=false
+DATABASE_SSL_CA=
+SENTRY_DSN=
+SENTRY_ENVIRONMENT=development
+SENTRY_RELEASE=local
+SENTRY_TRACES_SAMPLE_RATE=0
 ```
 
 ### 5. Lancer le serveur
@@ -175,7 +198,15 @@ psql -U skillswap -d skillswap -f ./data/migration_v3.sql
 npm test
 ```
 
-Couverture : validation Joi, middleware JWT, contrôles d'autorisation.
+```bash
+npm run test:integration
+```
+
+```bash
+npm run test:all
+```
+
+Couverture : validation Joi, middleware JWT, contrôles d'autorisation, endpoints critiques API.
 
 ---
 
@@ -186,13 +217,31 @@ Couverture : validation Joi, middleware JWT, contrôles d'autorisation.
 | `npm run dev` | Serveur de développement (watch mode) |
 | `npm start` | Serveur de production |
 | `npm test` | Lancer les tests Jest |
+| `npm run test:integration` | Lancer les tests d'intégration HTTP |
+| `npm run test:all` | Exécuter unit + intégration |
+| `npm run lint` | Linter ciblé (fichiers critiques) |
+| `npm run ci:check` | Vérification qualité complète locale |
+| `npm run ci:check:migrations` | Vérifie la présence des scripts SQL de migration |
 | `npm run db:create` | Créer le schéma SQL |
 | `npm run db:seed` | Insérer les données de test |
 | `npm run db:reset` | Réinitialiser la base complète |
+| `npm run demo:setup` | Préparer l'environnement de démo |
+| `npm run demo:reset` | Reset base pour rejouer la démo |
+| `npm run demo:smoke` | Smoke test (health/search + protected si creds env) |
 | `npm run migrate` | Exécuter les migrations Sequelize |
 | `npm run migrate:undo` | Annuler la dernière migration Sequelize |
 | `npm run migrate:undo:all` | Annuler toutes les migrations Sequelize |
 | `npm run migrate:status` | Afficher l'état des migrations |
+
+---
+
+## Démo recruteur
+
+- Runbook: `docs/demo-runbook.md`
+- Setup rapide:
+  1. `npm run demo:setup`
+  2. `npm run dev`
+  3. `npm run demo:smoke`
 
 ---
 

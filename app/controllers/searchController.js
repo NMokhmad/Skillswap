@@ -1,6 +1,8 @@
 import { Op } from 'sequelize';
 import { User, Skill, SavedSearch } from '../models/index.js';
 import { sequelize } from '../database.js';
+import { sendApiError, sendApiSuccess } from '../helpers/apiResponse.js';
+import { logger } from '../helpers/logger.js';
 
 const AVG_RATING_SQL = 'COALESCE((SELECT AVG(r.rate)::numeric FROM "review" r WHERE r."reviewed_id" = "User"."id"), 0)';
 const REVIEW_COUNT_SQL = '(SELECT COUNT(*) FROM "review" r WHERE r."reviewed_id" = "User"."id")';
@@ -40,15 +42,15 @@ function getOrder(sort) {
   const reviewCountLiteral = sequelize.literal(REVIEW_COUNT_SQL);
 
   switch (sort) {
-    case 'rating_asc':
-      return [[avgRatingLiteral, 'ASC']];
-    case 'newest':
-      return [['created_at', 'DESC']];
-    case 'popular':
-      return [[avgRatingLiteral, 'DESC'], [reviewCountLiteral, 'DESC']];
-    case 'rating_desc':
-    default:
-      return [[avgRatingLiteral, 'DESC']];
+  case 'rating_asc':
+    return [[avgRatingLiteral, 'ASC']];
+  case 'newest':
+    return [['created_at', 'DESC']];
+  case 'popular':
+    return [[avgRatingLiteral, 'DESC'], [reviewCountLiteral, 'DESC']];
+  case 'rating_desc':
+  default:
+    return [[avgRatingLiteral, 'DESC']];
   }
 }
 
@@ -67,7 +69,7 @@ const searchController = {
         initialQuery: typeof req.query.q === 'string' ? req.query.q : '',
       });
     } catch (error) {
-      console.error('Erreur getSearchPage:', error);
+      logger.error('get_search_page_failed', { error: error?.message || 'Unknown error' });
       res.status(500).send('Erreur serveur');
     }
   },
@@ -152,7 +154,7 @@ const searchController = {
 
       const ids = baseRows.map((row) => Number.parseInt(row.id, 10));
       if (!ids.length) {
-        return res.json({
+        return sendApiSuccess(res, {
           page,
           limit,
           total,
@@ -208,7 +210,7 @@ const searchController = {
         })
         .filter(Boolean);
 
-      res.json({
+      return sendApiSuccess(res, {
         page,
         limit,
         total,
@@ -216,8 +218,8 @@ const searchController = {
         results,
       });
     } catch (error) {
-      console.error('Erreur searchTalents:', error);
-      res.status(500).json({ error: 'Erreur serveur' });
+      logger.error('search_talents_failed', { error: error?.message || 'Unknown error' });
+      return sendApiError(res, { status: 500, code: 'SERVER_ERROR', message: 'Erreur serveur' });
     }
   },
 
@@ -225,7 +227,7 @@ const searchController = {
     try {
       const q = typeof req.query.q === 'string' ? req.query.q.trim() : '';
       if (!q) {
-        return res.json({ suggestions: [] });
+        return sendApiSuccess(res, { suggestions: [] });
       }
 
       const users = await User.findAll({
@@ -240,7 +242,7 @@ const searchController = {
         limit: 5,
       });
 
-      res.json({
+      return sendApiSuccess(res, {
         suggestions: users.map((user) => ({
           id: user.id,
           fullname: `${user.firstname} ${user.lastname}`,
@@ -248,8 +250,8 @@ const searchController = {
         })),
       });
     } catch (error) {
-      console.error('Erreur autocomplete:', error);
-      res.status(500).json({ error: 'Erreur serveur' });
+      logger.error('autocomplete_failed', { error: error?.message || 'Unknown error' });
+      return sendApiError(res, { status: 500, code: 'SERVER_ERROR', message: 'Erreur serveur' });
     }
   },
 
@@ -259,7 +261,7 @@ const searchController = {
       const filters = normalizeFilters(req.body.filters || {});
 
       if (!name) {
-        return res.status(400).json({ error: 'Nom de recherche obligatoire.' });
+        return sendApiError(res, { status: 400, code: 'BAD_REQUEST', message: 'Nom de recherche obligatoire.' });
       }
 
       const savedSearch = await SavedSearch.create({
@@ -268,17 +270,17 @@ const searchController = {
         filters,
       });
 
-      res.status(201).json({
+      return sendApiSuccess(res, {
         search: {
           id: savedSearch.id,
           name: savedSearch.name,
           filters: savedSearch.filters,
           createdAt: savedSearch.created_at,
         }
-      });
+      }, 201);
     } catch (error) {
-      console.error('Erreur saveSearch:', error);
-      res.status(500).json({ error: 'Erreur serveur' });
+      logger.error('save_search_failed', { error: error?.message || 'Unknown error' });
+      return sendApiError(res, { status: 500, code: 'SERVER_ERROR', message: 'Erreur serveur' });
     }
   },
 
@@ -290,7 +292,7 @@ const searchController = {
         order: [['created_at', 'DESC']],
       });
 
-      res.json({
+      return sendApiSuccess(res, {
         searches: searches.map((search) => ({
           id: search.id,
           name: search.name,
@@ -299,8 +301,8 @@ const searchController = {
         }))
       });
     } catch (error) {
-      console.error('Erreur getSavedSearches:', error);
-      res.status(500).json({ error: 'Erreur serveur' });
+      logger.error('get_saved_searches_failed', { error: error?.message || 'Unknown error' });
+      return sendApiError(res, { status: 500, code: 'SERVER_ERROR', message: 'Erreur serveur' });
     }
   },
 
@@ -308,7 +310,7 @@ const searchController = {
     try {
       const id = Number.parseInt(req.params.id, 10);
       if (!Number.isInteger(id) || id <= 0) {
-        return res.status(400).json({ error: 'Identifiant invalide.' });
+        return sendApiError(res, { status: 400, code: 'BAD_REQUEST', message: 'Identifiant invalide.' });
       }
 
       const deleted = await SavedSearch.destroy({
@@ -319,13 +321,13 @@ const searchController = {
       });
 
       if (!deleted) {
-        return res.status(404).json({ error: 'Recherche sauvegardee introuvable.' });
+        return sendApiError(res, { status: 404, code: 'NOT_FOUND', message: 'Recherche sauvegardee introuvable.' });
       }
 
-      res.json({ success: true });
+      return sendApiSuccess(res, { success: true });
     } catch (error) {
-      console.error('Erreur deleteSavedSearch:', error);
-      res.status(500).json({ error: 'Erreur serveur' });
+      logger.error('delete_saved_search_failed', { error: error?.message || 'Unknown error' });
+      return sendApiError(res, { status: 500, code: 'SERVER_ERROR', message: 'Erreur serveur' });
     }
   },
 };

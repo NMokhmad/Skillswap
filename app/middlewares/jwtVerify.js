@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import { isApiRequest, sendApiError } from '../helpers/apiResponse.js';
 
 /**
  * Middleware strict : bloque l'accès si le JWT est absent ou invalide.
@@ -7,24 +8,33 @@ import jwt from 'jsonwebtoken';
  */
 export const verifyJWT = (req, res, next) => {
   const token = req.cookies.token;
+  const apiRequest = isApiRequest(req);
 
   if (!token) {
-    if (req.method === 'GET') {
+    if (!apiRequest && req.method === 'GET') {
       return res.redirect('/login');
     }
-    return res.status(401).json({ error: 'Accès non autorisé' });
+    return sendApiError(res, {
+      status: 401,
+      code: 'UNAUTHORIZED',
+      message: 'Acces non autorise',
+    });
   }
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
     next();
-  } catch (error) {
+  } catch {
     res.clearCookie('token');
-    if (req.method === 'GET') {
+    if (!apiRequest && req.method === 'GET') {
       return res.redirect('/login');
     }
-    return res.status(403).json({ error: 'Token invalide ou expiré' });
+    return sendApiError(res, {
+      status: 403,
+      code: 'FORBIDDEN',
+      message: 'Token invalide ou expire',
+    });
   }
 };
 
@@ -45,7 +55,7 @@ export const optionalJWT = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
-  } catch (error) {
+  } catch {
     req.user = null;
     res.clearCookie('token');
   }

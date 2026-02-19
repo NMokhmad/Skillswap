@@ -11,6 +11,7 @@
 7. [Ce qui doit être amélioré](#7-ce-qui-doit-être-amélioré)
 8. [Suivi des corrections](#8-suivi-des-corrections)
 9. [Mise à jour Phase 2/3](#9-mise-à-jour-phase-23)
+10. [Mise à jour Fiabilité/Qualité](#10-mise-à-jour-fiabilitéqualité)
 
 ---
 
@@ -397,7 +398,7 @@ L'utilisation de `method-override` avec `?_method=DELETE` dans les formulaires H
 | 11 | Nommage incohérent (fr/en) | Lisibilité du code | Choisir une langue et s'y tenir | ❌ À corriger |
 | 12 | Code cookie dupliqué | Maintenance plus difficile | Extraire un helper `setAuthCookies` | ❌ À corriger |
 | 13 | `sync({ alter: true })` en dev | Mauvaise habitude | Utiliser les migrations même en dev | ✅ Corrigé |
-| 14 | Timing attack au login | Fuite d'emails existants | Toujours exécuter argon2.verify | ❌ À corriger |
+| 14 | Timing attack au login | Fuite d'emails existants | Toujours exécuter argon2.verify | ✅ Corrigé |
 | 15 | Seed data invalide (rate=0) | Seed échoue | Corriger à rate >= 1 | ✅ Corrigé |
 | 16 | Notification model inutilisé | Code mort | Implémenter ou supprimer | ✅ Corrigé |
 
@@ -450,10 +451,10 @@ Ce projet a atteint un **bon niveau de qualité** après trois passes de correct
 Les axes d'amélioration restants sont :
 
 1. **SSL `rejectUnauthorized: true`** en production
-2. **Tests d'intégration** (Supertest + base de test)
+2. **Tests d'intégration DB réelle** (la suite HTTP est en place, mais sans base dédiée)
 3. **Nommage cohérent** (choisir une langue)
 4. **Code cookie JWT dupliqué** (factoriser un helper)
-5. **Timing attack au login** (risque faible)
+5. **Durcir la couverture E2E Socket.IO** (actuellement validé surtout en manuel)
 
 **Note de qualité globale : 🟢 Bon**
 
@@ -476,3 +477,197 @@ La v2 (messagerie WebSocket, notifications, recherche avancée) est désormais i
 - Une base existante doit recevoir les migrations SQL (`migration_v2.sql`, `migration_v3.sql`) avant d'utiliser les nouveaux modèles.
 - `sequelize.sync({ alter: true })` peut casser en présence de données existantes (cas réel: `role.updated_at` NULL) ; éviter cette stratégie sur environnement partagé.
 - Documenter explicitement l'ordre d'upgrade DB évite les erreurs runtime du type "colonne inexistante".
+
+---
+
+## 10. Mise à jour Fiabilité/Qualité
+
+### Contexte et objectif
+
+Le plan "Fiabilité/Qualité orientée démo" a été exécuté pour améliorer la crédibilité technique du projet:
+
+- rendre les erreurs API lisibles et traçables;
+- éviter les régressions sur les parcours critiques;
+- disposer d'une démonstration reproductible;
+- poser une base réaliste pour un environnement de production.
+
+Ce n'est pas une refonte d'architecture. L'objectif était d'augmenter la **qualité opérationnelle** sans casser les fonctionnalités existantes (messagerie, notifications, recherche).
+
+### 10.1 Architecture runtime: séparation app/serveur
+
+Refactor principal:
+
+- `app/createApp.js` construit l'application Express (middlewares, router, erreurs).
+- `index.js` orchestre le runtime (HTTP server, Socket.IO, auth socket, boot).
+
+Pourquoi c'est mieux:
+
+- meilleure testabilité (on peut instancier l'app sans démarrer le serveur réseau);
+- responsabilités plus claires;
+- réduction des effets de bord au démarrage.
+
+Leçon:
+
+> La séparation "construction d'app" vs "process de démarrage" est un gain rapide en maintenabilité, même sur un projet junior.
+
+### 10.2 Contrat d'erreurs API et corrélation des requêtes
+
+Standardisation mise en place:
+
+- format unique: `error.code`, `error.message`, `error.requestId`;
+- helper central: `app/helpers/apiResponse.js`;
+- middleware `requestId` qui:
+  - reprend `X-Request-Id` si fourni;
+  - sinon génère un UUID;
+  - renvoie toujours ce header en réponse.
+
+Routes santé ajoutées:
+
+- `GET /healthz` (liveness);
+- `GET /readyz` (readiness + check DB).
+
+Bénéfice direct:
+
+- un front peut parser les erreurs de manière déterministe;
+- un log backend peut être corrélé à un bug utilisateur grâce au `requestId`;
+- monitoring simplifié (health checks clairs).
+
+### 10.3 Observabilité pragmatique
+
+Ce qui a été intégré:
+
+- logger JSON (`app/helpers/logger.js`);
+- log de chaque requête (`requestId`, route, status, durée, userId si présent);
+- capture Sentry optionnelle (`app/helpers/sentry.js`) avec fallback safe.
+
+Décision importante:
+
+- Sentry est "best effort": si le package n'est pas installé, l'app continue.
+
+Pourquoi ce choix:
+
+- éviter de bloquer le développement local;
+- permettre l'activation progressive en staging/prod.
+
+### 10.4 Sécurité: correctifs à fort rendement
+
+1. **Timing attack login**
+- avant: chemin rapide si email absent;
+- après: vérification Argon2 toujours exécutée via hash factice.
+- impact: pas de leak évident sur l'existence d'un compte.
+
+2. **SSL base de données**
+- ajout de `ENABLE_STRICT_DB_SSL` + `DATABASE_SSL_CA`;
+- mode strict possible (`rejectUnauthorized: true`) sans modifier le code.
+
+3. **Validation Socket.IO**
+- validations dédiées pour `message:send`, `message:typing`, `message:read`;
+- normalisation des erreurs métier envoyées au client (`message:error`).
+
+4. **Sync Sequelize**
+- `sequelize.sync()` n'est plus exécuté automatiquement au démarrage;
+- activation explicite via `ENABLE_SEQUELIZE_SYNC=true`.
+
+Leçon:
+
+> Les gains sécurité les plus utiles en portfolio ne sont pas "théoriques"; ce sont des points visibles en revue de code et en incident réel.
+
+### 10.5 Stratégie de tests: montée en maturité
+
+Nouveaux tests unitaires:
+
+- `requestId` middleware;
+- validation payload Socket.IO;
+- mitigation timing attack sur login.
+
+Mise à jour des tests existants:
+
+- alignement sur le nouveau contrat d'erreur API JSON.
+
+Tests d'intégration ajoutés (`tests_integration/`):
+
+- contrat API;
+- santé (`healthz`, `readyz`);
+- scénarios métiers notifications/messages/recherche/saved-search avec ownership.
+
+Résultat actuel:
+
+- unitaires: **51 tests**;
+- intégration: **12 tests**;
+- exécution globale: `npm run test:all` vert.
+
+Leçon importante:
+
+- dans un environnement sandbox, les tests réseau "vrais" peuvent échouer (`listen EPERM`);
+- fallback adopté: intégration contrôleur + middleware sans port réseau, mais couvrant le comportement métier.
+
+### 10.6 CI bloquante
+
+Workflow ajouté: `.github/workflows/ci.yml`
+
+Étapes:
+
+1. `npm ci`
+2. `npm run lint`
+3. `npm test -- --runInBand`
+4. `npm run test:integration`
+5. `npm run ci:check:migrations`
+
+Scripts qualité introduits:
+
+- `npm run lint`
+- `npm run test:all`
+- `npm run ci:check`
+
+Bénéfice:
+
+- qualité vérifiée automatiquement sur PR;
+- diminution du risque de merge cassant.
+
+### 10.7 Packaging démo et storytelling technique
+
+Livrables:
+
+- runbook: `docs/demo-runbook.md`;
+- scripts:
+  - `npm run demo:setup`
+  - `npm run demo:reset`
+  - `npm run demo:smoke`
+
+Points couverts par le smoke:
+
+- health endpoint;
+- endpoint recherche public;
+- endpoint protégé notifications si credentials fournis.
+
+Leçon:
+
+> Une démo reproductible en 3 commandes vaut plus qu'une longue explication sur "ce qui marche chez moi".
+
+### 10.8 Arbitrages et limites connues
+
+Ce qui a volontairement été laissé hors scope:
+
+- pas de migration vers SPA/microservices;
+- pas d'OpenTelemetry complet;
+- pas de tests E2E navigateur (Playwright/Cypress) pour ce lot.
+
+Limites restantes:
+
+1. SSL strict DB doit être activé en environnement réel avec CA valide.
+2. Couverture Socket.IO encore majoritairement validation + manuel, pas full E2E.
+3. Nommage FR/EN encore mixte dans certains modules legacy.
+4. Factorisation possible des cookies JWT (register/login).
+
+### 10.9 Ce que ce lot prouve en entretien
+
+Compétences démontrables:
+
+- savoir prioriser les risques (fiabilité > features "cosmétiques");
+- transformer des problèmes flous en garde-fous concrets (tests + CI + runbook);
+- améliorer la sécurité sans bloquer la livraison;
+- travailler incrémentalement avec un système existant.
+
+Message recruteur:
+
+> Le projet ne se contente plus de "fonctionner". Il est instrumenté, testable, et démontrable de manière reproductible.

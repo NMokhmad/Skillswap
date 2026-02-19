@@ -2,6 +2,10 @@ import argon2 from 'argon2';
 import { User } from '../models/User.js';
 import { userCreateSchema, userLoginSchema } from '../schemas/user.schema.js';
 import jwt from 'jsonwebtoken';
+import { logger } from '../helpers/logger.js';
+
+// Hash factice utilisé pour limiter le timing oracle sur email inexistant.
+const DUMMY_PASSWORD_HASH = '$argon2id$v=19$m=65536,t=3,p=4$iN7ouafNW6UO+9K2h7QTMw$Sy8gwZycADw9UKvHhU3JB8xJlxzvk5y6sb8LXuT2f0s';
 
 const authController = {
   renderRegisterPage(req, res, errors = {}, formData = {}) {
@@ -71,7 +75,7 @@ const authController = {
         });
       }
 
-      console.error(error);
+      logger.error('register_failed', { error: error?.message || 'Unknown error' });
       res.status(500).send("Erreur du serveur");
     }
   },
@@ -87,7 +91,9 @@ const authController = {
         where: { email }
       });
 
-      if (!user || !await argon2.verify(user.password, password)) {
+      const hashToVerify = user?.password || DUMMY_PASSWORD_HASH;
+      const passwordValid = await argon2.verify(hashToVerify, password);
+      if (!user || !passwordValid) {
         return res.render('login', { title, cssFile, error: 'Email ou mot de passe incorrect' });
       }
 
@@ -106,7 +112,7 @@ const authController = {
       res.redirect('/');
 
     } catch (error) {
-      console.error(error);
+      logger.error('login_failed', { error: error?.message || 'Unknown error' });
       res.status(500).send('Erreur du serveur');
     }
   },

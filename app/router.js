@@ -9,10 +9,14 @@ import reviewController from "./controllers/reviewController.js";
 import messageController from "./controllers/messageController.js";
 import notificationController from "./controllers/notificationController.js";
 import searchController from "./controllers/searchController.js";
+import healthController from "./controllers/healthController.js";
 import { verifyJWT, optionalJWT } from "./middlewares/jwtVerify.js";
 import { uploadAvatar } from "./middlewares/upload.js";
 
 const router = Router();
+
+router.get("/healthz", healthController.liveness);
+router.get("/readyz", healthController.readiness);
 
 // ============================================
 // Routes publiques (optionalJWT pour savoir si un user est connecté)
