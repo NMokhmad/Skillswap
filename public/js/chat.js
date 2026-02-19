@@ -11,7 +11,10 @@
 
   if (!currentUserId || !otherUserId || !messagesContainer || !form || !input) return;
 
-  const socket = window.skillSwapSocket || (typeof io !== 'undefined' ? io({ withCredentials: true }) : null);
+  const socket = window.skillSwapSocket || (typeof io !== 'undefined' ? io({
+    withCredentials: true,
+    transports: ['websocket'],
+  }) : null);
   if (!socket) return;
   window.skillSwapSocket = socket;
 

@@ -4,6 +4,7 @@ import rateLimit from 'express-rate-limit';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import methodeOverride from 'method-override';
+import { randomBytes } from 'crypto';
 import router from './router.js';
 import { sanitize } from './middlewares/sanitizeHtml.js';
 import { userInfo } from './middlewares/userInfoCookie.js';
@@ -20,11 +21,20 @@ export function createApp() {
     app.set('trust proxy', 1);
   }
 
+  app.use((req, res, next) => {
+    res.locals.cspNonce = randomBytes(16).toString('base64');
+    next();
+  });
+
   app.use(helmet({
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", "https://kit.fontawesome.com"],
+        scriptSrc: [
+          "'self'",
+          "https://kit.fontawesome.com",
+          (req, res) => `'nonce-${res.locals.cspNonce}'`,
+        ],
         styleSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net/", "https://cdnjs.cloudflare.com/", "https://ka-f.fontawesome.com", "https://fonts.googleapis.com"],
         fontSrc: ["'self'", "https://ka-f.fontawesome.com", "https://cdnjs.cloudflare.com/", "https://fonts.gstatic.com"],
         connectSrc: ["'self'", "https://ka-f.fontawesome.com", "ws:", "wss:"],

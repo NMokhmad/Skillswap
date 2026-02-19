@@ -142,7 +142,7 @@
 </nav>
 
 <% if (user) { %>
-<script>
+<script nonce="<%= cspNonce %>">
   window.currentUserId = <%= user.id %>;
 
   // Charger le badge de notifications non lues

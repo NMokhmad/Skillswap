@@ -97,7 +97,7 @@
     </section>
 </main>
 
-<script>
+<script nonce="<%= cspNonce %>">
   window.SEARCH_CONFIG = {
     initialQuery: <%- JSON.stringify(initialQuery || '') %>,
     isAuthenticated: <%= user ? 'true' : 'false' %>

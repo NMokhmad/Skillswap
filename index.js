@@ -19,7 +19,8 @@ const io = new Server(server, {
   cors: {
     origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
     credentials: true
-  }
+  },
+  transports: ['websocket'],
 });
 
 // Authentification Socket.IO via cookie JWT

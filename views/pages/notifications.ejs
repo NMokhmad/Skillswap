@@ -132,7 +132,7 @@
     </div>
 </main>
 
-<script>
+<script nonce="<%= cspNonce %>">
   // Marquer une notification comme lue
   document.querySelectorAll('.notif-read-btn').forEach(btn => {
     btn.addEventListener('click', async () => {

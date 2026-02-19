@@ -3,7 +3,10 @@
   if (typeof io === 'undefined') return;
   if (!window.currentUserId) return;
 
-  const socket = window.skillSwapSocket || io({ withCredentials: true });
+  const socket = window.skillSwapSocket || io({
+    withCredentials: true,
+    transports: ['websocket'],
+  });
   window.skillSwapSocket = socket;
 
   if (window.__skillSwapSocketInitialized) return;

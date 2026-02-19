@@ -344,7 +344,7 @@
 
 <script src="/js/follow.js"></script>
 <script src="/js/review.js"></script>
-<script>
+<script nonce="<%= cspNonce %>">
     const toggleBtn = document.getElementById('btn-toggle-review-form');
     const formContainer = document.getElementById('review-form-container');
     if (toggleBtn && formContainer) {
