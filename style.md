@@ -176,6 +176,7 @@ Préfixe `ss-` + identifiant de page + composant :
 | Login      | `ss-login-`  |
 | Talents    | `ss-tal-`    |
 | Skills     | `ss-sk-`     |
+| Mon Profil | `ss-profil-` |
 
 ---
 
