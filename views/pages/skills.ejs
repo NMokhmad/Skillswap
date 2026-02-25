@@ -1,193 +1,99 @@
 <%- include('../partials/header.ejs') %>
 </head>
-<%- include('../partials/navbar.ejs') %>
 
-<main class="section skills-page-bg">
-    <div class="container">
+<body>
+    <%- include('../partials/navbar.ejs') %>
 
-        <!-- En-tete de la page avec style moderne -->
-        <div class="box has-text-centered mb-6 p-6 skills-header-banner">
+    <div class="ss-sk-page">
 
-            <!-- Effet de brillance -->
-            <div class="skills-header-shine"></div>
-
-            <!-- Contenu de l'en-tete -->
-            <div class="skills-header-content">
-                <div class="mb-4">
-                    <span class="icon is-large has-text-light skills-header-icon">
-                        <i class="fa-solid fa-graduation-cap"></i>
-                    </span>
+        <!-- Header -->
+        <header class="ss-sk-header">
+            <h1 class="ss-sk-title">Nos <em>compétences</em></h1>
+            <p class="ss-sk-subtitle">Découvrez toutes les compétences disponibles sur SkillSwap</p>
+            <div class="ss-sk-stats">
+                <div class="ss-sk-stat-box">
+                    <span class="ss-sk-stat-num"><%= skills.length %></span>
+                    <span class="ss-sk-stat-label">Compétences</span>
                 </div>
-
-                <h1 class="title is-1 has-text-light has-text-weight-bold mb-3">
-                    Nos Compétences
-                </h1>
-
-                <p class="subtitle is-4 has-text-light mb-4 skills-subtitle-text">
-                    Découvrez toutes les compétences disponibles sur SkillSwap
-                </p>
-
-                <!-- Statistiques rapides -->
-                <div class="is-flex is-justify-content-center is-flex-wrap-wrap skills-stats-row">
-                    <div class="skills-stat-box">
-                        <p class="title is-3 has-text-light mb-1"><%= skills.length %></p>
-                        <p class="subtitle is-6 has-text-light mb-0 skills-stat-label">Compétences</p>
-                    </div>
-                    <div class="skills-stat-box">
-                        <p class="title is-3 has-text-light mb-1"><%= totalUsers %></p>
-                        <p class="subtitle is-6 has-text-light mb-0 skills-stat-label">Talents</p>
-                    </div>
+                <div class="ss-sk-stat-box">
+                    <span class="ss-sk-stat-num"><%= totalUsers %></span>
+                    <span class="ss-sk-stat-label">Talents</span>
                 </div>
             </div>
-        </div>
+        </header>
 
-        <!-- Barre de recherche : filtrage côté client -->
-        <div class="mb-5 p-4 skills-search-box">
-            <div class="field has-addons">
-                <div class="control is-expanded">
-                    <input id="skills-search" class="input text is-medium skills-search-input" type="text" placeholder="Rechercher une compétence...">
-                </div>
-                <div class="control">
-                    <button class="button is-medium skills-search-btn" disabled>
-                        <span class="icon">
-                            <i class="fa-solid fa-search"></i>
-                        </span>
-                        <span>Rechercher</span>
-                    </button>
-                </div>
+        <!-- Body -->
+        <div class="ss-sk-body">
+
+            <!-- Search -->
+            <div class="ss-sk-search-wrap">
+                <i class="fas fa-search"></i>
+                <input
+                    class="ss-sk-search"
+                    type="text"
+                    id="skills-search"
+                    placeholder="Rechercher une compétence..."
+                    autocomplete="off"
+                >
             </div>
-        </div>
 
-        <!-- Grille de competences avec couleurs variees -->
-        <div class="columns is-multiline">
-            <% skills.forEach((skill, index) => {
-                const variantIndex = index % 6;
-                %>
-                <div class="column is-one-third-desktop is-half-tablet is-full-mobile">
-                    <a href="/skills/<%= skill.slug %>" class="skills-card-link">
-                        <div class="box skill-card has-text-centered p-5 skills-card-variant-<%= variantIndex %>">
+            <!-- Grid -->
+            <div class="ss-sk-grid">
+                <% skills.forEach((skill) => { %>
+                    <a href="/skills/<%= skill.slug %>" class="ss-sk-card-link">
+                        <div class="ss-sk-card">
 
-                            <!-- Effet de fond gradient au hover -->
-                            <div class="card-gradient-bg skills-gradient-bg-<%= variantIndex %>"></div>
-
-                            <!-- Badge compteur (optionnel) -->
-                            <div class="skills-badge-wrapper">
-                                <span class="tag is-medium skills-badge-<%= variantIndex %>">
-                                    <span class="icon is-small">
-                                        <i class="fa-solid fa-users"></i>
-                                    </span>
-                                    <span><%= skill.users ? skill.users.length : 0 %></span>
-                                </span>
+                            <!-- Badge -->
+                            <div class="ss-sk-badge">
+                                <i class="fas fa-users"></i>
+                                <span><%= skill.users ? skill.users.length : 0 %></span>
                             </div>
 
-                            <!-- Contenu de la carte -->
-                            <div class="skills-card-content">
-                                <!-- Icone circulaire -->
-                                <div class="skill-icon mb-4">
-                                    <div class="skills-icon-circle skills-icon-circle-<%= variantIndex %>">
-                                        <span class="icon is-large skills-icon-glyph skills-icon-glyph-<%= variantIndex %>">
-                                            <i class="fa-solid <%= skill.icon %>"></i>
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <!-- Titre de la competence -->
-                                <h2 class="title is-5 has-text-weight-bold mb-3 skill-title">
-                                    <%= skill.label %>
-                                </h2>
-
-                                <!-- Note moyenne et popularite -->
-                                <div class="mb-3">
-                                    <span class="icon-text is-justify-content-center">
-                                        <span class="skills-star-icon">
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star-half-stroke"></i>
-                                        </span>
-                                        <span class="has-text-weight-semibold skills-rating-text">4.5</span>
-                                    </span>
-                                </div>
-
-                                <!-- Tags de categorie -->
-                                <div class="tags are-small is-justify-content-center">
-                                    <% if (index % 3 === 0) { %>
-                                        <span class="tag skill-tag skills-tag-popular">
-                                            <span class="icon is-small">
-                                                <i class="fa-solid fa-fire"></i>
-                                            </span>
-                                            <span>Populaire</span>
-                                        </span>
-                                    <% } %>
-                                    <% if (index % 4 === 0) { %>
-                                        <span class="tag skill-tag skills-tag-trending">
-                                            <span class="icon is-small">
-                                                <i class="fa-solid fa-rocket"></i>
-                                            </span>
-                                            <span>Tendance</span>
-                                        </span>
-                                    <% } %>
-                                </div>
-
-                                <!-- CTA au hover -->
-                                <div class="skill-cta mt-4">
-                                    <button class="button is-small is-rounded skills-cta-btn">
-                                        Voir les talents
-                                        <span class="icon is-small ml-1">
-                                            <i class="fa-solid fa-arrow-right"></i>
-                                        </span>
-                                    </button>
-                                </div>
+                            <!-- Icon -->
+                            <div class="ss-sk-icon-wrap">
+                                <i class="fas <%= skill.icon %>"></i>
                             </div>
+
+                            <!-- Label -->
+                            <h2 class="ss-sk-label"><%= skill.label %></h2>
+
+                            <!-- CTA -->
+                            <span class="ss-sk-cta">Voir les talents →</span>
+
                         </div>
                     </a>
-                </div>
-            <% }) %>
-        </div>
-
-        <!-- Section CTA en bas de page -->
-        <div class="box has-text-centered mt-6 p-6 skills-bottom-cta">
-            <div class="mb-4">
-                <span class="icon is-large skills-bottom-cta-icon">
-                    <i class="fa-solid fa-lightbulb"></i>
-                </span>
+                <% }) %>
             </div>
 
-            <h3 class="title is-4 has-text-weight-bold skills-bottom-cta-title">Vous ne trouvez pas la compétence que vous cherchez ?</h3>
-            <p class="subtitle is-5 mb-5 skills-bottom-cta-subtitle">
-                Proposez-nous de nouvelles compétences à ajouter à notre catalogue !
-            </p>
+            <!-- Bottom CTA -->
+            <div class="ss-sk-bottom-cta">
+                <p class="ss-sk-bottom-cta-title">Vous ne trouvez pas votre compétence ?</p>
+                <p class="ss-sk-bottom-cta-text">Connectez-vous pour proposer de nouvelles compétences à notre catalogue.</p>
+                <a href="/login" class="ss-sk-bottom-cta-btn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Se connecter
+                </a>
+            </div>
 
-            <button class="button is-large skills-bottom-cta-btn">
-                <span class="icon">
-                    <i class="fa-solid fa-plus"></i>
-                </span>
-                <span>Proposer une compétence</span>
-            </button>
-        </div>
+        </div><!-- /.ss-sk-body -->
 
-    </div>
-</main>
+    </div><!-- /.ss-sk-page -->
 
-<script nonce="<%= cspNonce %>">
-  // Filtrage côté client des compétences
-  const searchInput = document.getElementById('skills-search');
-  const cards = document.querySelectorAll('.columns.is-multiline > .column');
+    <script nonce="<%= cspNonce %>">
+      const searchInput = document.getElementById('skills-search');
+      const cards = document.querySelectorAll('.ss-sk-grid .ss-sk-card-link');
 
-  searchInput.addEventListener('input', () => {
-    const query = searchInput.value.toLowerCase().trim();
-    cards.forEach(card => {
-      const title = card.querySelector('.skill-title');
-      if (title) {
-        const match = title.textContent.toLowerCase().includes(query);
-        card.style.display = match ? '' : 'none';
-      }
-    });
-  });
-</script>
+      searchInput.addEventListener('input', () => {
+        const query = searchInput.value.toLowerCase().trim();
+        cards.forEach(card => {
+          const label = card.querySelector('.ss-sk-label');
+          if (label) {
+            card.style.display = label.textContent.toLowerCase().includes(query) ? '' : 'none';
+          }
+        });
+      });
+    </script>
 
-<%- include('../partials/footer.ejs') %>
-
+    <%- include('../partials/footer.ejs') %>
 </body>
 </html>
