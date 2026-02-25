@@ -182,6 +182,7 @@ Préfixe `ss-` + identifiant de page + composant :
 | Compétence (détail) | `ss-sp-`     |
 | Notifications       | `ss-notif-`  |
 | Messages            | `ss-msg-`    |
+| Conversation        | `ss-conv-`   |
 
 ---
 
