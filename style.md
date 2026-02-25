@@ -177,6 +177,7 @@ Préfixe `ss-` + identifiant de page + composant :
 | Talents    | `ss-tal-`    |
 | Skills     | `ss-sk-`     |
 | Mon Profil | `ss-profil-` |
+| Aide       | `ss-help-`   |
 
 ---
 
