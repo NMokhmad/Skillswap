@@ -1,103 +1,203 @@
+# SkillSwap — Style Guide « Noir Académique »
 
+## Couleurs
 
+| Token            | Valeur                       | Usage                          |
+|------------------|------------------------------|--------------------------------|
+| `--bg`           | `#0C1E1C`                    | Fond de page                   |
+| `--card`         | `rgba(14, 34, 32, 0.72)`     | Fond carte glass               |
+| `--border`       | `rgba(212, 146, 42, 0.18)`   | Bordure carte (repos)          |
+| `--border-hover` | `rgba(212, 146, 42, 0.35)`   | Bordure carte (hover)          |
+| `--amber`        | `#D4922A`                    | Accent principal               |
+| `--amber-h`      | `#E8A63C`                    | Accent hover                   |
+| `--cream`        | `#F7F2E8`                    | Texte principal                |
+| `--cream-muted`  | `rgba(247, 242, 232, 0.65)`  | Texte secondaire               |
+| `--cream-dim`    | `rgba(247, 242, 232, 0.40)`  | Placeholder / texte tertiaire  |
+| `--error`        | `rgba(220, 80, 80, 0.55)`    | Bordure erreur                 |
+| `--error-bg`     | `rgba(220, 80, 80, 0.08)`    | Fond erreur                    |
 
+---
 
-<button class="button is-link">Link</button>
+## Typographie
 
+| Rôle           | Police             | Style                  |
+|----------------|--------------------|------------------------|
+| Titres `h1–h3` | Cormorant Garamond | italic, weight 600     |
+| Corps / UI     | Outfit             | normal, weight 400–600 |
 
+```css
+/* Titre de page */
+font-family: 'Cormorant Garamond', serif;
+font-size: clamp(2rem, 5vw, 3rem);
+font-weight: 600;
+font-style: italic;
+color: #D4922A;
 
+/* Sous-titre */
+font-family: 'Outfit', sans-serif;
+font-size: 1rem;
+color: rgba(247, 242, 232, 0.65);
 
-<div class="notification">
-  <button class="delete"></button>
-  Lorem ipsum dolor sit amet, consectetur adipiscing elit lorem ipsum dolor.
-  <strong>Pellentesque risus mi</strong>, tempus quis placerat ut, porta nec
-  nulla. Vestibulum rhoncus ac ex sit amet fringilla. Nullam gravida purus diam,
-  et dictum <a>felis venenatis</a> efficitur.
-</div>
+/* Label UI (boutons, champs) */
+font-family: 'Outfit', sans-serif;
+font-size: 0.88rem;
+font-weight: 600;
+```
 
+---
 
+## Carte Glass
 
+Patron commun à toutes les pages (register, onboarding, login, talents, skills).
 
+```css
+background: rgba(14, 34, 32, 0.72);
+border: 1px solid rgba(212, 146, 42, 0.18);
+border-radius: 14px;
+backdrop-filter: blur(16px) saturate(1.4);
+transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+```
 
-// Dispo 
+Hover :
+```css
+transform: translateY(-6px);
+border-color: rgba(212, 146, 42, 0.35);
+box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+```
 
-<span class="tag is-success">Success</span>
+---
 
-// Non dispo 
+## Composants récurrents
 
-<span class="tag is-danger">Danger</span>
+### Bouton primaire (amber plein)
+```css
+background: #D4922A;
+color: #0C1E1C;
+border: none;
+border-radius: 8px;
+font-family: 'Outfit', sans-serif;
+font-weight: 700;
+padding: 0.75rem 1rem;
+transition: background 0.2s ease, transform 0.2s ease;
+```
+Hover : `background: #E8A63C; transform: translateY(-1px)`
 
+### Bouton secondaire (outline amber)
+```css
+background: transparent;
+border: 1px solid #D4922A;
+color: #D4922A;
+border-radius: 8px;
+font-family: 'Outfit', sans-serif;
+font-weight: 600;
+```
+Hover : `background: #D4922A; color: #0C1E1C`
 
-// Page recherche par profil 
+### Champ de formulaire
+```css
+background: rgba(14, 34, 32, 0.50);
+border: 1px solid rgba(212, 146, 42, 0.20);
+border-radius: 8px;
+color: #F7F2E8;
+font-family: 'Outfit', sans-serif;
+padding: 0.65rem 0.9rem;
+```
+Focus : `border-color: rgba(212, 146, 42, 0.55); outline: none`
 
-<div class="card">
-  <div class="card-image">
-    <figure class="image is-4by3">
-      <img
-        src="https://bulma.io/assets/images/placeholders/1280x960.png"
-        alt="Placeholder image"
-      />
-    </figure>
-  </div>
-  <div class="card-content">
-    <div class="media">
-      <div class="media-left">
-        <figure class="image is-48x48">
-          <img
-            src="https://bulma.io/assets/images/placeholders/96x96.png"
-            alt="Placeholder image"
-          />
-        </figure>
-      </div>
-      <div class="media-content">
-        <p class="title is-4">John Smith</p>
-        <p class="subtitle is-6">@johnsmith</p>
-      </div>
-    </div>
+### Pill / tag
+```css
+border: 1px solid rgba(212, 146, 42, 0.30);
+border-radius: 20px;
+padding: 0.25rem 0.75rem;
+font-size: 0.75rem;
+color: rgba(247, 242, 232, 0.75);
+font-family: 'Outfit', sans-serif;
+```
+Hover : `background: #D4922A; color: #0C1E1C; border-color: #D4922A`
 
-    <div class="content">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec
-      iaculis mauris. <a>@bulmaio</a>. <a href="#">#css</a>
-      <a href="#">#responsive</a>
-      <br />
-      <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
-    </div>
-  </div>
-</div>
+### Séparateur de sections
+```css
+border: none;
+border-top: 1px solid rgba(212, 146, 42, 0.15);
+margin: 2rem 0;
+```
 
-//////
+---
 
-Page de profil, pour pouvoir save/edit/delete
+## Header de page (listing)
 
-<div class="card">
-  <footer class="card-footer">
-    <a href="#" class="card-footer-item">Save</a>
-    <a href="#" class="card-footer-item">Edit</a>
-    <a href="#" class="card-footer-item">Delete</a>
-  </footer>
-</div>
+```css
+background: rgba(14, 34, 32, 0.60);
+border-bottom: 1px solid rgba(212, 146, 42, 0.15);
+padding: 4rem 1.5rem;
+text-align: center;
+```
 
-pagination : (Pour la recherche de profil)
+Stat-box dans le header :
+```css
+background: rgba(14, 34, 32, 0.72);
+border: 1px solid rgba(212, 146, 42, 0.18);
+border-radius: 12px;
+padding: 0.75rem 1.75rem;
+backdrop-filter: blur(10px);
+```
 
-https://bulma.io/documentation/components/pagination/
+---
 
-///
+## Grille (pages listing)
 
-Acceuil : (Pour la navbar d'acceuil)
+```css
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 1.5rem;
+max-width: 1200px;
+margin: 0 auto;
+```
 
-https://bulma.io/documentation/components/tabs/
+| Breakpoint  | Colonnes |
+|-------------|----------|
+| `> 900px`   | 3        |
+| `600–900px` | 2        |
+| `< 600px`   | 1        |
 
-///
+---
 
-Optionnel : (https://bulma.io/documentation/form/general/)
+## Nomenclature des classes
 
-///
+Préfixe `ss-` + identifiant de page + composant :
 
-Upload image pour profil : https://bulma.io/documentation/form/file/
+| Page       | Préfixe      |
+|------------|--------------|
+| Navbar     | `ss-nav-`    |
+| Footer     | `ss-footer-` |
+| Homepage   | `ss-hero-`   |
+| Register   | `ss-reg-`    |
+| Onboarding | `ss-ob-`     |
+| Login      | `ss-login-`  |
+| Talents    | `ss-tal-`    |
+| Skills     | `ss-sk-`     |
 
-///
-Pour le footer et header : https://bulma.io/documentation/layout/hero/ [Badia]
-Pour la page aide : https://bulma.io/documentation/columns/sizes/ [badia]
+---
 
-///
-https://bulma.io/documentation/layout/media-object/ (Pour les avis)
+## Responsive — règles générales
+
+```css
+@media (max-width: 900px) { /* tablette */ }
+@media (max-width: 600px) { /* mobile */ }
+@media (max-width: 480px) { /* petit mobile */ }
+```
+
+Utiliser `clamp()` pour les tailles de police :
+```css
+font-size: clamp(1.6rem, 4vw, 2.5rem);
+```
+
+---
+
+## Conventions CSS
+
+- Pas de Bulma. CSS pur uniquement (Grid, Flexbox, Custom Properties).
+- Variables CSS définies dans `:root` ou localement sur le composant.
+- Pas de `!important` sauf héritage Bulma résiduel à écraser (migration en cours).
+- JS inline avec `nonce="<%= cspNonce %>"` pour tous les scripts de page.
+- Pas de fichiers JS externes pour les pages auth (register, onboarding, login).
