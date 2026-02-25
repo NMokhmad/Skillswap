@@ -1,91 +1,81 @@
 <%- include('../partials/header.ejs') %>
-<script src="https://kit.fontawesome.com/626daf36fc.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
 <%- include('../partials/navbar.ejs') %>
 
 <main
-    class="section conv-main"
+    class="ss-conv-main"
     id="conversation-page"
     data-current-user-id="<%= currentUserId %>"
     data-other-user-id="<%= otherUser.id %>"
 >
-    <div class="container">
-        <div class="columns is-centered">
-            <div class="column is-8">
+    <div class="ss-conv-container">
 
-                <!-- En-tete de la conversation -->
-                <div class="box mb-4 conv-header">
-                    <div class="is-flex is-align-items-center">
-                        <a href="/messages" class="mr-4 conv-back-link">
-                            <span class="icon is-medium">
-                                <i class="fas fa-arrow-left fa-lg"></i>
-                            </span>
-                        </a>
-                        <div class="conv-avatar">
-                            <span class="conv-avatar-initials">
-                                <%= otherUser.firstname.charAt(0).toUpperCase() %><%= otherUser.lastname.charAt(0).toUpperCase() %>
-                            </span>
-                        </div>
-                        <div class="ml-3">
-                            <a href="/talents/<%= otherUser.id %>" class="has-text-weight-bold conv-user-link">
-                                <%= otherUser.firstname %> <%= otherUser.lastname %>
-                            </a>
-                        </div>
+        <!-- Header -->
+        <div class="ss-conv-header">
+            <a href="/messages" class="ss-conv-back">
+                <i class="fas fa-arrow-left"></i>
+                Retour
+            </a>
+            <div class="ss-conv-avatar">
+                <span class="ss-conv-avatar-initials">
+                    <%= otherUser.firstname.charAt(0).toUpperCase() %><%= otherUser.lastname.charAt(0).toUpperCase() %>
+                </span>
+            </div>
+            <a href="/talents/<%= otherUser.id %>" class="ss-conv-user-link">
+                <%= otherUser.firstname %> <%= otherUser.lastname %>
+            </a>
+        </div>
+
+        <!-- Messages -->
+        <div class="ss-conv-messages-box" id="messages-container">
+            <% if (messages.length === 0) { %>
+                <p class="ss-conv-empty">
+                    Aucun message. Commencez la conversation !
+                </p>
+            <% } %>
+
+            <% messages.forEach(msg => { %>
+                <% const isMine = msg.sender_id === currentUserId; %>
+                <div class="ss-conv-message-row <%= isMine ? 'ss-conv-message-row--mine' : 'ss-conv-message-row--theirs' %>" data-message-id="<%= msg.id %>">
+                    <div class="ss-conv-bubble <%= isMine ? 'ss-conv-bubble--mine' : 'ss-conv-bubble--theirs' %>">
+                        <p class="ss-conv-bubble-text"><%= msg.content %></p>
+                        <p class="ss-conv-bubble-time">
+                            <%= new Date(msg.created_at).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) %>
+                        </p>
                     </div>
                 </div>
-
-                <!-- Messages -->
-                <div class="box conv-messages-container" id="messages-container">
-                    <% if (messages.length === 0) { %>
-                        <p class="has-text-centered has-text-grey conv-empty-message">
-                            Aucun message. Commencez la conversation !
-                        </p>
-                    <% } %>
-
-                    <% messages.forEach(msg => { %>
-                        <% const isMine = msg.sender_id === currentUserId; %>
-                        <div class="mb-4 conv-message-row <%= isMine ? 'conv-message-row-mine' : 'conv-message-row-theirs' %>" data-message-id="<%= msg.id %>">
-                            <div class="conv-bubble <%= isMine ? 'conv-bubble-mine' : 'conv-bubble-theirs' %>">
-                                <p class="conv-bubble-text"><%= msg.content %></p>
-                                <p class="is-size-7 mt-1 conv-bubble-time">
-                                    <%= new Date(msg.created_at).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) %>
-                                </p>
-                            </div>
-                        </div>
-                    <% }) %>
-                </div>
-                <div id="typing-indicator" class="conv-typing-indicator" hidden>
-                    <span class="icon is-small"><i class="fas fa-pen"></i></span>
-                    <span><%= otherUser.firstname %> est en train d'ecrire...</span>
-                </div>
-
-                <!-- Formulaire d'envoi -->
-                <div class="box mt-4 conv-send-box">
-                    <form action="/messages/<%= otherUser.id %>" method="POST" id="message-form">
-                        <div class="field has-addons message-field">
-                            <div class="control is-expanded">
-                                <input class="input is-medium conv-message-input" id="message-input" type="text" name="content" placeholder="Ecrire un message..." required autocomplete="off">
-                            </div>
-                            <div class="control">
-                                <button type="submit" class="button is-medium conv-send-btn" id="message-submit">
-                                    <span class="icon">
-                                        <i class="fas fa-paper-plane"></i>
-                                    </span>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-
-            </div>
+            <% }) %>
         </div>
+
+        <div id="typing-indicator" class="ss-conv-typing" hidden>
+            <i class="fas fa-pen"></i>
+            <span><%= otherUser.firstname %> est en train d'écrire...</span>
+        </div>
+
+        <!-- Formulaire d'envoi -->
+        <div class="ss-conv-send-box">
+            <form action="/messages/<%= otherUser.id %>" method="POST" id="message-form" class="ss-conv-send-form">
+                <input
+                    class="ss-conv-input"
+                    id="message-input"
+                    type="text"
+                    name="content"
+                    placeholder="Écrire un message..."
+                    required
+                    autocomplete="off"
+                >
+                <button type="submit" class="ss-conv-send-btn" id="message-submit">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </form>
+        </div>
+
     </div>
 </main>
 
 <script nonce="<%= cspNonce %>">
-    // Auto-scroll vers le dernier message
     const container = document.getElementById('messages-container');
     if (container) {
         container.scrollTop = container.scrollHeight;
