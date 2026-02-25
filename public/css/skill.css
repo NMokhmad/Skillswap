@@ -1,452 +1,294 @@
+/* ===== Page Compétence Détail — Noir Académique ===== */
+:root {
+  --sp-bg:       #0C1E1C;
+  --sp-card:     rgba(14, 34, 32, 0.72);
+  --sp-border:   rgba(212, 146, 42, 0.18);
+  --sp-border-h: rgba(212, 146, 42, 0.35);
+  --sp-amber:    #D4922A;
+  --sp-amber-h:  #E8A63C;
+  --sp-cream:    #F7F2E8;
+  --sp-muted:    rgba(247, 242, 232, 0.65);
+  --sp-dim:      rgba(247, 242, 232, 0.40);
+}
+
 html, body {
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--sp-bg);
 }
 
-footer {
-    width: 100%;
-    margin-top: auto;
+footer { width: 100%; margin-top: auto; }
+
+.ss-sp-page {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
-/* =============================================
-   SKILL PAGE STYLES
-   ============================================= */
-
-/* Main section background */
-.skill-page-main {
-    background: linear-gradient(135deg, #f3e8f3 0%, #ffeef8 100%);
+/* ── Main ── */
+.ss-sp-main {
+  flex: 1;
+  padding: 2.5rem 1.5rem 4rem;
 }
 
-/* Header box with gradient */
-.skill-page-header {
-    background: linear-gradient(135deg, #30293d 0%, #5a4a6f 50%, #7d6b93 100%);
-    border-radius: 16px;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 12px 32px rgba(48, 41, 61, 0.25);
+.ss-sp-container {
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-/* Shine overlay effect behind header */
-.skill-page-shine-overlay {
-    position: absolute;
-    top: -50%;
-    right: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-    pointer-events: none;
+/* ── Header compétence ── */
+.ss-sp-header {
+  background: var(--sp-card);
+  border: 1px solid var(--sp-border);
+  border-radius: 14px;
+  backdrop-filter: blur(16px) saturate(1.4);
+  padding: 3rem 2rem;
+  text-align: center;
+  margin-bottom: 2.5rem;
 }
 
-/* Relative positioning for stacking context */
-.skill-page-relative {
-    position: relative;
+.ss-sp-icon-wrap {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(212, 146, 42, 0.15);
+  border: 1px solid rgba(212, 146, 42, 0.30);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: var(--sp-amber);
+  margin: 0 auto 1.25rem;
+  transition: background 0.25s ease, color 0.25s ease;
 }
 
-/* Main skill icon */
-.skill-page-icon-large {
-    font-size: 5rem;
-    filter: drop-shadow(0 8px 16px rgba(0,0,0,0.3));
+.ss-sp-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 600;
+  font-style: italic;
+  color: var(--sp-amber);
+  margin: 0 0 1rem;
 }
 
-/* Counter badge (users count) */
-.skill-page-counter-badge {
-    display: inline-block;
-    background-color: rgba(255, 255, 255, 0.2);
-    padding: 0.75rem 2rem;
-    border-radius: 25px;
-    backdrop-filter: blur(10px);
-    border: 2px solid rgba(255, 255, 255, 0.3);
+.ss-sp-counter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(14, 34, 32, 0.50);
+  border: 1px solid rgba(212, 146, 42, 0.20);
+  border-radius: 20px;
+  padding: 0.4rem 1.25rem;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  color: var(--sp-muted);
+  margin-bottom: 1rem;
 }
 
-/* Counter text */
-.skill-page-counter-text {
-    font-weight: 600;
+.ss-sp-counter i { color: var(--sp-amber); }
+
+.ss-sp-tags {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
-/* Gold-colored icon (users icon, stars) */
-.skill-page-icon-gold {
-    color: #ffd700;
+.ss-sp-tag {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border: 1px solid rgba(212, 146, 42, 0.30);
+  border-radius: 20px;
+  padding: 0.3rem 0.85rem;
+  color: var(--sp-amber);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
 }
 
-/* Tag: popular */
-.skill-page-tag-popular {
-    background-color: #e07b91;
-    color: white;
-    border-radius: 20px;
-    padding: 0.5rem 1.5rem;
-    font-weight: 600;
-    margin: 0.25rem;
+/* ── Section talents ── */
+.ss-sp-section-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--sp-cream);
+  margin: 0 0 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
 }
 
-/* Tag: demanded */
-.skill-page-tag-demanded {
-    background-color: #6b7db3;
-    color: white;
-    border-radius: 20px;
-    padding: 0.5rem 1.5rem;
-    font-weight: 600;
-    margin: 0.25rem;
+.ss-sp-section-title i { color: var(--sp-amber); }
+
+/* ── Grille talents ── */
+.ss-sp-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 2.5rem;
 }
 
-/* Section header box */
-.skill-page-section-header {
-    background-color: white;
-    border-radius: 12px;
-    border-left: 5px solid #e07b91;
-    box-shadow: 0 4px 12px rgba(48, 41, 61, 0.08);
+/* ── Carte talent ── */
+.ss-sp-card-link { text-decoration: none; display: block; }
+
+.ss-sp-card {
+  background: var(--sp-card);
+  border: 1px solid var(--sp-border);
+  border-radius: 14px;
+  backdrop-filter: blur(16px) saturate(1.4);
+  padding: 1.5rem 1rem;
+  text-align: center;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
-/* Section title color */
-.skill-page-title-dark {
-    color: #30293d;
+.ss-sp-card-link:hover .ss-sp-card {
+  transform: translateY(-6px);
+  border-color: var(--sp-border-h);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
 }
 
-/* Section title icon accent */
-.skill-page-icon-accent {
-    color: #e07b91;
+.ss-sp-card-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(212, 146, 42, 0.20);
+  border: 2px solid rgba(212, 146, 42, 0.30);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 0.75rem;
+  font-size: 1.5rem;
+  color: var(--sp-amber);
+  transition: background 0.25s ease, color 0.25s ease;
 }
 
-/* Section subtitle muted */
-.skill-page-subtitle-muted {
-    color: #7d6b93;
-    margin-bottom: 0;
+.ss-sp-card-link:hover .ss-sp-card-avatar {
+  background: var(--sp-amber);
+  color: #0C1E1C;
 }
 
-/* Talent link (no decoration) */
-.skill-page-talent-link {
-    text-decoration: none;
+.ss-sp-card-name {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--sp-cream);
+  margin: 0;
+  transition: color 0.2s ease;
 }
 
-/* Profile card base styling */
-.skill-page-card {
-    background-color: white;
-    border-radius: 16px;
-    transition: all 0.3s ease;
-    height: 100%;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(48, 41, 61, 0.1);
+.ss-sp-card-link:hover .ss-sp-card-name { color: var(--sp-amber); }
+
+/* ── Empty state ── */
+.ss-sp-empty {
+  background: var(--sp-card);
+  border: 1px dashed rgba(212, 146, 42, 0.30);
+  border-radius: 14px;
+  backdrop-filter: blur(16px) saturate(1.4);
+  padding: 3rem 2rem;
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 2.5rem;
 }
 
-/* Border color variants for cards (by index) */
-.skill-page-card-border-0 { border: 3px solid #ff6b9d; }
-.skill-page-card-border-1 { border: 3px solid #6b7db3; }
-.skill-page-card-border-2 { border: 3px solid #7d6b93; }
-.skill-page-card-border-3 { border: 3px solid #e07b91; }
-.skill-page-card-border-4 { border: 3px solid #a8b7e5; }
-.skill-page-card-border-5 { border: 3px solid #ffa8c5; }
-
-/* Card background hover effect overlay */
-.skill-page-card-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: 0;
+.ss-sp-empty-icon {
+  font-size: 5rem;
+  color: var(--sp-amber);
+  opacity: 0.25;
+  display: block;
+  margin-bottom: 1.25rem;
 }
 
-/* Gradient variants for card backgrounds and avatars */
-.skill-page-gradient-0 { background: linear-gradient(135deg, #ff6b9d, #ffa8c5); }
-.skill-page-gradient-1 { background: linear-gradient(135deg, #6b7db3, #a8b7e5); }
-.skill-page-gradient-2 { background: linear-gradient(135deg, #7d6b93, #5a4a6f); }
-.skill-page-gradient-3 { background: linear-gradient(135deg, #e07b91, #ff6b9d); }
-.skill-page-gradient-4 { background: linear-gradient(135deg, #a8b7e5, #6b7db3); }
-.skill-page-gradient-5 { background: linear-gradient(135deg, #ffa8c5, #ff6b9d); }
-
-/* Card content wrapper (above bg effect) */
-.skill-page-card-content {
-    position: relative;
-    z-index: 1;
+.ss-sp-empty-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--sp-cream);
+  margin: 0 0 0.75rem;
 }
 
-/* Top badge positioning */
-.skill-page-top-badge-wrapper {
-    position: absolute;
-    top: -1rem;
-    right: -1rem;
+.ss-sp-empty-text {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  color: var(--sp-muted);
+  margin: 0 0 1.5rem;
 }
 
-/* Crown/top badge styling */
-.skill-page-top-badge {
-    background-color: #ffd700;
-    color: #8d4a00;
-    border-radius: 20px;
-    padding: 0.5rem 1rem;
-    font-weight: bold;
-    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
+/* ── Suggestions ── */
+.ss-sp-suggestions {
+  background: rgba(14, 34, 32, 0.50);
+  border: 1px solid rgba(212, 146, 42, 0.15);
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  text-align: left;
+  max-width: 400px;
+  margin: 0 auto 1.5rem;
 }
 
-/* Avatar circle */
-.skill-page-avatar {
-    width: 96px;
-    height: 96px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 4px solid white;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    transition: all 0.3s ease;
+.ss-sp-suggestions-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--sp-cream);
+  margin: 0 0 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-/* Avatar icon size */
-.skill-page-avatar-icon {
-    font-size: 2.5rem;
+.ss-sp-suggestions-title i { color: var(--sp-amber); }
+
+.ss-sp-suggestion-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-/* Talent name */
-.skill-page-talent-name {
-    color: #30293d;
-    transition: color 0.3s ease;
+.ss-sp-suggestion-list li {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.85rem;
+  color: var(--sp-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
-/* Star rating icon */
-.skill-page-rating-stars {
-    color: #ffd700;
-    font-size: 0.9rem;
+.ss-sp-suggestion-list li i { color: var(--sp-amber); }
+
+/* ── Bouton retour ── */
+.ss-sp-back-wrap { text-align: center; margin-top: 2rem; }
+
+.ss-sp-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  background: transparent;
+  border: 1px solid var(--sp-amber);
+  color: var(--sp-amber);
+  border-radius: 8px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
-/* Rating score text */
-.skill-page-rating-score {
-    color: #7d6b93;
-    font-size: 0.9rem;
+.ss-sp-back-btn:hover {
+  background: var(--sp-amber);
+  color: #0C1E1C;
 }
 
-/* Skill badge on card */
-.skill-page-skill-tag {
-    background-color: #f3e8f3;
-    color: #30293d;
-    border-radius: 10px;
-    font-weight: 600;
-    transition: all 0.3s ease;
+/* ── Responsive ── */
+@media (max-width: 900px) { .ss-sp-grid { grid-template-columns: repeat(2, 1fr); } }
+
+@media (max-width: 600px) {
+  .ss-sp-grid { grid-template-columns: 1fr; }
+  .ss-sp-main { padding: 1.5rem 1rem 3rem; }
 }
 
-/* Skill badge border color variants */
-.skill-page-skill-tag-border-0 { border: 2px solid #ff6b9d; }
-.skill-page-skill-tag-border-1 { border: 2px solid #6b7db3; }
-.skill-page-skill-tag-border-2 { border: 2px solid #7d6b93; }
-.skill-page-skill-tag-border-3 { border: 2px solid #e07b91; }
-.skill-page-skill-tag-border-4 { border: 2px solid #a8b7e5; }
-.skill-page-skill-tag-border-5 { border: 2px solid #ffa8c5; }
-
-/* Stats row */
-.skill-page-stats-row {
-    border-top: 2px solid #f3e8f3;
-    display: flex;
-    justify-content: space-around;
-}
-
-/* Stat value */
-.skill-page-stat-value {
-    color: #30293d;
-    font-size: 1.1rem;
-}
-
-/* Stat label */
-.skill-page-stat-label {
-    color: #7d6b93;
-}
-
-/* Stats divider */
-.skill-page-stats-divider {
-    border-left: 2px solid #f3e8f3;
-    padding-left: 1rem;
-}
-
-/* Empty state box */
-.skill-page-empty-state {
-    background: linear-gradient(135deg, white 0%, #ffeef8 100%);
-    border-radius: 16px;
-    border: 3px dashed #e07b91;
-    box-shadow: 0 8px 24px rgba(48, 41, 61, 0.08);
-}
-
-/* Empty state large icon */
-.skill-page-empty-icon {
-    font-size: 6rem;
-    color: #7d6b93;
-    opacity: 0.3;
-}
-
-/* Empty state subtitle */
-.skill-page-empty-subtitle {
-    color: #7d6b93;
-}
-
-/* Suggestions box */
-.skill-page-suggestions-box {
-    background-color: white;
-    border-radius: 12px;
-    max-width: 500px;
-    margin: 0 auto 2rem auto;
-    border: 2px solid #ffa8c5;
-}
-
-/* Suggestion list (no bullets) */
-.skill-page-suggestion-list {
-    list-style: none;
-    padding-left: 0;
-}
-
-/* Suggestion text color */
-.skill-page-suggestion-text {
-    color: #7d6b93;
-}
-
-/* Suggestion icon color (blue) */
-.skill-page-icon-blue {
-    color: #6b7db3;
-}
-
-/* Button: see all skills */
-.skill-page-btn-dark {
-    background-color: #30293d;
-    color: white;
-    border-radius: 12px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-/* Button: alert me */
-.skill-page-btn-alert {
-    background-color: #e07b91;
-    color: white;
-    border: none;
-    border-radius: 12px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-/* Back button */
-.skill-page-btn-back {
-    background-color: white;
-    border: 3px solid #30293d;
-    color: #30293d;
-    border-radius: 12px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(48, 41, 61, 0.1);
-}
-
-/* =============================================
-   HOVER & ANIMATION STYLES (from <style> block)
-   ============================================= */
-
-/* Profile cards with advanced hover effect */
-.profile-card {
-    min-height: 320px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.profile-card:hover {
-    transform: translateY(-12px) scale(1.02);
-    box-shadow: 0 20px 40px rgba(48, 41, 61, 0.2) !important;
-}
-
-.profile-card:hover .card-bg-effect {
-    opacity: 0.1;
-}
-
-.profile-card:hover .talent-name {
-    color: white !important;
-}
-
-.profile-card:hover .skill-badge {
-    background-color: white !important;
-    transform: scale(1.05);
-}
-
-/* Avatar animation */
-.profile-avatar {
-    transition: transform 0.3s ease;
-}
-
-.profile-card:hover .profile-avatar {
-    transform: scale(1.15) rotate(5deg);
-}
-
-.profile-card:hover .avatar-circle {
-    box-shadow: 0 8px 24px rgba(0,0,0,0.25) !important;
-    border-width: 5px !important;
-}
-
-/* Back button hover */
-.back-button:hover {
-    background-color: #30293d !important;
-    color: white !important;
-    transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgba(48, 41, 61, 0.25) !important;
-}
-
-/* Empty state buttons hover */
-.buttons .button:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
-
-.buttons .button:first-child:hover {
-    background-color: #5a4a6f !important;
-}
-
-.buttons .button:last-child:hover {
-    background-color: #ff6b9d !important;
-}
-
-/* Pulsation animation for popular tags */
-@keyframes pulse {
-    0%, 100% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.05);
-    }
-}
-
-.tag.is-medium {
-    animation: pulse 2s ease-in-out infinite;
-}
-
-/* Shine effect on header */
-@keyframes shine {
-    0% {
-        background-position: -200% center;
-    }
-    100% {
-        background-position: 200% center;
-    }
-}
-
-/* Floating icon parallax effect */
-@keyframes float-icon {
-    0%, 100% {
-        transform: translateY(0px) rotate(0deg);
-    }
-    50% {
-        transform: translateY(-15px) rotate(5deg);
-    }
-}
-
-.icon.is-large {
-    animation: float-icon 4s ease-in-out infinite;
-}
-
-/* Smooth transitions for all interactive elements */
-* {
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* ─── Mobile (max 480px) ─── */
-@media screen and (max-width: 480px) {
-    .skill-page-main .columns > .column {
-        flex: none;
-        width: 100%;
-    }
-}
+@media (max-width: 480px) { .ss-sp-header { padding: 2rem 1rem; } }
