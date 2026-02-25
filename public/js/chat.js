@@ -20,7 +20,7 @@
 
   const pendingByClientId = new Map();
   const renderedMessageIds = new Set(
-    Array.from(messagesContainer.querySelectorAll('.conv-message-row'))
+    Array.from(messagesContainer.querySelectorAll('.ss-conv-message-row'))
       .map((node) => Number.parseInt(node.dataset.messageId, 10))
       .filter((id) => Number.isInteger(id))
   );
@@ -53,8 +53,8 @@
     if (clientMessageId && pendingByClientId.has(clientMessageId)) {
       const pendingNode = pendingByClientId.get(clientMessageId);
       pendingNode.dataset.messageId = messageId;
-      pendingNode.classList.remove('conv-message-pending');
-      const timeNode = pendingNode.querySelector('.conv-bubble-time');
+      pendingNode.classList.remove('ss-conv-message-pending');
+      const timeNode = pendingNode.querySelector('.ss-conv-bubble-time');
       if (timeNode) timeNode.textContent = formatTime(message.createdAt);
       pendingByClientId.delete(clientMessageId);
       renderedMessageIds.add(messageId);
@@ -136,16 +136,27 @@
 
   function renderMessage({ messageId, content, isMine, createdAt, pending = false }) {
     const row = document.createElement('div');
-    row.className = `mb-4 conv-message-row ${isMine ? 'conv-message-row-mine' : 'conv-message-row-theirs'} ${pending ? 'conv-message-pending' : ''}`;
+    row.className = [
+      'ss-conv-message-row',
+      isMine ? 'ss-conv-message-row--mine' : 'ss-conv-message-row--theirs',
+      pending ? 'ss-conv-message-pending' : '',
+    ].filter(Boolean).join(' ');
     if (messageId) row.dataset.messageId = String(messageId);
 
-    row.innerHTML = `
-      <div class="conv-bubble ${isMine ? 'conv-bubble-mine' : 'conv-bubble-theirs'}">
-        <p class="conv-bubble-text"></p>
-        <p class="is-size-7 mt-1 conv-bubble-time">${formatTime(createdAt)}</p>
-      </div>
-    `;
-    row.querySelector('.conv-bubble-text').textContent = content;
+    const bubble = document.createElement('div');
+    bubble.className = 'ss-conv-bubble ' + (isMine ? 'ss-conv-bubble--mine' : 'ss-conv-bubble--theirs');
+
+    const text = document.createElement('p');
+    text.className = 'ss-conv-bubble-text';
+    text.textContent = content;
+
+    const time = document.createElement('p');
+    time.className = 'ss-conv-bubble-time';
+    time.textContent = formatTime(createdAt);
+
+    bubble.appendChild(text);
+    bubble.appendChild(time);
+    row.appendChild(bubble);
 
     messagesContainer.appendChild(row);
     scrollToBottom();
