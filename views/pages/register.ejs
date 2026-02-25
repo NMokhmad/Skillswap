@@ -4,150 +4,242 @@
 <body>
     <%- include('../partials/navbar.ejs') %>
 
-    <section class="register-section">
-        <div class="container">
-            <div class="columns is-centered">
-                <div class="column is-5-desktop is-6-tablet is-12-mobile">
-                    <div class="register-card">
-                        <!-- En-tête avec gradient -->
-                        <div class="register-header">
-                            <div class="icon-circle">
-                                <span class="icon is-large">
-                                    <i class="fas fa-user-plus fa-2x register-icon-header"></i>
-                                </span>
-                            </div>
-                            <h1 class="title">Rejoignez SkillSwap</h1>
-                            <p class="subtitle">Créez votre compte en quelques secondes</p>
+    <div class="ss-reg-page">
+        <div class="ss-reg-card">
+
+            <!-- En-tête -->
+            <div class="ss-reg-header">
+                <h1 class="ss-reg-title">Rejoignez <em>Skill</em><strong>Swap</strong></h1>
+                <p class="ss-reg-subtitle">Créez votre compte gratuitement</p>
+            </div>
+
+            <hr class="ss-reg-divider">
+
+            <!-- Formulaire -->
+            <form action="/register" method="POST">
+
+                <!-- Nom + Prénom côte à côte -->
+                <div class="ss-reg-row">
+
+                    <!-- Nom -->
+                    <div class="ss-reg-field<% if (errors && errors.lastname) { %> has-error<% } %>">
+                        <label class="ss-reg-label" for="lastname">Nom</label>
+                        <div class="ss-reg-input-wrap">
+                            <input
+                                class="ss-reg-input"
+                                type="text"
+                                id="lastname"
+                                name="lastname"
+                                placeholder="Dupont"
+                                value="<%= formData.lastname || '' %>"
+                                autocomplete="family-name"
+                            >
+                            <i class="fas fa-user"></i>
                         </div>
+                        <% if (errors && errors.lastname) { %>
+                            <p class="ss-reg-error-msg">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <%= errors.lastname %>
+                            </p>
+                        <% } %>
+                    </div>
 
-                        <!-- Corps du formulaire -->
-                        <div class="register-body">
-                            <!-- Badge de sécurité -->
-                            <div class="security-badge">
-                                <span class="icon">
-                                    <i class="fas fa-shield-alt"></i>
-                                </span>
-                                <span>Vos données sont sécurisées et protégées</span>
-                            </div>
-
-                            <!-- Formulaire -->
-                            <form action="/register" method="POST">
-                                <!-- Nom -->
-                                <div class="field">
-                                    <label class="label">
-                                        <span class="icon is-small register-icon-lastname">
-                                            <i class="fas fa-user"></i>
-                                        </span>
-                                        Nom
-                                    </label>
-                                    <div class="control has-icons-left">
-                                        <input class="input" type="text" name="lastname" placeholder="Votre nom de famille" value="<%= formData.lastname || '' %>">
-                                        <span class="icon is-left">
-                                            <i class="fas fa-user"></i>
-                                        </span>
-                                    </div>
-                                    <% if (errors && errors.lastname) { %>
-                                        <p class="error"><i class="fas fa-exclamation-circle"></i> <%= errors.lastname %></p>
-                                    <% } %>
-                                </div>
-
-                                <!-- Prénom -->
-                                <div class="field">
-                                    <label class="label">
-                                        <span class="icon is-small register-icon-firstname">
-                                            <i class="fas fa-user"></i>
-                                        </span>
-                                        Prénom
-                                    </label>
-                                    <div class="control has-icons-left">
-                                        <input class="input" type="text" name="firstname" placeholder="Votre prénom" value="<%= formData.firstname || '' %>">
-                                        <span class="icon is-left">
-                                            <i class="fas fa-user"></i>
-                                        </span>
-                                    </div>
-                                    <% if (errors && errors.firstname) { %>
-                                        <p class="error"><i class="fas fa-exclamation-circle"></i> <%= errors.firstname %></p>
-                                    <% } %>
-                                </div>
-
-                                <!-- Email -->
-                                <div class="field">
-                                    <label class="label">
-                                        <span class="icon is-small register-icon-email">
-                                            <i class="fas fa-envelope"></i>
-                                        </span>
-                                        Email
-                                    </label>
-                                    <div class="control has-icons-left">
-                                        <input class="input" type="email" name="email" placeholder="votre.email@exemple.com" value="<%= formData.email || '' %>">
-                                        <span class="icon is-left">
-                                            <i class="fas fa-envelope"></i>
-                                        </span>
-                                    </div>
-                                    <% if (errors && errors.email) { %>
-                                        <p class="error"><i class="fas fa-exclamation-circle"></i> <%= errors.email %></p>
-                                    <% } %>
-                                </div>
-
-                                <!-- Mot de passe -->
-                                <div class="field">
-                                    <label class="label">
-                                        <span class="icon is-small register-icon-password">
-                                            <i class="fas fa-lock"></i>
-                                        </span>
-                                        Mot de passe
-                                    </label>
-                                    <div class="control has-icons-left">
-                                        <input class="input" type="password" name="password" placeholder="Minimum 8 caractères">
-                                        <span class="icon is-left">
-                                            <i class="fas fa-lock"></i>
-                                        </span>
-                                    </div>
-                                    <% if (errors && errors.password) { %>
-                                        <p class="error"><i class="fas fa-exclamation-circle"></i> <%= errors.password %></p>
-                                    <% } %>
-                                </div>
-
-                                <!-- Confirmation du mot de passe -->
-                                <div class="field">
-                                    <label class="label">
-                                        <span class="icon is-small register-icon-confirm">
-                                            <i class="fas fa-lock"></i>
-                                        </span>
-                                        Confirmer le mot de passe
-                                    </label>
-                                    <div class="control has-icons-left">
-                                        <input class="input" type="password" name="confirmPassword" placeholder="Retapez votre mot de passe">
-                                        <span class="icon is-left">
-                                            <i class="fas fa-lock"></i>
-                                        </span>
-                                    </div>
-                                    <% if (errors && errors.confirmPassword) { %>
-                                        <p class="error"><i class="fas fa-exclamation-circle"></i> <%= errors.confirmPassword %></p>
-                                    <% } %>
-                                </div>
-
-                                <!-- Bouton d'inscription -->
-                                <div class="field register-submit-field">
-                                    <button type="submit" class="btn-register1">
-                                        <span class="icon">
-                                            <i class="fas fa-rocket"></i>
-                                        </span>
-                                        <span>Créer mon compte</span>
-                                    </button>
-                                </div>
-                            </form>
-
-                            <!-- Lien vers la connexion -->
-                            <div class="login-link">
-                                <p>Vous avez déjà un compte ? <a href="/login">Connectez-vous ici</a></p>
-                            </div>
+                    <!-- Prénom -->
+                    <div class="ss-reg-field<% if (errors && errors.firstname) { %> has-error<% } %>">
+                        <label class="ss-reg-label" for="firstname">Prénom</label>
+                        <div class="ss-reg-input-wrap">
+                            <input
+                                class="ss-reg-input"
+                                type="text"
+                                id="firstname"
+                                name="firstname"
+                                placeholder="Jean"
+                                value="<%= formData.firstname || '' %>"
+                                autocomplete="given-name"
+                            >
+                            <i class="fas fa-user"></i>
                         </div>
+                        <% if (errors && errors.firstname) { %>
+                            <p class="ss-reg-error-msg">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <%= errors.firstname %>
+                            </p>
+                        <% } %>
+                    </div>
+
+                </div><!-- /.ss-reg-row -->
+
+                <!-- Email -->
+                <div class="ss-reg-field<% if (errors && errors.email) { %> has-error<% } %>">
+                    <label class="ss-reg-label" for="email">Email</label>
+                    <div class="ss-reg-input-wrap">
+                        <input
+                            class="ss-reg-input"
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="jean.dupont@exemple.com"
+                            value="<%= formData.email || '' %>"
+                            autocomplete="email"
+                        >
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <% if (errors && errors.email) { %>
+                        <p class="ss-reg-error-msg">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <%= errors.email %>
+                        </p>
+                    <% } %>
+                </div>
+
+                <!-- Mot de passe -->
+                <div class="ss-reg-field<% if (errors && errors.password) { %> has-error<% } %>">
+                    <label class="ss-reg-label" for="password">Mot de passe</label>
+                    <div class="ss-reg-input-wrap">
+                        <input
+                            class="ss-reg-input"
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Minimum 8 caractères"
+                            autocomplete="new-password"
+                        >
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <% if (errors && errors.password) { %>
+                        <p class="ss-reg-error-msg">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <%= errors.password %>
+                        </p>
+                    <% } %>
+
+                    <!-- Barre de force -->
+                    <div class="ss-strength-wrap" id="strengthWrap" style="display:none;">
+                        <div class="ss-strength-bar">
+                            <div class="ss-strength-seg" id="seg1"></div>
+                            <div class="ss-strength-seg" id="seg2"></div>
+                            <div class="ss-strength-seg" id="seg3"></div>
+                            <div class="ss-strength-seg" id="seg4"></div>
+                        </div>
+                        <ul class="ss-criteria-list">
+                            <li class="ss-criteria-item" id="crit-len">
+                                <i class="fas fa-times"></i>
+                                8 caractères min.
+                            </li>
+                            <li class="ss-criteria-item" id="crit-upper">
+                                <i class="fas fa-times"></i>
+                                1 majuscule
+                            </li>
+                            <li class="ss-criteria-item" id="crit-num">
+                                <i class="fas fa-times"></i>
+                                1 chiffre
+                            </li>
+                            <li class="ss-criteria-item" id="crit-special">
+                                <i class="fas fa-times"></i>
+                                1 caractère spécial
+                            </li>
+                        </ul>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
+
+                <!-- Confirmation mot de passe -->
+                <div class="ss-reg-field<% if (errors && errors.confirmPassword) { %> has-error<% } %>">
+                    <label class="ss-reg-label" for="confirmPassword">Confirmer le mot de passe</label>
+                    <div class="ss-reg-input-wrap">
+                        <input
+                            class="ss-reg-input"
+                            type="password"
+                            id="confirmPassword"
+                            name="confirmPassword"
+                            placeholder="Retapez votre mot de passe"
+                            autocomplete="new-password"
+                        >
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <% if (errors && errors.confirmPassword) { %>
+                        <p class="ss-reg-error-msg">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <%= errors.confirmPassword %>
+                        </p>
+                    <% } %>
+                </div>
+
+                <!-- Bouton -->
+                <button type="submit" class="ss-reg-btn">
+                    <i class="fas fa-user-plus"></i>
+                    S'inscrire
+                </button>
+
+            </form>
+
+            <!-- Lien login -->
+            <p class="ss-reg-login-link">
+                Déjà un compte ? <a href="/login">Se connecter</a>
+            </p>
+
+        </div><!-- /.ss-reg-card -->
+    </div><!-- /.ss-reg-page -->
+
+    <!-- JS : barre de force + critères (inline, noncé CSP) -->
+    <script nonce="<%= cspNonce %>">
+    (function () {
+        const pwdInput    = document.getElementById('password');
+        const strengthWrap = document.getElementById('strengthWrap');
+        const segs        = [
+            document.getElementById('seg1'),
+            document.getElementById('seg2'),
+            document.getElementById('seg3'),
+            document.getElementById('seg4'),
+        ];
+        const crits = {
+            len:     document.getElementById('crit-len'),
+            upper:   document.getElementById('crit-upper'),
+            num:     document.getElementById('crit-num'),
+            special: document.getElementById('crit-special'),
+        };
+
+        function updateCrit(el, valid) {
+            el.classList.toggle('valid', valid);
+            el.classList.toggle('invalid', !valid);
+            const icon = el.querySelector('i');
+            icon.className = valid ? 'fas fa-check' : 'fas fa-times';
+        }
+
+        function updateStrength(val) {
+            if (!val) {
+                strengthWrap.style.display = 'none';
+                segs.forEach(s => { s.className = 'ss-strength-seg'; });
+                Object.values(crits).forEach(c => {
+                    c.classList.remove('valid', 'invalid');
+                    c.querySelector('i').className = 'fas fa-times';
+                });
+                return;
+            }
+
+            strengthWrap.style.display = 'block';
+
+            const checks = {
+                len:     val.length >= 8,
+                upper:   /[A-Z]/.test(val),
+                num:     /[0-9]/.test(val),
+                special: /[^A-Za-z0-9]/.test(val),
+            };
+
+            Object.entries(checks).forEach(([key, ok]) => updateCrit(crits[key], ok));
+
+            const score = Object.values(checks).filter(Boolean).length;
+
+            segs.forEach((s, i) => {
+                s.className = 'ss-strength-seg';
+                if (i < score) s.classList.add('active-' + score);
+            });
+        }
+
+        if (pwdInput) {
+            pwdInput.addEventListener('input', () => updateStrength(pwdInput.value));
+        }
+    })();
+    </script>
 
     <%- include('../partials/footer.ejs') %>
 </body>
