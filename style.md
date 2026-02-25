@@ -178,6 +178,10 @@ Préfixe `ss-` + identifiant de page + composant :
 | Skills     | `ss-sk-`     |
 | Mon Profil | `ss-profil-` |
 | Aide       | `ss-help-`   |
+| Talent (profil)     | `ss-tp-`     |
+| Compétence (détail) | `ss-sp-`     |
+| Notifications       | `ss-notif-`  |
+| Messages            | `ss-msg-`    |
 
 ---
 
