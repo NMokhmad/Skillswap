@@ -1,182 +1,252 @@
-/* ===== Footer base ===== */
-.footer-main {
-    background: linear-gradient(135deg, #30293d, #5a4a6f, #7d6b93);
-    padding: 3rem 1.5rem 2rem;
+/* ====================================================
+   SKILLSWAP — FOOTER (Pure CSS, no framework)
+   CSS Grid · Flexbox · Custom Properties
+==================================================== */
+
+:root {
+    --foot-bg:      #071312;
+    --foot-border:  rgba(212, 146, 42, 0.10);
+    --foot-amber:   #D4922A;
+    --foot-amber-h: #E8A63C;
+    --foot-cream:   #F7F2E8;
+    --foot-cream-4: rgba(247, 242, 232, 0.42);
+    --foot-cream-3: rgba(247, 242, 232, 0.28);
+    --font-serif:   'Cormorant Garamond', Georgia, serif;
+    --font-sans:    'Outfit', system-ui, sans-serif;
+    --ease:         cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* ===== Logo section ===== */
-.footer-logo-title {
-    font-weight: 700;
+/* ─── Base ─── */
+.ss-footer {
+    background: var(--foot-bg);
+    border-top: 1px solid var(--foot-border);
+    font-family: var(--font-sans);
 }
 
-.footer-logo-skill {
-    background: linear-gradient(135deg, #ff6b9d, #ffd700);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+.ss-footer-inner {
+    max-width: 1200px;
+    margin-inline: auto;
+    padding: 4rem 1.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.5rem;
 }
 
-.footer-logo-swap {
-    color: #ffa8c5;
+/* ─── Logo + slogan ─── */
+.ss-footer-brand {
+    text-align: center;
 }
 
-.footer-slogan {
-    opacity: 0.9;
+.ss-footer-logo {
+    font-family: var(--font-serif);
+    font-size: 2.75rem;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin: 0 0 0.6rem;
+    color: var(--foot-cream);
 }
 
-/* ===== Social section ===== */
-.footer-social-title {
+.ss-footer-logo em {
+    font-style: italic;
+    color: var(--foot-cream);
+}
+
+.ss-footer-logo strong {
+    color: var(--foot-amber);
+    font-style: normal;
     font-weight: 600;
 }
 
-.footer-social-row {
-    gap: 1rem;
+/* "Skill" italic, "Swap" amber — using em + strong inside template
+   OR: just color the whole word differently via CSS :first-child split
+   Since the template uses <em>Skill</em>Swap, we target em for italic
+   and the text node "Swap" won't be targetable — use a wrapper approach */
+.ss-footer-logo em + span,
+.ss-footer-logo em ~ * {
+    color: var(--foot-amber);
 }
 
-.social-icon {
+/* Simple override: em = italic cream, rest = amber */
+.ss-footer-logo {
+    color: var(--foot-amber);  /* Swap color */
+}
+
+.ss-footer-logo em {
+    color: var(--foot-cream);  /* Skill color */
+}
+
+.ss-footer-slogan {
+    font-size: 0.78rem;
+    font-weight: 300;
+    letter-spacing: 0.07em;
+    color: rgba(247, 242, 232, 0.34);
+    margin: 0;
+}
+
+/* ─── Social ─── */
+.ss-footer-social {
+    text-align: center;
+}
+
+.ss-footer-social-label {
+    font-size: 0.64rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(247, 242, 232, 0.30);
+    margin: 0 0 1rem;
+}
+
+.ss-footer-social-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.65rem;
+}
+
+.ss-social-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 56px;
-    height: 56px;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border-radius: 16px;
-    border: 2px solid rgba(255, 168, 197, 0.3);
-    transition: all 0.3s ease;
+    width: 44px;
+    height: 44px;
+    background: rgba(247, 242, 232, 0.04);
+    border: 1px solid rgba(247, 242, 232, 0.07);
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.22s var(--ease);
 }
 
-.footer-social-img {
-    width: 32px;
-    height: 32px;
+.ss-social-img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
     filter: brightness(0) invert(1);
+    opacity: 0.38;
+    transition: opacity 0.22s var(--ease);
 }
 
-/* Effets hover pour les icones sociales */
-.social-icon:hover {
-    transform: translateY(-8px) scale(1.05);
-    background: rgba(255, 168, 197, 0.2) !important;
-    border-color: #ffa8c5 !important;
-    box-shadow: 0 8px 16px rgba(255, 107, 157, 0.3);
+.ss-social-icon:hover {
+    background: rgba(212, 146, 42, 0.10);
+    border-color: rgba(212, 146, 42, 0.28);
+    transform: translateY(-3px);
 }
 
-.social-icon:hover img {
-    filter: brightness(0) invert(1) sepia(1) saturate(5) hue-rotate(290deg) !important;
+.ss-social-icon:hover .ss-social-img {
+    opacity: 0.85;
+    filter: brightness(0) invert(0.75) sepia(1) saturate(3) hue-rotate(10deg);
 }
 
-/* ===== Footer section cards ===== */
-.footer-section-card {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
-    padding: 1.5rem;
-    height: 100%;
+/* ─── Link columns ─── */
+.ss-footer-cols {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem 2.5rem;
+    width: 100%;
+    max-width: 700px;
+    text-align: center;
 }
 
-.footer-section-card-assistance {
-    border: 2px solid rgba(255, 168, 197, 0.2);
+.ss-footer-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    transition: transform 0.22s var(--ease);
 }
 
-.footer-section-card-recherches {
-    border: 2px solid rgba(255, 107, 157, 0.2);
+.ss-footer-col:hover {
+    transform: translateY(-2px);
 }
 
-.footer-section-card-ressources {
-    border: 2px solid rgba(255, 215, 0, 0.2);
-}
-
-/* ===== Section icon boxes ===== */
-.footer-section-icon-box {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
+.ss-footer-col-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    background: rgba(212, 146, 42, 0.10);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 1rem;
+    color: var(--foot-amber);
+    font-size: 0.88rem;
+    margin-bottom: 0.5rem;
 }
 
-.footer-icon-box-assistance {
-    background: linear-gradient(135deg, #6b7db3, #a8b7e5);
-}
-
-.footer-icon-box-recherches {
-    background: linear-gradient(135deg, #e07b91, #ff6b9d);
-}
-
-.footer-icon-box-ressources {
-    background: linear-gradient(135deg, #ffd700, #ffed4e);
-}
-
-.footer-icon-white {
-    color: white;
-}
-
-.footer-icon-dark {
-    color: #30293d;
-}
-
-/* ===== Section titles ===== */
-.footer-section-title-assistance {
+.ss-footer-col-title {
+    font-size: 0.65rem;
     font-weight: 600;
-    color: #a8b7e5;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--foot-amber);
+    margin: 0 0 0.5rem;
 }
 
-.footer-section-title-recherches {
-    font-weight: 600;
-    color: #ffa8c5;
+.ss-footer-link {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.8rem;
+    color: rgba(247, 242, 232, 0.42);
+    text-decoration: none;
+    padding: 0.25rem 0.4rem;
+    transition: color 0.18s var(--ease), transform 0.18s var(--ease);
 }
 
-.footer-section-title-ressources {
-    font-weight: 600;
-    color: #ffd700;
+.ss-footer-link i {
+    font-size: 0.55rem;
+    color: rgba(247, 242, 232, 0.18);
+    transition: color 0.18s;
 }
 
-/* ===== Footer links ===== */
-.footer-link {
-    color: rgba(255, 255, 255, 0.8);
-    transition: all 0.3s ease;
-    display: block;
-    padding: 0.5rem;
-    border-radius: 8px;
+.ss-footer-link:hover {
+    color: rgba(247, 242, 232, 0.82);
+    transform: translateX(3px);
 }
 
-/* Effets hover pour les liens du footer */
-.footer-link:hover {
-    background: rgba(255, 255, 255, 0.1) !important;
-    color: white !important;
-    transform: translateX(5px);
+.ss-footer-link:hover i {
+    color: var(--foot-amber);
 }
 
-/* ===== Separator ===== */
-.footer-separator {
-    height: 2px;
-    background: linear-gradient(90deg, transparent, rgba(255, 168, 197, 0.3), transparent);
-    margin: 2rem 0;
+/* ─── Separator ─── */
+.ss-footer-sep {
+    width: 100%;
+    border: none;
+    border-top: 1px solid;
+    border-image: linear-gradient(90deg, transparent, rgba(212, 146, 42, 0.22), transparent) 1;
+    margin: 0;
 }
 
-/* ===== Copyright ===== */
-.footer-copyright {
-    opacity: 0.8;
-    font-size: 0.95rem;
+/* ─── Copyright ─── */
+.ss-footer-copy {
+    font-size: 0.72rem;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    color: rgba(247, 242, 232, 0.26);
+    margin: 0;
+    text-align: center;
 }
 
-.footer-copyright-brand {
-    color: #ffa8c5;
+.ss-footer-copy strong {
+    color: rgba(247, 242, 232, 0.42);
+    font-weight: 500;
 }
 
-/* ===== Animation des sections du footer ===== */
-.footer-section:hover > div {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgba(48, 41, 61, 0.3);
-}
-
-/* Responsive */
-@media screen and (max-width: 768px) {
-    .footer-main .columns {
-        margin-bottom: 2rem !important;
+/* ─── Responsive ─── */
+@media (max-width: 600px) {
+    .ss-footer-cols {
+        grid-template-columns: 1fr;
+        max-width: 280px;
+        gap: 1.5rem;
     }
 
-    .footer-section {
-        margin-bottom: 1rem;
+    .ss-footer-logo {
+        font-size: 2.25rem;
+    }
+
+    .ss-footer-inner {
+        padding: 3rem 1.25rem 1.5rem;
+        gap: 2rem;
     }
 }
