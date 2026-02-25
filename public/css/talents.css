@@ -1,83 +1,303 @@
-.talents-header-icon { color: #ffd700; }
-.talents-main-content { padding-bottom: 4rem; }
+/* ===== Page Talents — Noir Académique ===== */
+:root {
+  --tal-bg:      #0C1E1C;
+  --tal-card:    rgba(14, 34, 32, 0.72);
+  --tal-border:  rgba(212, 146, 42, 0.18);
+  --tal-amber:   #D4922A;
+  --tal-amber-h: #E8A63C;
+  --tal-cream:   #F7F2E8;
+}
 
 html, body {
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    background-color: #f3e8f3 !important;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--tal-bg);
 }
 
 footer {
-    width: 100%;
-    margin-top: auto;
+  width: 100%;
+  margin-top: auto;
 }
 
-.talent-card {
-    height: 100% !important;
-    min-height: 100% !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: space-between !important;
-}
-.follow{
-    background-color: #d58bf3 !important;
-    color: #30293d !important;
-    border: none !important;
-    transition: background-color 0.3s ease !important;
-}
-.follow:hover{
-    background-color: #c06ae5 !important;
-    color: white !important;
-}
-.send-message{
-    background-color: #4b3f72 !important;
-    color: white !important;
-    border: none !important;
-    transition: background-color 0.3s ease !important;
-}
-.send-message:hover{
-    background-color: #3a2f5a !important;
-    color: #f3e8f3 !important;
+.ss-tal-page {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
-a.skill-link{
-    color: #a64ac9 !important;
-    font-weight: 600 !important;
-    text-decoration: none !important;
-    transition: color 0.2s ease !important; 
+/* ── Header ── */
+.ss-tal-header {
+  background: rgba(14, 34, 32, 0.60);
+  border-bottom: 1px solid rgba(212, 146, 42, 0.15);
+  padding: 4rem 1.5rem;
+  text-align: center;
 }
 
-a.skill-link:hover{
-    color: #7d3aa0 !important;
-    text-decoration: underline !important;
+.ss-tal-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 600;
+  font-style: italic;
+  color: var(--tal-amber);
+  margin: 0 0 0.5rem;
 }
 
-a.user-name {
-    color: #30293d !important;
-    font-weight: 700 !important;
-    font-size: 1.25rem !important;
-    text-decoration: none !important;
-    transition: color 0.2s ease !important;
-  }
-  
-a.user-name:hover {
-    color: #a64ac9 !important; /* ou un peu plus clair si tu préfères */
-    text-decoration: underline !important;
-  }
+.ss-tal-title em { font-style: normal; }
 
-.talent-card {
-    background-color: #f9f4fb !important;
-    border: 1px solid #e2d6eb !important;
-    border-radius: 8px !important;
-    box-shadow: 0 2px 5px rgba(48, 41, 61, 0.05) !important;
-    transition: transform 0.2s ease !important;
-  }
-  
-.talent-card:hover {
-    transform: translateY(-3px) !important;
-    box-shadow: 0 4px 10px rgba(48, 41, 61, 0.1) !important;
-  }
-  
+.ss-tal-subtitle {
+  font-family: 'Outfit', sans-serif;
+  color: rgba(247, 242, 232, 0.65);
+  font-size: 1rem;
+  margin: 0 0 2rem;
+}
+
+.ss-tal-stats {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.ss-tal-stat-box {
+  background: var(--tal-card);
+  border: 1px solid var(--tal-border);
+  border-radius: 12px;
+  padding: 0.75rem 1.75rem;
+  backdrop-filter: blur(10px);
+  text-align: center;
+}
+
+.ss-tal-stat-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--tal-amber);
+  display: block;
+}
+
+.ss-tal-stat-label {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.78rem;
+  color: rgba(247, 242, 232, 0.55);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ── Body ── */
+.ss-tal-body {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ── Grid ── */
+.ss-tal-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+/* ── Card ── */
+.ss-tal-card {
+  background: var(--tal-card);
+  border: 1px solid var(--tal-border);
+  border-radius: 14px;
+  backdrop-filter: blur(16px) saturate(1.4);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.ss-tal-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(212, 146, 42, 0.35);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+}
+
+/* ── Avatar ── */
+.ss-tal-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--tal-cream);
+  background: rgba(212, 146, 42, 0.20);
+  border: 2px solid rgba(212, 146, 42, 0.30);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.ss-tal-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ── Name ── */
+.ss-tal-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--tal-cream);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.ss-tal-name:hover { color: var(--tal-amber); }
+
+/* ── Stars ── */
+.ss-tal-stars {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.ss-tal-stars-row i {
+  font-size: 0.9rem;
+  color: rgba(247, 242, 232, 0.20);
+}
+
+.ss-tal-stars-row i.filled { color: var(--tal-amber); }
+
+.ss-tal-rating {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.72rem;
+  color: rgba(247, 242, 232, 0.50);
+}
+
+/* ── Skills pills ── */
+.ss-tal-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  justify-content: center;
+  flex: 1;
+}
+
+.ss-tal-pill {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.75rem;
+  color: rgba(247, 242, 232, 0.75);
+  border: 1px solid rgba(212, 146, 42, 0.30);
+  border-radius: 20px;
+  padding: 0.25rem 0.75rem;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.ss-tal-pill:hover {
+  background: var(--tal-amber);
+  color: #0C1E1C;
+  border-color: var(--tal-amber);
+}
+
+/* ── Action buttons ── */
+.ss-tal-actions {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.ss-tal-follow,
+.ss-tal-message {
+  flex: 1;
+  padding: 0.6rem 0.5rem;
+  border-radius: 8px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  text-decoration: none;
+}
+
+.ss-tal-follow {
+  background: transparent;
+  border: 1px solid var(--tal-amber);
+  color: var(--tal-amber);
+}
+
+.ss-tal-follow:hover,
+.ss-tal-follow.is-following {
+  background: var(--tal-amber);
+  color: #0C1E1C;
+}
+
+.ss-tal-message {
+  background: var(--tal-amber);
+  border: 1px solid var(--tal-amber);
+  color: #0C1E1C;
+}
+
+.ss-tal-message:hover {
+  background: var(--tal-amber-h);
+  border-color: var(--tal-amber-h);
+  transform: translateY(-1px);
+}
+
+/* ── Pagination ── */
+.ss-tal-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 2rem 0 0;
+  flex-wrap: wrap;
+}
+
+.ss-tal-page-link {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.85rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: 8px;
+  border: 1px solid rgba(212, 146, 42, 0.30);
+  color: var(--tal-amber);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.ss-tal-page-link:hover,
+.ss-tal-page-link.is-current {
+  background: var(--tal-amber);
+  border-color: var(--tal-amber);
+  color: #0C1E1C;
+}
+
+.ss-tal-page-link[disabled] {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .ss-tal-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .ss-tal-grid { grid-template-columns: 1fr; }
+  .ss-tal-body { padding: 1.5rem 1rem 3rem; }
+}
+
+@media (max-width: 480px) {
+  .ss-tal-header { padding: 2.5rem 1rem; }
+  .ss-tal-title { font-size: 1.6rem; }
+}
