@@ -193,176 +193,251 @@ footer { width: 100%; margin-top: auto; }
 }
 
 /* ══════════════════════════════════════
-   Conversation page (conv- prefix)
+   Conversation page (ss-conv- prefix)
    ══════════════════════════════════════ */
 
-.conv-main {
-    background: linear-gradient(135deg, #f3e8f3 0%, #ffeef8 100%);
-    min-height: 80vh;
+:root {
+  --conv-bg: #0C1E1C;
+  --conv-card: rgba(14, 34, 32, 0.72);
+  --conv-border: rgba(212, 146, 42, 0.18);
+  --conv-border-hover: rgba(212, 146, 42, 0.35);
+  --conv-amber: #D4922A;
+  --conv-amber-hover: #E8A63C;
+  --conv-cream: #F7F2E8;
+  --conv-muted: rgba(247, 242, 232, 0.65);
+  --conv-dim: rgba(247, 242, 232, 0.40);
+  --conv-radius: 14px;
 }
 
-/* Conversation header */
-.conv-header {
-    border-radius: 16px;
-    border: 2px solid #7d6b93;
+.ss-conv-main {
+  flex: 1;
+  padding: 2.5rem 1.5rem 4rem;
 }
 
-.conv-back-link {
-    color: #7d6b93;
+.ss-conv-container {
+  max-width: 700px;
+  margin: 0 auto;
 }
 
-.conv-avatar {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #7d6b93, #5a4a6f);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
+/* — Header — */
+
+.ss-conv-header {
+  background: var(--conv-card);
+  border: 1px solid var(--conv-border);
+  border-radius: var(--conv-radius);
+  backdrop-filter: blur(16px) saturate(1.4);
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
 
-.conv-avatar-initials {
-    color: white;
-    font-weight: 700;
+.ss-conv-back {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--conv-amber);
+  text-decoration: none;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+  transition: color 0.2s ease;
 }
 
-.conv-user-link {
-    color: #30293d;
-    font-size: 1.1rem;
+.ss-conv-back:hover { color: var(--conv-amber-hover); }
+
+.ss-conv-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(212, 146, 42, 0.20);
+  border: 2px solid rgba(212, 146, 42, 0.30);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
-/* Messages container */
-.conv-messages-container {
-    border-radius: 16px;
-    max-height: 500px;
-    overflow-y: auto;
-    padding: 1.5rem;
+.ss-conv-avatar-initials {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--conv-cream);
 }
 
-.conv-empty-message {
-    padding: 2rem;
+.ss-conv-user-link {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--conv-cream);
+  text-decoration: none;
+  transition: color 0.2s ease;
 }
 
-.conv-typing-indicator {
-    color: #7d6b93;
-    font-size: 0.85rem;
-    margin-top: 0.5rem;
-    margin-left: 0.5rem;
+.ss-conv-user-link:hover { color: var(--conv-amber); }
+
+/* — Zone messages — */
+
+.ss-conv-messages-box {
+  background: var(--conv-card);
+  border: 1px solid var(--conv-border);
+  border-radius: var(--conv-radius);
+  backdrop-filter: blur(16px) saturate(1.4);
+  padding: 1.5rem;
+  max-height: 500px;
+  overflow-y: auto;
+  margin-bottom: 0.5rem;
 }
 
-/* Message bubbles */
-.conv-message-row {
-    display: flex;
+.ss-conv-empty {
+  text-align: center;
+  padding: 2rem;
+  font-family: 'Outfit', sans-serif;
+  color: var(--conv-muted);
+  margin: 0;
 }
 
-.conv-message-row-mine {
-    justify-content: flex-end;
+.ss-conv-message-row {
+  display: flex;
+  margin-bottom: 1rem;
 }
 
-.conv-message-row-theirs {
-    justify-content: flex-start;
+.ss-conv-message-row--mine   { justify-content: flex-end; }
+.ss-conv-message-row--theirs { justify-content: flex-start; }
+
+/* — Bulles — */
+
+.ss-conv-bubble {
+  max-width: 70%;
+  padding: 0.75rem 1rem;
+  border-radius: 16px;
 }
 
-.conv-bubble {
-    max-width: 70%;
-    padding: 0.75rem 1rem;
-    border-radius: 16px;
+.ss-conv-bubble--mine {
+  background: var(--conv-amber);
+  color: #0C1E1C;
+  border-bottom-right-radius: 4px;
 }
 
-.conv-bubble-mine {
-    background: linear-gradient(135deg, #7d6b93, #5a4a6f);
-    color: white;
-    border-bottom-right-radius: 4px;
+.ss-conv-bubble--theirs {
+  background: var(--conv-card);
+  border: 1px solid var(--conv-border);
+  color: var(--conv-cream);
+  border-bottom-left-radius: 4px;
 }
 
-.conv-bubble-theirs {
-    background: white;
-    color: #30293d;
-    border: 2px solid #e8dce8;
-    border-bottom-left-radius: 4px;
+.ss-conv-bubble-text {
+  font-family: 'Outfit', sans-serif;
+  line-height: 1.5;
+  word-break: break-word;
+  margin: 0;
 }
 
-.conv-bubble-text {
-    line-height: 1.5;
-    word-break: break-word;
+.ss-conv-bubble-time {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.7rem;
+  color: rgba(247, 242, 232, 0.55);
+  text-align: right;
+  margin: 0.25rem 0 0;
 }
 
-.conv-bubble-time {
-    opacity: 0.7;
-    text-align: right;
+.ss-conv-bubble--mine .ss-conv-bubble-time {
+  color: rgba(12, 30, 28, 0.55);
 }
 
-.conv-message-pending .conv-bubble {
-    opacity: 0.75;
+.ss-conv-message-pending .ss-conv-bubble {
+  opacity: 0.65;
 }
 
-/* Send form */
-.conv-send-box {
-    border-radius: 16px;
-    border: 2px solid #e07b91;
+/* — Indicateur saisie — */
+
+.ss-conv-typing {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.85rem;
+  color: var(--conv-muted);
+  margin: 0 0 0.75rem 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
 }
 
-.conv-message-input {
-    border-radius: 12px;
-    border: 2px solid #e8dce8;
+.ss-conv-typing i { color: var(--conv-amber); }
+
+/* — Formulaire d'envoi — */
+
+.ss-conv-send-box {
+  background: var(--conv-card);
+  border: 1px solid var(--conv-border);
+  border-radius: var(--conv-radius);
+  backdrop-filter: blur(16px) saturate(1.4);
+  padding: 1rem 1.25rem;
 }
 
-.conv-send-btn {
-    background-color: #e07b91;
-    color: white;
-    border: none;
-    border-radius: 12px;
-    font-weight: 600;
-    margin-left: 0.5rem;
+.ss-conv-send-form {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  width: 100%;
 }
 
-/* ─── Scrollbar styling ─── */
-
-#messages-container::-webkit-scrollbar {
-    width: 6px;
+.ss-conv-input {
+  flex: 1;
+  background: rgba(14, 34, 32, 0.60);
+  border: 1px solid var(--conv-border);
+  border-radius: 10px;
+  color: var(--conv-cream);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+  padding: 0.75rem 1rem;
+  outline: none;
+  transition: border-color 0.2s ease;
 }
 
-#messages-container::-webkit-scrollbar-track {
-    background: transparent;
+.ss-conv-input::placeholder { color: var(--conv-dim); }
+.ss-conv-input:focus { border-color: rgba(212, 146, 42, 0.50); }
+
+.ss-conv-send-btn {
+  background: var(--conv-amber);
+  color: #0C1E1C;
+  border: none;
+  border-radius: 10px;
+  padding: 0.75rem 1.1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.2s ease;
 }
+
+.ss-conv-send-btn:hover { background: var(--conv-amber-hover); }
+
+/* — Scrollbar — */
+
+#messages-container::-webkit-scrollbar { width: 6px; }
+#messages-container::-webkit-scrollbar-track { background: transparent; }
 
 #messages-container::-webkit-scrollbar-thumb {
-    background: #e8dce8;
-    border-radius: 3px;
+  background: rgba(212, 146, 42, 0.30);
+  border-radius: 3px;
 }
 
 #messages-container::-webkit-scrollbar-thumb:hover {
-    background: #7d6b93;
+  background: rgba(212, 146, 42, 0.55);
 }
 
-/* ─── Responsive - Tablette ─── */
-@media screen and (max-width: 768px) {
-    .column.is-8 {
-        width: 100%;
-    }
+/* — Responsive — */
 
-    .conv-header {
-        padding: 0.75rem;
-    }
-
-    .conv-bubble {
-        max-width: 85%;
-    }
-
-    .field.has-addons {
-        flex-direction: row;
-    }
+@media (max-width: 768px) {
+  .ss-conv-bubble { max-width: 85%; }
 }
 
-/* ─── Responsive - Mobile ─── */
-@media screen and (max-width: 480px) {
-    .conv-bubble {
-        max-width: 90%;
-        padding: 0.6rem 0.8rem;
-    }
+@media (max-width: 480px) {
+  .ss-conv-main { padding: 1.5rem 1rem 3rem; }
 
-    #messages-container {
-        max-height: 400px;
-    }
+  .ss-conv-bubble {
+    max-width: 90%;
+    padding: 0.6rem 0.8rem;
+  }
+
+  #messages-container { max-height: 400px; }
 }
