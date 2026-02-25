@@ -1,521 +1,127 @@
 <%- include('../partials/header.ejs') %>
-<script src="https://kit.fontawesome.com/626daf36fc.js" crossorigin="anonymous"></script>
-
-<style>
-    /* Styles pour la page talents */
-    body {
-        background-color: #f3e8f3;
-    }
-
-    /* En-tête de la page avec gradient */
-    .talents-header {
-        background: linear-gradient(135deg, #30293d, #5a4a6f, #7d6b93);
-        padding: 3rem 1.5rem;
-        margin-bottom: 3rem;
-        border-radius: 0 0 24px 24px;
-        box-shadow: 0 8px 24px rgba(48, 41, 61, 0.15);
-    }
-
-    .talents-header .title {
-        color: white;
-        font-weight: 700;
-        font-size: 2.5rem;
-        margin-bottom: 0.5rem;
-    }
-
-    .talents-header .subtitle {
-        color: #ffa8c5;
-        font-size: 1.1rem;
-        opacity: 0.9;
-    }
-
-    /* Stats en haut */
-    .stats-container {
-        display: flex;
-        gap: 1rem;
-        justify-content: center;
-        flex-wrap: wrap;
-        margin-top: 2rem;
-    }
-
-    .stat-box {
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
-        padding: 1rem 2rem;
-        border-radius: 16px;
-        border: 2px solid rgba(255, 168, 197, 0.3);
-        text-align: center;
-    }
-
-    .stat-box .stat-number {
-        font-size: 2rem;
-        font-weight: 700;
-        color: #ffd700;
-    }
-
-    .stat-box .stat-label {
-        color: white;
-        opacity: 0.9;
-        font-size: 0.9rem;
-    }
-
-    /* Cartes talents - 6 variations de couleurs */
-    .talent-card {
-        background: white;
-        border-radius: 16px;
-        padding: 1.5rem;
-        height: 100%;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(48, 41, 61, 0.1);
-        border: 3px solid;
-        position: relative;
-        overflow: hidden;
-    }
-
-    /* Variation 1 - Rose */
-    .talent-card.variant-1 {
-        border-color: #ff6b9d;
-    }
-    .talent-card.variant-1::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 4px;
-        background: linear-gradient(90deg, #ff6b9d, #ffa8c5);
-    }
-
-    /* Variation 2 - Bleu */
-    .talent-card.variant-2 {
-        border-color: #6b7db3;
-    }
-    .talent-card.variant-2::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 4px;
-        background: linear-gradient(90deg, #6b7db3, #a8b7e5);
-    }
-
-    /* Variation 3 - Doré */
-    .talent-card.variant-3 {
-        border-color: #ffd700;
-    }
-    .talent-card.variant-3::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 4px;
-        background: linear-gradient(90deg, #ffd700, #ffed4e);
-    }
-
-    /* Variation 4 - Violet */
-    .talent-card.variant-4 {
-        border-color: #7d6b93;
-    }
-    .talent-card.variant-4::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 4px;
-        background: linear-gradient(90deg, #5a4a6f, #7d6b93);
-    }
-
-    /* Variation 5 - Rose corail */
-    .talent-card.variant-5 {
-        border-color: #e07b91;
-    }
-    .talent-card.variant-5::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 4px;
-        background: linear-gradient(90deg, #e07b91, #ff6b9d);
-    }
-
-    /* Variation 6 - Bleu clair */
-    .talent-card.variant-6 {
-        border-color: #a8b7e5;
-    }
-    .talent-card.variant-6::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 4px;
-        background: linear-gradient(90deg, #a8b7e5, #6b7db3);
-    }
-
-    .talent-card:hover {
-        transform: translateY(-12px);
-        box-shadow: 0 12px 32px rgba(48, 41, 61, 0.2);
-    }
-
-    /* Avatar avec initiales */
-    .talent-avatar {
-        width: 72px;
-        height: 72px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.8rem;
-        font-weight: 700;
-        color: white;
-        margin: 0 auto 1rem;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
-
-    .variant-1 .talent-avatar { background: linear-gradient(135deg, #ff6b9d, #ffa8c5); }
-    .variant-2 .talent-avatar { background: linear-gradient(135deg, #6b7db3, #a8b7e5); }
-    .variant-3 .talent-avatar { background: linear-gradient(135deg, #ffd700, #ffed4e); }
-    .variant-4 .talent-avatar { background: linear-gradient(135deg, #5a4a6f, #7d6b93); }
-    .variant-5 .talent-avatar { background: linear-gradient(135deg, #e07b91, #ff6b9d); }
-    .variant-6 .talent-avatar { background: linear-gradient(135deg, #a8b7e5, #6b7db3); }
-
-    /* Nom du talent */
-    .user-name {
-        color: #30293d;
-        font-weight: 700;
-        text-decoration: none;
-        display: block;
-        text-align: center;
-        margin-bottom: 0.5rem;
-        transition: color 0.3s ease;
-    }
-
-    .user-name:hover {
-        color: #ff6b9d;
-    }
-
-    /* Étoiles de notation */
-    .rating-container {
-        text-align: center;
-        margin-bottom: 1rem;
-    }
-
-    .rating-container i {
-        font-size: 1rem;
-    }
-
-    /* Tags de compétences */
-    .skills-tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-        justify-content: center;
-        margin: 1rem 0;
-    }
-
-    .skill-tag {
-        background: rgba(48, 41, 61, 0.05);
-        padding: 0.4rem 1rem;
-        border-radius: 20px;
-        font-size: 0.85rem;
-        font-weight: 600;
-        text-decoration: none;
-        transition: all 0.3s ease;
-        border: 2px solid transparent;
-    }
-
-    .variant-1 .skill-tag { color: #ff6b9d; }
-    .variant-2 .skill-tag { color: #6b7db3; }
-    .variant-3 .skill-tag { color: #ffd700; }
-    .variant-4 .skill-tag { color: #7d6b93; }
-    .variant-5 .skill-tag { color: #e07b91; }
-    .variant-6 .skill-tag { color: #a8b7e5; }
-
-    .variant-1 .skill-tag:hover { background: #ff6b9d; border-color: #ff6b9d; color: white; }
-    .variant-2 .skill-tag:hover { background: #6b7db3; border-color: #6b7db3; color: white; }
-    .variant-3 .skill-tag:hover { background: #ffd700; border-color: #ffd700; color: white; }
-    .variant-4 .skill-tag:hover { background: #7d6b93; border-color: #7d6b93; color: white; }
-    .variant-5 .skill-tag:hover { background: #e07b91; border-color: #e07b91; color: white; }
-    .variant-6 .skill-tag:hover { background: #a8b7e5; border-color: #a8b7e5; color: white; }
-
-    /* Boutons d'action */
-    .action-buttons {
-        display: flex;
-        gap: 0.5rem;
-        margin-top: 1.5rem;
-    }
-
-    .btn-follow, .btn-message {
-        flex: 1;
-        border: none;
-        padding: 0.75rem;
-        border-radius: 12px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        font-size: 0.9rem;
-    }
-
-    .btn-follow {
-        background: rgba(48, 41, 61, 0.05);
-        color: #30293d;
-        border: 2px solid;
-    }
-
-    .btn-message {
-        color: white;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    .variant-1 .btn-follow { border-color: #ff6b9d; }
-    .variant-1 .btn-follow:hover { background: #ff6b9d; color: white; }
-    .variant-1 .btn-message { background: linear-gradient(135deg, #ff6b9d, #ffa8c5); }
-    .variant-1 .btn-message:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(255, 107, 157, 0.3); }
-
-    .variant-2 .btn-follow { border-color: #6b7db3; }
-    .variant-2 .btn-follow:hover { background: #6b7db3; color: white; }
-    .variant-2 .btn-message { background: linear-gradient(135deg, #6b7db3, #a8b7e5); }
-    .variant-2 .btn-message:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(107, 125, 179, 0.3); }
-
-    .variant-3 .btn-follow { border-color: #ffd700; }
-    .variant-3 .btn-follow:hover { background: #ffd700; color: white; }
-    .variant-3 .btn-message { background: linear-gradient(135deg, #ffd700, #ffed4e); }
-    .variant-3 .btn-message:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(255, 215, 0, 0.3); }
-
-    .variant-4 .btn-follow { border-color: #7d6b93; }
-    .variant-4 .btn-follow:hover { background: #7d6b93; color: white; }
-    .variant-4 .btn-message { background: linear-gradient(135deg, #5a4a6f, #7d6b93); }
-    .variant-4 .btn-message:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(125, 107, 147, 0.3); }
-
-    .variant-5 .btn-follow { border-color: #e07b91; }
-    .variant-5 .btn-follow:hover { background: #e07b91; color: white; }
-    .variant-5 .btn-message { background: linear-gradient(135deg, #e07b91, #ff6b9d); }
-    .variant-5 .btn-message:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(224, 123, 145, 0.3); }
-
-    .variant-6 .btn-follow { border-color: #a8b7e5; }
-    .variant-6 .btn-follow:hover { background: #a8b7e5; color: white; }
-    .variant-6 .btn-message { background: linear-gradient(135deg, #a8b7e5, #6b7db3); }
-    .variant-6 .btn-message:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(168, 183, 229, 0.3); }
-
-    /* Responsive - Tablette */
-    @media screen and (max-width: 768px) {
-        .talents-header {
-            padding: 2rem 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .talents-header .title {
-            font-size: 2rem;
-        }
-
-        .stat-box {
-            padding: 0.75rem 1.5rem;
-        }
-
-        .stat-box .stat-number {
-            font-size: 1.5rem;
-        }
-
-        .talent-card {
-            padding: 1.25rem;
-        }
-
-        .action-buttons {
-            flex-direction: column;
-        }
-
-        .btn-follow, .btn-message {
-            width: 100%;
-            text-align: center;
-        }
-    }
-
-    /* Responsive - Mobile */
-    @media screen and (max-width: 480px) {
-        .talents-header {
-            padding: 1.5rem 0.75rem;
-            border-radius: 0 0 16px 16px;
-        }
-
-        .talents-header .title {
-            font-size: 1.6rem;
-        }
-
-        .talents-header .subtitle {
-            font-size: 0.95rem;
-        }
-
-        .stats-container {
-            gap: 0.5rem;
-        }
-
-        .stat-box {
-            padding: 0.5rem 1rem;
-        }
-
-        .stat-box .stat-number {
-            font-size: 1.3rem;
-        }
-
-        .talent-avatar {
-            width: 60px;
-            height: 60px;
-            font-size: 1.5rem;
-        }
-
-        .skill-tag {
-            font-size: 0.8rem;
-            padding: 0.3rem 0.75rem;
-        }
-    }
-</style>
 </head>
 
 <body>
-<%- include('../partials/navbar.ejs') %>
+    <%- include('../partials/navbar.ejs') %>
 
-<!-- En-tête avec gradient -->
-<div class="talents-header">
-    <div class="container has-text-centered">
-        <h1 class="title">
-            <span class="icon is-large talents-header-icon">
-                <i class="fas fa-users fa-2x"></i>
-            </span>
-            <br>
-            Tous les talents
-        </h1>
-        <p class="subtitle">Découvrez les experts de notre communauté</p>
+    <div class="ss-tal-page">
 
-        <!-- Stats -->
-        <div class="stats-container">
-            <div class="stat-box">
-                <div class="stat-number"><%= totalUsers %></div>
-                <div class="stat-label">Talents disponibles</div>
+        <!-- Header -->
+        <header class="ss-tal-header">
+            <h1 class="ss-tal-title">Tous les <em>talents</em></h1>
+            <p class="ss-tal-subtitle">Découvrez les experts de notre communauté</p>
+            <div class="ss-tal-stats">
+                <div class="ss-tal-stat-box">
+                    <span class="ss-tal-stat-num"><%= totalUsers %></span>
+                    <span class="ss-tal-stat-label">Talents disponibles</span>
+                </div>
+                <div class="ss-tal-stat-box">
+                    <span class="ss-tal-stat-num"><%= users.reduce((sum, u) => sum + u.skills.length, 0) %></span>
+                    <span class="ss-tal-stat-label">Compétences partagées</span>
+                </div>
             </div>
-            <div class="stat-box">
-                <div class="stat-number"><%= users.reduce((sum, u) => sum + u.skills.length, 0) %></div>
-                <div class="stat-label">Compétences partagées</div>
-            </div>
-        </div>
-    </div>
-</div>
+        </header>
 
-<main class="container talents-main-content">
-    <section class="section">
-        <div class="container">
-            <!-- Grille des talents -->
-            <div class="columns is-multiline">
-                <% users.forEach((user, index) => { %>
-                    <% const variant = (index % 6) + 1; %>
-                    <div class="column is-12-mobile is-6-tablet is-4-desktop">
-                        <div class="talent-card variant-<%= variant %>">
-                            <!-- Avatar avec initiales -->
-                            <div class="talent-avatar">
+        <!-- Body -->
+        <div class="ss-tal-body">
+
+            <!-- Grid -->
+            <div class="ss-tal-grid">
+                <% users.forEach((user) => { %>
+                    <div class="ss-tal-card">
+
+                        <!-- Avatar -->
+                        <div class="ss-tal-avatar">
+                            <% if (user.avatar) { %>
+                                <img src="<%= user.avatar %>" alt="<%= user.firstname %> <%= user.lastname %>">
+                            <% } else { %>
                                 <%= user.firstname.charAt(0).toUpperCase() %><%= user.lastname.charAt(0).toUpperCase() %>
-                            </div>
+                            <% } %>
+                        </div>
 
-                            <!-- Nom du talent -->
-                            <a href="/talents/<%= user.id %>" class="user-name">
-                                <%= user.firstname %> <%= user.lastname %>
-                            </a>
+                        <!-- Name -->
+                        <a href="/talents/<%= user.id %>" class="ss-tal-name">
+                            <%= user.firstname %> <%= user.lastname %>
+                        </a>
 
-                            <!-- Notation avec étoiles -->
-                            <div class="rating-container">
+                        <!-- Stars -->
+                        <div class="ss-tal-stars">
+                            <div class="ss-tal-stars-row">
                                 <% const fullStars = Math.floor(user.averageRating || 0); %>
                                 <% const hasHalf = (user.averageRating || 0) % 1 >= 0.5; %>
-                                
-                                <!-- Étoiles pleines -->
                                 <% for (let i = 0; i < fullStars; i++) { %>
-                                    <i class="fas fa-star has-text-warning"></i>
+                                    <i class="fas fa-star filled"></i>
                                 <% } %>
-
-                                <!-- Étoile partielle -->
                                 <% if (hasHalf) { %>
-                                    <i class="fas fa-star-half-alt has-text-warning"></i>
+                                    <i class="fas fa-star-half-alt filled"></i>
                                 <% } %>
-
-                                <!-- Étoiles vides -->
                                 <% for (let i = fullStars + (hasHalf ? 1 : 0); i < 5; i++) { %>
-                                    <i class="far fa-star has-text-grey-light"></i>
+                                    <i class="far fa-star"></i>
                                 <% } %>
-
-                                <br>
-                                <span class="has-text-grey is-size-7">(<%= (user.averageRating || 0).toFixed(1) %>/5)</span>
                             </div>
-
-                            <!-- Tags de compétences -->
-                            <div class="skills-tags">
-                                <% user.skills.forEach(skill => { %>
-                                    <a href="/skills/<%= skill.slug %>" class="skill-tag">
-                                        <span class="icon is-small">
-                                            <i class="fas fa-star"></i>
-                                        </span>
-                                        <%= skill.label %>
-                                    </a>
-                                <% }) %>
-                            </div>
-
-                            <!-- Boutons d'action -->
-                            <div class="action-buttons">
-                                <%
-                                  const isFollowing = followedUser && followedUser.followed && followedUser.followed.some(f => f.id === user.id);
-                                %>
-                                <button class="btn-follow <%= isFollowing ? 'is-following' : '' %>" data-user-id="<%= user.id %>" data-following="<%= isFollowing ? 'true' : 'false' %>">
-                                    <span class="icon is-small">
-                                        <i class="fas <%= isFollowing ? 'fa-user-minus' : 'fa-user-plus' %>"></i>
-                                    </span>
-                                    <span><%= isFollowing ? 'Ne plus suivre' : 'Suivre' %></span>
-                                </button>
-                                <a href="/messages/<%= user.id %>" class="btn-message">
-                                    <span class="icon is-small">
-                                        <i class="fas fa-paper-plane"></i>
-                                    </span>
-                                    <span>Message</span>
-                                </a>
-                            </div>
+                            <span class="ss-tal-rating">(<%= (user.averageRating || 0).toFixed(1) %>/5)</span>
                         </div>
+
+                        <!-- Skills -->
+                        <div class="ss-tal-skills">
+                            <% user.skills.forEach(skill => { %>
+                                <a href="/skills/<%= skill.slug %>" class="ss-tal-pill">
+                                    <%= skill.label %>
+                                </a>
+                            <% }) %>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="ss-tal-actions">
+                            <% const isFollowing = followedUser && followedUser.followed && followedUser.followed.some(f => f.id === user.id); %>
+                            <button
+                                class="ss-tal-follow btn-follow <%= isFollowing ? 'is-following' : '' %>"
+                                data-user-id="<%= user.id %>"
+                                data-following="<%= isFollowing ? 'true' : 'false' %>"
+                            >
+                                <i class="fas <%= isFollowing ? 'fa-user-minus' : 'fa-user-plus' %>"></i>
+                                <span><%= isFollowing ? 'Ne plus suivre' : 'Suivre' %></span>
+                            </button>
+                            <a href="/messages/<%= user.id %>" class="ss-tal-message">
+                                <i class="fas fa-paper-plane"></i>
+                                <span>Message</span>
+                            </a>
+                        </div>
+
                     </div>
                 <% }) %>
             </div>
 
             <!-- Pagination -->
             <% if (totalPages > 1) { %>
-            <nav class="pagination is-centered mt-6" role="navigation" aria-label="pagination">
+            <nav class="ss-tal-pagination" aria-label="pagination">
                 <% if (currentPage > 1) { %>
-                    <a class="pagination-previous" href="/talents?page=<%= currentPage - 1 %>">Précédent</a>
+                    <a class="ss-tal-page-link" href="/talents?page=<%= currentPage - 1 %>">← Précédent</a>
                 <% } else { %>
-                    <a class="pagination-previous" disabled>Précédent</a>
+                    <a class="ss-tal-page-link" disabled>← Précédent</a>
+                <% } %>
+
+                <% for (let i = 1; i <= totalPages; i++) { %>
+                    <a class="ss-tal-page-link <%= i === currentPage ? 'is-current' : '' %>"
+                       href="/talents?page=<%= i %>"
+                       aria-label="Page <%= i %>">
+                        <%= i %>
+                    </a>
                 <% } %>
 
                 <% if (currentPage < totalPages) { %>
-                    <a class="pagination-next" href="/talents?page=<%= currentPage + 1 %>">Suivant</a>
+                    <a class="ss-tal-page-link" href="/talents?page=<%= currentPage + 1 %>">Suivant →</a>
                 <% } else { %>
-                    <a class="pagination-next" disabled>Suivant</a>
+                    <a class="ss-tal-page-link" disabled>Suivant →</a>
                 <% } %>
-
-                <ul class="pagination-list">
-                    <% for (let i = 1; i <= totalPages; i++) { %>
-                        <li>
-                            <a class="pagination-link <%= i === currentPage ? 'is-current' : '' %>"
-                               href="/talents?page=<%= i %>"
-                               aria-label="Page <%= i %>">
-                                <%= i %>
-                            </a>
-                        </li>
-                    <% } %>
-                </ul>
             </nav>
             <% } %>
 
-        </div>
-    </section>
-</main>
+        </div><!-- /.ss-tal-body -->
 
-<script src="/js/follow.js"></script>
-<%- include('../partials/footer.ejs') %>
+    </div><!-- /.ss-tal-page -->
+
+    <script src="/js/follow.js"></script>
+    <%- include('../partials/footer.ejs') %>
 </body>
 </html>
