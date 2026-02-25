@@ -2,169 +2,142 @@
 </head>
 <%- include('../partials/navbar.ejs') %>
 
-<main class="section notif-main">
-    <div class="container">
-        <div class="columns is-centered">
-            <div class="column is-8-desktop is-10-tablet is-12-mobile">
+<main class="ss-notif-main">
+  <div class="ss-notif-container">
 
-                <!-- En-tête -->
-                <div class="notif-header mb-5">
-                    <div class="is-flex is-align-items-center is-justify-content-space-between is-flex-wrap-wrap">
-                        <div>
-                            <h1 class="title is-3 has-text-light mb-1">
-                                <span class="icon notif-title-icon mr-2">
-                                    <i class="fa-solid fa-bell"></i>
-                                </span>
-                                Notifications
-                            </h1>
-                            <p class="notif-subtitle">
-                                <% if (unreadCount > 0) { %>
-                                    Vous avez <strong><%= unreadCount %></strong> notification<%= unreadCount > 1 ? 's' : '' %> non lue<%= unreadCount > 1 ? 's' : '' %>
-                                <% } else { %>
-                                    Toutes vos notifications sont lues
-                                <% } %>
-                            </p>
-                        </div>
-                        <% if (unreadCount > 0) { %>
-                            <button class="button notif-mark-all-btn mt-2" id="markAllReadBtn">
-                                <span class="icon is-small">
-                                    <i class="fa-solid fa-check-double"></i>
-                                </span>
-                                <span>Tout marquer comme lu</span>
-                            </button>
-                        <% } %>
-                    </div>
-                </div>
-
-                <!-- Liste des notifications -->
-                <% if (notifications.length === 0) { %>
-                    <div class="box has-text-centered notif-empty-box">
-                        <span class="icon is-large notif-empty-icon">
-                            <i class="fa-solid fa-bell-slash"></i>
-                        </span>
-                        <h3 class="title is-5 notif-empty-title mt-3">Aucune notification</h3>
-                        <p class="has-text-grey">Vous n'avez pas encore reçu de notifications.</p>
-                    </div>
-                <% } else { %>
-                    <div class="notif-list">
-                        <% notifications.forEach((notif) => { %>
-                            <div class="box notif-item <%= notif.is_read ? '' : 'notif-unread' %>" data-id="<%= notif.id %>">
-                                <div class="is-flex is-align-items-center">
-                                    <!-- Icône selon le type -->
-                                    <div class="notif-icon-box notif-icon-<%= notif.type_notification %>">
-                                        <span class="icon">
-                                            <% if (notif.type_notification === 'message') { %>
-                                                <i class="fa-solid fa-envelope"></i>
-                                            <% } else if (notif.type_notification === 'review') { %>
-                                                <i class="fa-solid fa-star"></i>
-                                            <% } else if (notif.type_notification === 'follow') { %>
-                                                <i class="fa-solid fa-user-plus"></i>
-                                            <% } else { %>
-                                                <i class="fa-solid fa-bell"></i>
-                                            <% } %>
-                                        </span>
-                                    </div>
-
-                                    <!-- Contenu -->
-                                    <div class="notif-content ml-3">
-                                        <p class="notif-text"><%= notif.content %></p>
-                                        <p class="notif-time">
-                                            <span class="icon is-small">
-                                                <i class="fa-regular fa-clock"></i>
-                                            </span>
-                                            <%= new Date(notif.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) %>
-                                        </p>
-                                    </div>
-
-                                    <!-- Actions -->
-                                    <div class="notif-actions ml-auto is-flex is-align-items-center">
-                                        <% if (!notif.is_read) { %>
-                                            <button class="button is-small notif-read-btn" data-id="<%= notif.id %>" title="Marquer comme lu">
-                                                <span class="icon is-small">
-                                                    <i class="fa-solid fa-check"></i>
-                                                </span>
-                                            </button>
-                                        <% } %>
-                                        <% if (notif.action_url) { %>
-                                            <a href="<%= notif.action_url %>" class="button is-small notif-view-btn ml-1" title="Voir">
-                                                <span class="icon is-small">
-                                                    <i class="fa-solid fa-arrow-right"></i>
-                                                </span>
-                                            </a>
-                                        <% } %>
-                                        <button class="button is-small notif-delete-btn ml-1" data-id="<%= notif.id %>" title="Supprimer">
-                                            <span class="icon is-small">
-                                                <i class="fa-solid fa-trash"></i>
-                                            </span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        <% }) %>
-                    </div>
-
-                    <!-- Pagination -->
-                    <% if (totalPages > 1) { %>
-                        <nav class="pagination is-centered mt-5" role="navigation">
-                            <% if (currentPage > 1) { %>
-                                <a class="pagination-previous notif-pagination-btn" href="/notifications?page=<%= currentPage - 1 %>">Précédent</a>
-                            <% } else { %>
-                                <a class="pagination-previous notif-pagination-btn" disabled>Précédent</a>
-                            <% } %>
-                            <% if (currentPage < totalPages) { %>
-                                <a class="pagination-next notif-pagination-btn" href="/notifications?page=<%= currentPage + 1 %>">Suivant</a>
-                            <% } else { %>
-                                <a class="pagination-next notif-pagination-btn" disabled>Suivant</a>
-                            <% } %>
-                            <ul class="pagination-list">
-                                <% for (let i = 1; i <= totalPages; i++) { %>
-                                    <li>
-                                        <a class="pagination-link <%= i === currentPage ? 'notif-page-active' : '' %>" href="/notifications?page=<%= i %>"><%= i %></a>
-                                    </li>
-                                <% } %>
-                            </ul>
-                        </nav>
-                    <% } %>
-                <% } %>
-
-            </div>
-        </div>
+    <!-- Header -->
+    <div class="ss-notif-header">
+      <div class="ss-notif-title-wrap">
+        <h1 class="ss-notif-title">
+          <i class="fa-solid fa-bell"></i>
+          Notifications
+        </h1>
+        <p class="ss-notif-subtitle">
+          <% if (unreadCount > 0) { %>
+            Vous avez <strong style="color:var(--notif-amber)"><%= unreadCount %></strong>
+            notification<%= unreadCount > 1 ? 's' : '' %> non lue<%= unreadCount > 1 ? 's' : '' %>
+          <% } else { %>
+            Toutes vos notifications sont lues
+          <% } %>
+        </p>
+      </div>
+      <% if (unreadCount > 0) { %>
+        <button class="ss-notif-mark-all" id="markAllReadBtn">
+          <i class="fa-solid fa-check-double"></i>
+          <span>Tout marquer comme lu</span>
+        </button>
+      <% } %>
     </div>
+
+    <!-- Contenu -->
+    <% if (notifications.length === 0) { %>
+      <div class="ss-notif-empty">
+        <i class="fa-solid fa-bell-slash ss-notif-empty-icon"></i>
+        <h3 class="ss-notif-empty-title">Aucune notification</h3>
+        <p class="ss-notif-empty-text">Vous n'avez pas encore reçu de notifications.</p>
+      </div>
+    <% } else { %>
+      <div class="ss-notif-list">
+        <% notifications.forEach((notif) => { %>
+          <div class="ss-notif-item <%= notif.is_read ? '' : 'ss-notif-item--unread' %>" data-id="<%= notif.id %>">
+
+            <!-- Icône -->
+            <div class="ss-notif-icon-box">
+              <% if (notif.type_notification === 'message') { %>
+                <i class="fa-solid fa-envelope"></i>
+              <% } else if (notif.type_notification === 'review') { %>
+                <i class="fa-solid fa-star"></i>
+              <% } else if (notif.type_notification === 'follow') { %>
+                <i class="fa-solid fa-user-plus"></i>
+              <% } else { %>
+                <i class="fa-solid fa-bell"></i>
+              <% } %>
+            </div>
+
+            <!-- Contenu -->
+            <div class="ss-notif-content">
+              <p class="ss-notif-text"><%= notif.content %></p>
+              <p class="ss-notif-time">
+                <i class="fa-regular fa-clock"></i>
+                <%= new Date(notif.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) %>
+              </p>
+            </div>
+
+            <!-- Actions -->
+            <div class="ss-notif-actions">
+              <% if (!notif.is_read) { %>
+                <button class="ss-notif-read-btn" data-id="<%= notif.id %>" title="Marquer comme lu">
+                  <i class="fa-solid fa-check"></i>
+                </button>
+              <% } %>
+              <% if (notif.action_url) { %>
+                <a href="<%= notif.action_url %>" class="ss-notif-view-btn" title="Voir">
+                  <i class="fa-solid fa-arrow-right"></i>
+                </a>
+              <% } %>
+              <button class="ss-notif-delete-btn" data-id="<%= notif.id %>" title="Supprimer">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
+
+          </div>
+        <% }) %>
+      </div>
+
+      <!-- Pagination -->
+      <% if (totalPages > 1) { %>
+        <nav class="ss-notif-pagination" aria-label="pagination">
+          <% if (currentPage > 1) { %>
+            <a class="ss-notif-page-link" href="/notifications?page=<%= currentPage - 1 %>">← Précédent</a>
+          <% } else { %>
+            <a class="ss-notif-page-link" disabled>← Précédent</a>
+          <% } %>
+
+          <% for (let i = 1; i <= totalPages; i++) { %>
+            <a class="ss-notif-page-link <%= i === currentPage ? 'ss-notif-page-link--active' : '' %>"
+               href="/notifications?page=<%= i %>"><%= i %></a>
+          <% } %>
+
+          <% if (currentPage < totalPages) { %>
+            <a class="ss-notif-page-link" href="/notifications?page=<%= currentPage + 1 %>">Suivant →</a>
+          <% } else { %>
+            <a class="ss-notif-page-link" disabled>Suivant →</a>
+          <% } %>
+        </nav>
+      <% } %>
+    <% } %>
+
+  </div>
 </main>
 
 <script nonce="<%= cspNonce %>">
-  // Marquer une notification comme lue
-  document.querySelectorAll('.notif-read-btn').forEach(btn => {
+  document.querySelectorAll('.ss-notif-read-btn').forEach(btn => {
     btn.addEventListener('click', async () => {
       const id = btn.dataset.id;
       const res = await fetch(`/api/notifications/${id}/read`, { method: 'POST' });
       if (res.ok) {
-        const item = btn.closest('.notif-item');
-        item.classList.remove('notif-unread');
+        const item = btn.closest('.ss-notif-item');
+        item.classList.remove('ss-notif-item--unread');
         btn.remove();
       }
     });
   });
 
-  // Supprimer une notification
-  document.querySelectorAll('.notif-delete-btn').forEach(btn => {
+  document.querySelectorAll('.ss-notif-delete-btn').forEach(btn => {
     btn.addEventListener('click', async () => {
       const id = btn.dataset.id;
       const res = await fetch(`/api/notifications/${id}/delete`, { method: 'POST' });
-      if (res.ok) {
-        btn.closest('.notif-item').remove();
-      }
+      if (res.ok) { btn.closest('.ss-notif-item').remove(); }
     });
   });
 
-  // Tout marquer comme lu
   const markAllBtn = document.getElementById('markAllReadBtn');
   if (markAllBtn) {
     markAllBtn.addEventListener('click', async () => {
       const res = await fetch('/api/notifications/read-all', { method: 'POST' });
       if (res.ok) {
-        document.querySelectorAll('.notif-unread').forEach(el => el.classList.remove('notif-unread'));
-        document.querySelectorAll('.notif-read-btn').forEach(btn => btn.remove());
+        document.querySelectorAll('.ss-notif-item--unread').forEach(el => el.classList.remove('ss-notif-item--unread'));
+        document.querySelectorAll('.ss-notif-read-btn').forEach(btn => btn.remove());
         markAllBtn.remove();
       }
     });
