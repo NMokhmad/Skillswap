@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const stars = document.querySelectorAll('.review-star');
+  const stars = document.querySelectorAll('.ss-tp-review-star');
   const rateInput = document.getElementById('review-rate');
 
   if (!stars.length || !rateInput) return;
@@ -14,10 +14,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const icon = s.querySelector('i');
         if (v <= value) {
           icon.className = 'fas fa-star';
-          s.style.color = '#ffd700';
+          s.style.color = '#D4922A';
         } else {
           icon.className = 'far fa-star';
-          s.style.color = '#ccc';
+          s.style.color = 'rgba(247, 242, 232, 0.20)';
         }
       });
     });
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const icon = s.querySelector('i');
         if (v <= value) {
           icon.className = 'fas fa-star';
-          s.style.color = '#ffd700';
+          s.style.color = '#D4922A';
         }
       });
     });
@@ -41,10 +41,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const icon = s.querySelector('i');
         if (v <= currentValue) {
           icon.className = 'fas fa-star';
-          s.style.color = '#ffd700';
+          s.style.color = '#D4922A';
         } else {
           icon.className = 'far fa-star';
-          s.style.color = '#ccc';
+          s.style.color = 'rgba(247, 242, 232, 0.20)';
         }
       });
     });
