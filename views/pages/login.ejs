@@ -4,115 +4,90 @@
 <body>
     <%- include('../partials/navbar.ejs') %>
 
-    <section class="login-section">
-        <div class="container">
-            <div class="columns is-centered">
-                <div class="column is-5-desktop is-6-tablet is-12-mobile">
-                    <div class="login-card">
-                        <!-- En-tête avec gradient -->
-                        <div class="login-header">
-                            <div class="icon-circle">
-                                <span class="icon is-large">
-                                    <i class="fas fa-sign-in-alt fa-2x login-icon-header"></i>
-                                </span>
-                            </div>
-                            <h1 class="title">Bon retour !</h1>
-                            <p class="subtitle">Connectez-vous à votre compte SkillSwap</p>
-                        </div>
+    <div class="ss-login-page">
+        <div class="ss-login-card">
 
-                        <!-- Corps du formulaire -->
-                        <div class="login-body">
-                            <!-- Badge de bienvenue -->
-                            <div class="welcome-badge">
-                                <span class="icon">
-                                    <i class="fas fa-star"></i>
-                                </span>
-                                <span>Ravis de vous revoir parmi nous !</span>
-                            </div>
+            <!-- En-tête -->
+            <div class="ss-login-header">
+                <h1 class="ss-login-title">Bon retour sur <em>Skill</em><strong>Swap</strong></h1>
+                <p class="ss-login-subtitle">Connectez-vous à votre compte</p>
+            </div>
 
-                            <!-- Message d'erreur -->
-                            <% if (typeof error !== 'undefined' && error) { %>
-                                <div class="error-notification">
-                                    <span class="icon">
-                                        <i class="fas fa-exclamation-triangle"></i>
-                                    </span>
-                                    <div>
-                                        <strong>Erreur de connexion</strong><br>
-                                        <%= error %>
-                                    </div>
-                                </div>
-                            <% } %>
+            <hr class="ss-login-divider">
 
-                            <!-- Formulaire -->
-                            <form action="/login" method="POST">
-                                <!-- Email -->
-                                <div class="field">
-                                    <label class="label">
-                                        <span class="icon is-small login-icon-email">
-                                            <i class="fas fa-envelope"></i>
-                                        </span>
-                                        Email
-                                    </label>
-                                    <div class="control has-icons-left">
-                                        <input class="input" type="email" name="email" placeholder="votre.email@exemple.com" required>
-                                        <span class="icon is-left">
-                                            <i class="fas fa-envelope"></i>
-                                        </span>
-                                    </div>
-                                </div>
+            <!-- Bandeau erreur (conditionnel) -->
+            <% if (typeof error !== 'undefined' && error) { %>
+                <div class="ss-login-error">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span><%= error %></span>
+                </div>
+            <% } %>
 
-                                <!-- Mot de passe -->
-                                <div class="field">
-                                    <label class="label">
-                                        <span class="icon is-small login-icon-password">
-                                            <i class="fas fa-lock"></i>
-                                        </span>
-                                        Mot de passe
-                                    </label>
-                                    <div class="control has-icons-left">
-                                        <input class="input" type="password" name="password" placeholder="Votre mot de passe" required>
-                                        <span class="icon is-left">
-                                            <i class="fas fa-lock"></i>
-                                        </span>
-                                    </div>
-                                </div>
+            <!-- Formulaire -->
+            <form action="/login" method="POST">
 
-                                <!-- Mot de passe oublié -->
-                                <div class="forgot-password">
-                                    <a href="/forgot-password">
-                                        <span class="icon is-small">
-                                            <i class="fas fa-question-circle"></i>
-                                        </span>
-                                        Mot de passe oublié ?
-                                    </a>
-                                </div>
-
-                                <!-- Bouton de connexion -->
-                                <div class="field login-submit-field">
-                                    <button type="submit" class="btn-login1">
-                                        <span class="icon">
-                                            <i class="fas fa-arrow-right"></i>
-                                        </span>
-                                        <span>Se connecter</span>
-                                    </button>
-                                </div>
-                            </form>
-
-                            <!-- Séparateur -->
-                            <div class="divider">
-                                <span>OU</span>
-                            </div>
-
-                            <!-- Lien vers l'inscription -->
-                            <div class="register-link">
-                                <p>Vous n'avez pas encore de compte ? <a href="/register">Créez-en un maintenant</a></p>
-                            </div>
-                        </div>
+                <!-- Email -->
+                <div class="ss-login-field">
+                    <label class="ss-login-label" for="email">Email</label>
+                    <div class="ss-login-input-wrap">
+                        <input
+                            class="ss-login-input"
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="votre.email@exemple.com"
+                            autocomplete="email"
+                            required
+                        >
+                        <i class="fas fa-envelope"></i>
                     </div>
                 </div>
+
+                <!-- Mot de passe -->
+                <div class="ss-login-field">
+                    <label class="ss-login-label" for="password">Mot de passe</label>
+                    <div class="ss-login-input-wrap">
+                        <input
+                            class="ss-login-input"
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Votre mot de passe"
+                            autocomplete="current-password"
+                            required
+                        >
+                        <i class="fas fa-lock"></i>
+                    </div>
+                </div>
+
+                <!-- Mot de passe oublié -->
+                <div class="ss-login-forgot">
+                    <a href="/forgot-password">
+                        <i class="fas fa-question-circle"></i>
+                        Mot de passe oublié ?
+                    </a>
+                </div>
+
+                <!-- Bouton -->
+                <button type="submit" class="ss-login-btn">
+                    <i class="fas fa-arrow-right"></i>
+                    Se connecter
+                </button>
+
+            </form>
+
+            <!-- Séparateur OU -->
+            <div class="ss-login-or">
+                <span>OU</span>
             </div>
-        </div>
-    </section>
+
+            <!-- Lien inscription -->
+            <p class="ss-login-register-link">
+                Pas encore de compte ? <a href="/register">Créez-en un</a>
+            </p>
+
+        </div><!-- /.ss-login-card -->
+    </div><!-- /.ss-login-page -->
 
     <%- include('../partials/footer.ejs') %>
 </body>
