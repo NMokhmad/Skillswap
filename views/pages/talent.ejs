@@ -1,360 +1,217 @@
 <%- include('../partials/header.ejs') %>
-<script src="https://kit.fontawesome.com/626daf36fc.js" crossorigin="anonymous"></script>
 </head>
 
+<body>
 <%- include('../partials/navbar.ejs') %>
 
-<main class="section talent-main">
-    <div class="container">
+<main class="ss-tp-main">
+  <div class="ss-tp-container">
+    <div class="ss-tp-grid">
 
-        <div class="columns">
-            <!-- Colonne principale - Profil -->
-            <div class="column is-8">
+      <!-- Colonne principale -->
+      <div>
 
-                <!-- Carte profil principale -->
-                <div class="box talent-profile-card">
+        <!-- Header profil -->
+        <div class="ss-tp-card ss-tp-header">
+          <div class="ss-tp-verified">
+            <i class="fa-solid fa-circle-check"></i>
+            <span>Vérifié</span>
+          </div>
 
-                    <!-- En-tête du profil avec gradient -->
-                    <div class="has-text-centered mb-5 pb-5 talent-profile-header">
+          <div class="ss-tp-avatar">
+            <%= profils.firstname.charAt(0).toUpperCase() %><%= profils.lastname.charAt(0).toUpperCase() %>
+          </div>
 
-                        <!-- Badge vérifié en haut à droite -->
-                        <div class="talent-verified-wrapper">
-                            <span class="tag is-medium talent-verified-badge">
-                                <span class="icon">
-                                    <i class="fa-solid fa-circle-check"></i>
-                                </span>
-                                <span>Vérifié</span>
-                            </span>
-                        </div>
+          <h1 class="ss-tp-name"><%= profils.firstname %> <%= profils.lastname %></h1>
 
-                        <!-- Avatar -->
-                        <figure class="image is-128x128 is-inline-block mb-4">
-                            <div class="talent-avatar">
-                                <span class="talent-avatar-text">
-                                    <%= profils.firstname.charAt(0).toUpperCase() %><%= profils.lastname.charAt(0).toUpperCase() %>
-                                </span>
-                            </div>
-                        </figure>
+          <div class="ss-tp-stars-row">
+            <% const fullStars = Math.floor(averageRating); %>
+            <% const hasHalf = averageRating % 1 >= 0.5; %>
+            <% for (let i = 0; i < fullStars; i++) { %><i class="fa-solid fa-star filled"></i><% } %>
+            <% if (hasHalf) { %><i class="fa-solid fa-star-half-stroke filled"></i><% } %>
+            <% for (let i = fullStars + (hasHalf ? 1 : 0); i < 5; i++) { %><i class="fa-regular fa-star"></i><% } %>
+          </div>
+          <span class="ss-tp-rating"><%= averageRating.toFixed(1) %>/5 · <%= reviewCount %> avis</span>
 
-                        <!-- Nom et prénom -->
-                        <h1 class="title is-3 has-text-weight-bold mb-2 has-text-white">
-                            <%= profils.firstname %> <%= profils.lastname %>
-                        </h1>
-
-                        <!-- Note avec fond semi-transparent -->
-                        <div class="mb-4 talent-rating-badge">
-                            <span class="icon-text">
-                                <span class="talent-rating-stars">
-                                    <% const fullStars = Math.floor(averageRating); %>
-                                    <% const hasHalf = averageRating % 1 >= 0.5; %>
-                                    <% for (let i = 0; i < fullStars; i++) { %>
-                                        <i class="fa-solid fa-star"></i>
-                                    <% } %>
-                                    <% if (hasHalf) { %>
-                                        <i class="fa-solid fa-star-half-stroke"></i>
-                                    <% } %>
-                                    <% for (let i = fullStars + (hasHalf ? 1 : 0); i < 5; i++) { %>
-                                        <i class="fa-regular fa-star"></i>
-                                    <% } %>
-                                </span>
-                                <span class="has-text-weight-bold has-text-white talent-rating-value"><%= averageRating.toFixed(1) %>/5</span>
-                                <span class="has-text-white talent-rating-count">(<%= reviewCount %> avis)</span>
-                            </span>
-                        </div>
-
-                        <!-- Boutons d'action -->
-                        <div class="buttons is-centered mt-4">
-                            <button class="button is-medium talent-btn-follow btn-follow <%= isFollowing ? 'is-following' : '' %>" data-user-id="<%= profils.id %>" data-following="<%= isFollowing ? 'true' : 'false' %>">
-                                <span class="icon">
-                                    <i class="fa-solid <%= isFollowing ? 'fa-user-minus' : 'fa-user-plus' %>"></i>
-                                </span>
-                                <span><%= isFollowing ? 'Ne plus suivre' : 'Suivre' %></span>
-                            </button>
-                            <a href="/messages/<%= profils.id %>" class="button is-medium talent-btn-message">
-                                <span class="icon">
-                                    <i class="fa-solid fa-message"></i>
-                                </span>
-                                <span>Message</span>
-                            </a>
-                        </div>
-                    </div>
-
-                    <% if (profils.bio) { %>
-                    <!-- Bio -->
-                    <div class="content mb-5">
-                        <h2 class="title is-5 has-text-weight-semibold mb-4 talent-section-title">
-                            <span class="icon-text">
-                                <span class="icon talent-icon-about">
-                                    <i class="fa-solid fa-user"></i>
-                                </span>
-                                <span>À propos</span>
-                            </span>
-                        </h2>
-                        <p class="talent-bio-text"><%= profils.bio %></p>
-                    </div>
-                    <% } %>
-
-                    <!-- Compétences -->
-                    <div class="content mb-5">
-                        <h2 class="title is-5 has-text-weight-semibold mb-4 talent-section-title">
-                            <span class="icon-text">
-                                <span class="icon talent-icon-skills">
-                                    <i class="fa-solid fa-certificate"></i>
-                                </span>
-                                <span>Compétences</span>
-                            </span>
-                        </h2>
-                        <div class="tags are-medium">
-                            <% profils.skills.forEach((skill, index) => { %>
-                                <a href="/skills/<%= skill.slug %>" class="tag skill-tag skill-color-<%= index % 4 %>">
-                                    <span class="icon">
-                                        <i class="fa-solid fa-star"></i>
-                                    </span>
-                                    <span><%= skill.label %></span>
-                                </a>
-                            <% }) %>
-                        </div>
-                    </div>
-
-                    <!-- Contact -->
-                    <div class="content">
-                        <h2 class="title is-5 has-text-weight-semibold mb-4 talent-section-title">
-                            <span class="icon-text">
-                                <span class="icon talent-icon-contact">
-                                    <i class="fa-solid fa-envelope"></i>
-                                </span>
-                                <span>Contact</span>
-                            </span>
-                        </h2>
-                        <div class="box talent-contact-box">
-                            <p class="has-text-weight-semibold talent-contact-text">
-                                <span class="icon-text">
-                                    <span class="icon talent-contact-email-icon">
-                                        <i class="fa-solid fa-at"></i>
-                                    </span>
-                                    <span><%= profils.email %></span>
-                                </span>
-                            </p>
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- Section Avis -->
-                <div class="box mt-5 talent-reviews-card">
-                    <div class="is-flex is-justify-content-space-between is-align-items-center mb-5 pb-4 talent-reviews-header">
-                        <h2 class="title is-4 has-text-weight-semibold mb-0 talent-section-title">
-                            <span class="icon-text">
-                                <span class="icon talent-icon-reviews">
-                                    <i class="fa-solid fa-comments"></i>
-                                </span>
-                                <span>Avis des utilisateurs</span>
-                            </span>
-                        </h2>
-                        <% if (typeof user !== 'undefined' && user && user.id !== profils.id) { %>
-                        <button class="button is-medium talent-btn-review" id="btn-toggle-review-form">
-                            <span class="icon">
-                                <i class="fa-solid fa-plus"></i>
-                            </span>
-                            <span>Laisser un avis</span>
-                        </button>
-                        <% } %>
-                    </div>
-
-                    <!-- Formulaire d'avis -->
-                    <% if (typeof user !== 'undefined' && user && user.id !== profils.id) { %>
-                    <div id="review-form-container" style="display: none;" class="mb-5">
-                        <div class="box talent-review-form-box">
-                            <form action="/review/<%= profils.id %>" method="POST">
-                                <div class="field">
-                                    <label class="label talent-review-label">Note</label>
-                                    <div class="control">
-                                        <input type="hidden" name="rate" id="review-rate" value="0">
-                                        <div class="review-stars talent-review-stars">
-                                            <% for (let i = 1; i <= 5; i++) { %>
-                                                <span class="review-star talent-review-star" data-value="<%= i %>">
-                                                    <i class="far fa-star"></i>
-                                                </span>
-                                            <% } %>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="field">
-                                    <label class="label talent-review-label">Compétence évaluée</label>
-                                    <div class="control">
-                                        <div class="select is-fullwidth">
-                                            <select name="skill_id" required>
-                                                <option value="">-- Choisir une compétence --</option>
-                                                <% profils.skills.forEach(skill => { %>
-                                                    <option value="<%= skill.id %>"><%= skill.label %></option>
-                                                <% }) %>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="field">
-                                    <label class="label talent-review-label">Commentaire</label>
-                                    <div class="control">
-                                        <textarea class="textarea" name="content" placeholder="Décrivez votre expérience..." rows="3"></textarea>
-                                    </div>
-                                </div>
-
-                                <div class="field">
-                                    <div class="control">
-                                        <button type="submit" class="button is-medium talent-btn-submit-review">
-                                            <span class="icon">
-                                                <i class="fa-solid fa-paper-plane"></i>
-                                            </span>
-                                            <span>Envoyer mon avis</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <% } %>
-
-                    <!-- Liste des avis -->
-                    <div class="review-list">
-                        <% if (reviews.length === 0) { %>
-                            <p class="has-text-centered has-text-grey talent-no-reviews">Aucun avis pour le moment.</p>
-                        <% } %>
-
-                        <% reviews.forEach((review, index) => { %>
-                            <div class="box mb-4 review-bg-<%= index % 4 %>">
-                                <div class="is-flex is-justify-content-space-between is-align-items-start mb-3">
-                                    <div class="is-flex is-align-items-center">
-                                        <figure class="image is-48x48 mr-3">
-                                            <div class="talent-review-avatar review-avatar-<%= index % 4 %>">
-                                                <span class="talent-review-avatar-text">
-                                                    <%= review.reviewer.firstname.charAt(0).toUpperCase() %><%= review.reviewer.lastname.charAt(0).toUpperCase() %>
-                                                </span>
-                                            </div>
-                                        </figure>
-                                        <div>
-                                            <a href="/talents/<%= review.reviewer.id %>" class="has-text-weight-bold talent-reviewer-name"><%= review.reviewer.firstname %> <%= review.reviewer.lastname %></a>
-                                            <p class="is-size-7 talent-review-date"><%= new Date(review.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }) %></p>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <span class="icon-text">
-                                            <span class="talent-review-stars-display">
-                                                <% for (let i = 0; i < review.rate; i++) { %>
-                                                    <i class="fa-solid fa-star"></i>
-                                                <% } %>
-                                                <% for (let i = review.rate; i < 5; i++) { %>
-                                                    <i class="fa-regular fa-star"></i>
-                                                <% } %>
-                                            </span>
-                                        </span>
-                                    </div>
-                                </div>
-                                <% if (review.content) { %>
-                                    <p class="talent-review-content"><%= review.content %></p>
-                                <% } %>
-                            </div>
-                        <% }) %>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- Colonne latérale - Statistiques -->
-            <div class="column is-4">
-                <div class="box talent-sidebar">
-                    <h3 class="title is-5 has-text-weight-semibold mb-5 pb-3 talent-sidebar-title">
-                        <span class="icon-text">
-                            <span class="icon talent-icon-stats">
-                                <i class="fa-solid fa-chart-line"></i>
-                            </span>
-                            <span>Statistiques</span>
-                        </span>
-                    </h3>
-
-                    <!-- Stats -->
-                    <div class="content">
-                        <div class="box mb-3 talent-stat-skills">
-                            <div class="is-flex is-justify-content-space-between is-align-items-center">
-                                <span class="has-text-white has-text-weight-semibold">
-                                    <span class="icon">
-                                        <i class="fa-solid fa-certificate"></i>
-                                    </span>
-                                    Compétences
-                                </span>
-                                <span class="tag is-large talent-stat-value talent-stat-value-skills">
-                                    <%= profils.skills.length %>
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="box mb-3 talent-stat-reviews">
-                            <div class="is-flex is-justify-content-space-between is-align-items-center">
-                                <span class="has-text-white has-text-weight-semibold">
-                                    <span class="icon">
-                                        <i class="fa-solid fa-comments"></i>
-                                    </span>
-                                    Avis reçus
-                                </span>
-                                <span class="tag is-large talent-stat-value talent-stat-value-reviews">
-                                    <%= reviewCount %>
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="box talent-stat-followers">
-                            <div class="is-flex is-justify-content-space-between is-align-items-center">
-                                <span class="has-text-white has-text-weight-semibold">
-                                    <span class="icon">
-                                        <i class="fa-solid fa-users"></i>
-                                    </span>
-                                    Abonnés
-                                </span>
-                                <span class="tag is-large talent-stat-value talent-stat-value-followers">
-                                    <%= followerCount %>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Badge membre -->
-                    <div class="box mt-5 talent-member-badge">
-                        <div class="talent-member-glow"></div>
-
-                        <span class="icon is-large has-text-light mb-3 talent-member-icon">
-                            <i class="fa-solid fa-award"></i>
-                        </span>
-                        <p class="has-text-light has-text-weight-bold is-size-5 mb-2">Membre Vérifié</p>
-                        <p class="has-text-light is-size-6 talent-member-date">
-                            <span class="icon-text">
-                                <span class="icon">
-                                    <i class="fa-solid fa-calendar-check"></i>
-                                </span>
-                                <span>Membre depuis <%= new Date(profils.created_at).toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' }) %></span>
-                            </span>
-                        </p>
-                    </div>
-                </div>
-            </div>
+          <div class="ss-tp-actions">
+            <button
+              class="ss-tp-btn-follow btn-follow <%= isFollowing ? 'is-following' : '' %>"
+              data-user-id="<%= profils.id %>"
+              data-following="<%= isFollowing ? 'true' : 'false' %>"
+            >
+              <i class="fa-solid <%= isFollowing ? 'fa-user-minus' : 'fa-user-plus' %>"></i>
+              <span><%= isFollowing ? 'Ne plus suivre' : 'Suivre' %></span>
+            </button>
+            <a href="/messages/<%= profils.id %>" class="ss-tp-btn-message">
+              <i class="fa-solid fa-paper-plane"></i>
+              <span>Message</span>
+            </a>
+          </div>
         </div>
 
-    </div>
+        <% if (profils.bio) { %>
+        <!-- Bio -->
+        <div class="ss-tp-card">
+          <h2 class="ss-tp-section-title"><i class="fa-solid fa-user"></i> À propos</h2>
+          <hr class="ss-tp-divider">
+          <p class="ss-tp-bio"><%= profils.bio %></p>
+        </div>
+        <% } %>
+
+        <!-- Compétences -->
+        <div class="ss-tp-card">
+          <h2 class="ss-tp-section-title"><i class="fa-solid fa-certificate"></i> Compétences</h2>
+          <hr class="ss-tp-divider">
+          <div class="ss-tp-skills">
+            <% profils.skills.forEach(skill => { %>
+              <a href="/skills/<%= skill.slug %>" class="ss-tp-pill"><%= skill.label %></a>
+            <% }) %>
+          </div>
+        </div>
+
+        <!-- Contact -->
+        <div class="ss-tp-card">
+          <h2 class="ss-tp-section-title"><i class="fa-solid fa-envelope"></i> Contact</h2>
+          <hr class="ss-tp-divider">
+          <div class="ss-tp-contact">
+            <i class="fa-solid fa-at"></i>
+            <span><%= profils.email %></span>
+          </div>
+        </div>
+
+        <!-- Avis -->
+        <div class="ss-tp-card">
+          <div class="ss-tp-reviews-header">
+            <h2 class="ss-tp-section-title" style="margin:0">
+              <i class="fa-solid fa-comments"></i> Avis des utilisateurs
+            </h2>
+            <% if (typeof user !== 'undefined' && user && user.id !== profils.id) { %>
+              <button class="ss-tp-btn-add-review" id="btn-toggle-review-form">
+                <i class="fa-solid fa-plus"></i>
+                <span>Laisser un avis</span>
+              </button>
+            <% } %>
+          </div>
+
+          <% if (typeof user !== 'undefined' && user && user.id !== profils.id) { %>
+          <div id="review-form-container" style="display:none;" class="ss-tp-review-form">
+            <div class="ss-tp-card">
+              <form action="/review/<%= profils.id %>" method="POST">
+                <div class="ss-tp-field">
+                  <label class="ss-tp-form-label">Note</label>
+                  <input type="hidden" name="rate" id="review-rate" value="0">
+                  <div class="ss-tp-review-stars">
+                    <% for (let i = 1; i <= 5; i++) { %>
+                      <span class="ss-tp-review-star" data-value="<%= i %>">
+                        <i class="far fa-star"></i>
+                      </span>
+                    <% } %>
+                  </div>
+                </div>
+                <div class="ss-tp-field">
+                  <label class="ss-tp-form-label">Compétence évaluée</label>
+                  <select name="skill_id" required class="ss-tp-select">
+                    <option value="">-- Choisir une compétence --</option>
+                    <% profils.skills.forEach(skill => { %>
+                      <option value="<%= skill.id %>"><%= skill.label %></option>
+                    <% }) %>
+                  </select>
+                </div>
+                <div class="ss-tp-field">
+                  <label class="ss-tp-form-label">Commentaire</label>
+                  <textarea name="content" class="ss-tp-textarea" placeholder="Décrivez votre expérience..." rows="3"></textarea>
+                </div>
+                <button type="submit" class="ss-tp-btn-submit">
+                  <i class="fa-solid fa-paper-plane"></i>
+                  Envoyer mon avis
+                </button>
+              </form>
+            </div>
+          </div>
+          <% } %>
+
+          <!-- Liste avis -->
+          <% if (reviews.length === 0) { %>
+            <p class="ss-tp-no-reviews">Aucun avis pour le moment.</p>
+          <% } %>
+
+          <% reviews.forEach((review) => { %>
+            <div class="ss-tp-review-card">
+              <div class="ss-tp-review-meta">
+                <div class="ss-tp-reviewer">
+                  <div class="ss-tp-reviewer-avatar">
+                    <%= review.reviewer.firstname.charAt(0).toUpperCase() %><%= review.reviewer.lastname.charAt(0).toUpperCase() %>
+                  </div>
+                  <div>
+                    <a href="/talents/<%= review.reviewer.id %>" class="ss-tp-reviewer-name">
+                      <%= review.reviewer.firstname %> <%= review.reviewer.lastname %>
+                    </a>
+                    <p class="ss-tp-review-date">
+                      <%= new Date(review.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }) %>
+                    </p>
+                  </div>
+                </div>
+                <div class="ss-tp-review-stars-display">
+                  <% for (let i = 0; i < review.rate; i++) { %><i class="fa-solid fa-star filled"></i><% } %>
+                  <% for (let i = review.rate; i < 5; i++) { %><i class="fa-regular fa-star"></i><% } %>
+                </div>
+              </div>
+              <% if (review.content) { %>
+                <p class="ss-tp-review-content"><%= review.content %></p>
+              <% } %>
+            </div>
+          <% }) %>
+
+        </div><!-- /.ss-tp-card avis -->
+
+      </div><!-- /colonne principale -->
+
+      <!-- Sidebar -->
+      <div class="ss-tp-sidebar">
+        <div class="ss-tp-card">
+          <h3 class="ss-tp-sidebar-title">
+            <i class="fa-solid fa-chart-line"></i> Statistiques
+          </h3>
+          <div class="ss-tp-stat-box">
+            <span class="ss-tp-stat-label"><i class="fa-solid fa-certificate"></i> Compétences</span>
+            <span class="ss-tp-stat-value"><%= profils.skills.length %></span>
+          </div>
+          <div class="ss-tp-stat-box">
+            <span class="ss-tp-stat-label"><i class="fa-solid fa-comments"></i> Avis reçus</span>
+            <span class="ss-tp-stat-value"><%= reviewCount %></span>
+          </div>
+          <div class="ss-tp-stat-box">
+            <span class="ss-tp-stat-label"><i class="fa-solid fa-users"></i> Abonnés</span>
+            <span class="ss-tp-stat-value"><%= followerCount %></span>
+          </div>
+        </div>
+
+        <div class="ss-tp-card ss-tp-member-badge">
+          <i class="fa-solid fa-award ss-tp-member-icon"></i>
+          <p class="ss-tp-member-label">Membre Vérifié</p>
+          <p class="ss-tp-member-date">
+            <i class="fa-solid fa-calendar-check"></i>
+            Membre depuis <%= new Date(profils.created_at).toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' }) %>
+          </p>
+        </div>
+      </div><!-- /sidebar -->
+
+    </div><!-- /.ss-tp-grid -->
+  </div>
 </main>
 
 <script src="/js/follow.js"></script>
 <script src="/js/review.js"></script>
 <script nonce="<%= cspNonce %>">
-    const toggleBtn = document.getElementById('btn-toggle-review-form');
-    const formContainer = document.getElementById('review-form-container');
-    if (toggleBtn && formContainer) {
-        toggleBtn.addEventListener('click', () => {
-            formContainer.style.display = formContainer.style.display === 'none' ? 'block' : 'none';
-        });
-    }
+  const toggleBtn = document.getElementById('btn-toggle-review-form');
+  const formContainer = document.getElementById('review-form-container');
+  if (toggleBtn && formContainer) {
+    toggleBtn.addEventListener('click', () => {
+      formContainer.style.display = formContainer.style.display === 'none' ? 'block' : 'none';
+    });
+  }
 </script>
 
 <%- include('../partials/footer.ejs') %>
-
 </body>
 </html>
