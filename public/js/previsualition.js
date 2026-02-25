@@ -19,7 +19,7 @@
                             const img = document.createElement('img');
                             img.id = 'avatar-preview-edit';
                             img.src = event.target.result;
-                            img.style.cssText = 'width: 96px; height: 96px; border-radius: 50%; object-fit: cover; border: 3px solid #e8dce8;';
+                            img.style.cssText = 'width: 96px; height: 96px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(212,146,42,0.30);';
                             avatarPreviewEdit.parentNode.replaceChild(img, avatarPreviewEdit);
                         }
                     };
