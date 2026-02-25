@@ -1,76 +1,65 @@
 <%- include('../partials/header.ejs') %>
-<script src="https://kit.fontawesome.com/626daf36fc.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
 <%- include('../partials/navbar.ejs') %>
 
-<main class="section msg-main">
-    <div class="container">
+<main class="ss-msg-main">
+  <div class="ss-msg-container">
 
-        <!-- En-tete -->
-        <div class="has-text-centered mb-6 msg-header">
-            <h1 class="title has-text-white msg-title">
-                <span class="icon is-large msg-title-icon">
-                    <i class="fas fa-envelope"></i>
-                </span>
-                <br>
-                Mes Messages
-            </h1>
-            <p class="msg-subtitle"><%= conversations.length %> conversation<%= conversations.length > 1 ? 's' : '' %></p>
-        </div>
-
-        <% if (conversations.length === 0) { %>
-            <div class="box has-text-centered msg-empty-box">
-                <span class="icon is-large has-text-grey-light msg-empty-icon">
-                    <i class="fas fa-comments"></i>
-                </span>
-                <p class="title is-5 mt-4 msg-empty-title">Aucune conversation</p>
-                <p class="has-text-grey">Envoyez un message depuis le profil d'un talent pour commencer une conversation.</p>
-                <a href="/talents" class="button mt-4 msg-empty-btn">
-                    <span class="icon"><i class="fas fa-users"></i></span>
-                    <span>Voir les talents</span>
-                </a>
-            </div>
-        <% } else { %>
-            <div class="columns is-centered">
-                <div class="column is-8">
-                    <% conversations.forEach((conv, index) => { %>
-                        <% const variant = (index % 4) + 1; %>
-                        <a href="/messages/<%= conv.user.id %>" class="msg-conv-link">
-                            <div class="box mb-4 msg-conv-card msg-conv-card-variant-<%= variant %>">
-                                <div class="is-flex is-align-items-center">
-                                    <!-- Avatar -->
-                                    <div class="msg-avatar msg-avatar-variant-<%= variant %>">
-                                        <span class="msg-avatar-initials">
-                                            <%= conv.user.firstname.charAt(0).toUpperCase() %><%= conv.user.lastname.charAt(0).toUpperCase() %>
-                                        </span>
-                                    </div>
-                                    <!-- Contenu -->
-                                    <div class="ml-4 msg-conv-content">
-                                        <div class="is-flex is-justify-content-space-between is-align-items-center">
-                                            <p class="has-text-weight-bold msg-conv-name"><%= conv.user.firstname %> <%= conv.user.lastname %></p>
-                                            <span class="is-size-7 msg-conv-date">
-                                                <%= new Date(conv.lastMessage.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }) %>
-                                            </span>
-                                        </div>
-                                        <p class="is-size-7 msg-conv-preview">
-                                            <%= conv.lastMessage.content %>
-                                        </p>
-                                    </div>
-                                    <% if (conv.unreadCount > 0) { %>
-                                        <span class="tag is-rounded ml-3 msg-unread-badge">
-                                            <%= conv.unreadCount %>
-                                        </span>
-                                    <% } %>
-                                </div>
-                            </div>
-                        </a>
-                    <% }) %>
-                </div>
-            </div>
-        <% } %>
+    <!-- Header -->
+    <div class="ss-msg-header">
+      <i class="fas fa-envelope ss-msg-header-icon"></i>
+      <h1 class="ss-msg-title">Mes Messages</h1>
+      <p class="ss-msg-subtitle">
+        <%= conversations.length %> conversation<%= conversations.length > 1 ? 's' : '' %>
+      </p>
     </div>
+
+    <% if (conversations.length === 0) { %>
+      <div class="ss-msg-empty">
+        <i class="fas fa-comments ss-msg-empty-icon"></i>
+        <p class="ss-msg-empty-title">Aucune conversation</p>
+        <p class="ss-msg-empty-text">
+          Envoyez un message depuis le profil d'un talent pour commencer une conversation.
+        </p>
+        <a href="/talents" class="ss-msg-empty-btn">
+          <i class="fas fa-users"></i>
+          <span>Voir les talents</span>
+        </a>
+      </div>
+    <% } else { %>
+      <div class="ss-msg-conv-list">
+        <% conversations.forEach((conv) => { %>
+          <a href="/messages/<%= conv.user.id %>" class="ss-msg-conv-link">
+            <div class="ss-msg-conv-card">
+              <!-- Avatar -->
+              <div class="ss-msg-avatar">
+                <span class="ss-msg-avatar-initials">
+                  <%= conv.user.firstname.charAt(0).toUpperCase() %><%= conv.user.lastname.charAt(0).toUpperCase() %>
+                </span>
+              </div>
+              <!-- Contenu -->
+              <div class="ss-msg-conv-content">
+                <div class="ss-msg-conv-header">
+                  <p class="ss-msg-conv-name"><%= conv.user.firstname %> <%= conv.user.lastname %></p>
+                  <span class="ss-msg-conv-date">
+                    <%= new Date(conv.lastMessage.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }) %>
+                  </span>
+                </div>
+                <p class="ss-msg-conv-preview"><%= conv.lastMessage.content %></p>
+              </div>
+              <!-- Badge non-lu -->
+              <% if (conv.unreadCount > 0) { %>
+                <span class="ss-msg-unread-badge"><%= conv.unreadCount %></span>
+              <% } %>
+            </div>
+          </a>
+        <% }) %>
+      </div>
+    <% } %>
+
+  </div>
 </main>
 
 <%- include('../partials/footer.ejs') %>
