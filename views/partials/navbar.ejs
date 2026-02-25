@@ -1,97 +1,93 @@
-<nav class="navbar">
-    <div class="container">
-        <div class="navbar-brand">
-            <a class="navbar-item has-text-light navbar-logo" href="/">
-                <span class="logo-text">SkillSwap</span>
-            </a>
+<nav class="ss-nav">
+    <div class="ss-nav-inner">
 
-            <!-- Avatar compact : mobile/tablet uniquement -->
+        <!-- ── Brand ── -->
+        <div class="ss-nav-brand">
+            <a href="/" class="ss-nav-logo">SkillSwap</a>
+
+            <!-- Mobile : cloche + avatar (caché sur desktop via CSS) -->
             <% if (user) { %>
-                <!-- Cloche notifications mobile -->
-                <div class="navbar-item is-hidden-desktop notif-bell-mobile" id="notifBellMobile">
-                    <a href="/notifications" class="notif-bell-link">
-                        <span class="icon has-text-light">
+                <div class="ss-nav-mobile-right">
+                    <div class="ss-notif-bell-wrap" id="notifBellMobile">
+                        <a href="/notifications" class="ss-notif-btn">
                             <i class="fa-solid fa-bell"></i>
-                        </span>
-                        <span class="notif-badge" id="notifBadgeMobile" style="display:none;">0</span>
-                    </a>
-                </div>
+                            <span class="notif-badge" id="notifBadgeMobile" style="display:none;">0</span>
+                        </a>
+                    </div>
 
-                <div class="navbar-item has-dropdown is-hidden-desktop" id="userDropdownMobile">
-                    <a class="user-avatar-btn" id="userDropdownMobileToggle">
-                        <i class="fas fa-user-circle"></i>
-                    </a>
-                    <div class="navbar-dropdown is-right user-avatar-dropdown">
-                        <a class="navbar-item" href="/user/<%= user.id %>/profil">
-                            <span class="icon dropdown-icon-profil"><i class="fas fa-user"></i></span>
-                            <span>Mon profil</span>
-                        </a>
-                        <a class="navbar-item" href="/messages">
-                            <span class="icon dropdown-icon-messages"><i class="fas fa-envelope"></i></span>
-                            <span>Messages</span>
-                            <span class="message-badge" id="messageBadgeMobile" style="display:none;">0</span>
-                        </a>
-                        <a class="navbar-item" href="/notifications">
-                            <span class="icon dropdown-icon-messages"><i class="fas fa-bell"></i></span>
-                            <span>Notifications</span>
-                        </a>
-                        <hr class="navbar-divider dropdown-divider">
-                        <form action="/logout" method="POST" class="navbar-item dropdown-item-logout" style="display:inline;">
-                            <button type="submit">
-                                <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
-                                <span>Déconnexion</span>
-                            </button>
-                        </form>
+                    <div class="ss-avatar-wrap" id="userDropdownMobile">
+                        <button class="ss-avatar-btn" id="userDropdownMobileToggle" aria-label="Menu utilisateur">
+                            <i class="fas fa-user-circle"></i>
+                        </button>
+                        <div class="ss-dropdown ss-dropdown--left">
+                            <a href="/user/<%= user.id %>/profil" class="ss-dropdown-item">
+                                <i class="fas fa-user ss-di-amber"></i>
+                                Mon profil
+                            </a>
+                            <a href="/messages" class="ss-dropdown-item">
+                                <i class="fas fa-envelope ss-di-amber"></i>
+                                Messages
+                                <span class="message-badge" id="messageBadgeMobile" style="display:none;">0</span>
+                            </a>
+                            <a href="/notifications" class="ss-dropdown-item">
+                                <i class="fas fa-bell ss-di-amber"></i>
+                                Notifications
+                            </a>
+                            <hr class="ss-dropdown-sep">
+                            <form action="/logout" method="POST" class="ss-dropdown-item ss-dropdown-item--logout">
+                                <button type="submit">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    Déconnexion
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             <% } %>
 
-            <a role="button" class="navbar-burger" id="burger">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-            </a>
+            <!-- Burger -->
+            <button class="ss-burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
 
-        <div class="navbar-menu" id="navbarMenu">
-            <div class="navbar-end">
-                <a class="navbar-item has-text-light nav-link" href="/">
-                    <span class="icon icon-home"><i class="fas fa-home"></i></span>
+        <!-- ── Menu ── -->
+        <div class="ss-nav-menu" id="navbarMenu">
+            <div class="ss-nav-links">
+                <a href="/" class="ss-nav-link">
+                    <i class="fas fa-home"></i>
                     <span>Accueil</span>
                 </a>
-
-                <a class="navbar-item has-text-light nav-link" href="/talents">
-                    <span class="icon icon-talents"><i class="fas fa-users"></i></span>
+                <a href="/talents" class="ss-nav-link">
+                    <i class="fas fa-users"></i>
                     <span>Talents</span>
                 </a>
-
-                <a class="navbar-item has-text-light nav-link" href="/skills">
-                    <span class="icon icon-skills"><i class="fas fa-star"></i></span>
+                <a href="/skills" class="ss-nav-link">
+                    <i class="fas fa-star"></i>
                     <span>Compétences</span>
                 </a>
-
-                <a class="navbar-item has-text-light nav-link" href="/search">
-                    <span class="icon icon-search"><i class="fas fa-search"></i></span>
+                <a href="/search" class="ss-nav-link">
+                    <i class="fas fa-search"></i>
                     <span>Recherche</span>
                 </a>
-
-                <a class="navbar-item has-text-light nav-link" href="/help">
-                    <span class="icon icon-help"><i class="fas fa-question-circle"></i></span>
+                <a href="/help" class="ss-nav-link">
+                    <i class="fas fa-question-circle"></i>
                     <span>Aide</span>
                 </a>
+            </div>
 
-                <!-- Dropdown avec prénom : desktop uniquement -->
+            <div class="ss-nav-actions">
                 <% if (user) { %>
-                    <!-- Cloche notifications desktop avec dropdown -->
-                    <div class="navbar-item has-dropdown is-hidden-touch" id="notifDropdownDesktop">
-                        <a class="navbar-link is-arrowless notif-bell-link" id="notifBellDesktop" href="/notifications">
-                            <span class="icon has-text-light">
-                                <i class="fa-solid fa-bell"></i>
-                            </span>
+                    <!-- Cloche desktop avec dropdown hover -->
+                    <div class="ss-notif-wrap" id="notifDropdownDesktop">
+                        <a href="/notifications" class="ss-notif-btn" id="notifBellDesktop">
+                            <i class="fa-solid fa-bell"></i>
                             <span class="notif-badge" id="notifBadgeDesktop" style="display:none;">0</span>
                         </a>
-                        <div class="navbar-dropdown is-right notif-dropdown-panel" id="notifDropdownPanel">
+                        <div class="ss-dropdown ss-dropdown--notif" id="notifDropdownPanel">
                             <div class="notif-dropdown-header">
                                 <strong>Notifications</strong>
                                 <a href="#" id="notifMarkAllDropdown" class="notif-dropdown-mark-all">Tout lire</a>
@@ -103,41 +99,42 @@
                         </div>
                     </div>
 
-                    <div class="navbar-item has-dropdown is-hidden-touch" id="userDropdownDesktop">
-                        <a class="navbar-link is-arrowless" id="userDropdownDesktopToggle">
-                            <span class="icon"><i class="fas fa-user-circle"></i></span>
+                    <!-- Prénom + dropdown desktop -->
+                    <div class="ss-user-wrap" id="userDropdownDesktop">
+                        <button class="ss-user-btn" id="userDropdownDesktopToggle">
+                            <i class="fas fa-user-circle"></i>
                             <span><%= user.firstname %></span>
-                            <span class="icon is-small chevron-icon"><i class="fas fa-chevron-down"></i></span>
-                        </a>
-                        <div class="navbar-dropdown is-right">
-                            <a class="navbar-item" href="/user/<%= user.id %>/profil">
-                                <span class="icon dropdown-icon-profil"><i class="fas fa-user"></i></span>
-                                <span>Mon profil</span>
+                            <i class="fas fa-chevron-down ss-chevron"></i>
+                        </button>
+                        <div class="ss-dropdown ss-dropdown--right">
+                            <a href="/user/<%= user.id %>/profil" class="ss-dropdown-item">
+                                <i class="fas fa-user ss-di-amber"></i>
+                                Mon profil
                             </a>
-                            <a class="navbar-item" href="/messages">
-                                <span class="icon dropdown-icon-messages"><i class="fas fa-envelope"></i></span>
-                                <span>Messages</span>
+                            <a href="/messages" class="ss-dropdown-item">
+                                <i class="fas fa-envelope ss-di-amber"></i>
+                                Messages
                                 <span class="message-badge" id="messageBadgeDesktop" style="display:none;">0</span>
                             </a>
-                            <hr class="navbar-divider dropdown-divider">
-                            <form action="/logout" class="navbar-item dropdown-item-logout" method="POST" style="display:inline;">
+                            <hr class="ss-dropdown-sep">
+                            <form action="/logout" class="ss-dropdown-item ss-dropdown-item--logout" method="POST">
                                 <button type="submit">Déconnexion</button>
                             </form>
                         </div>
                     </div>
                 <% } else { %>
-                    <a class="navbar-item btn-login" href="/login">
-                        <span class="icon"><i class="fas fa-sign-in-alt"></i></span>
-                        <span>Connexion</span>
+                    <a href="/login" class="ss-btn-nav ss-btn-nav--outline">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Connexion
                     </a>
-
-                    <a class="navbar-item btn-register" href="/register">
-                        <span class="icon"><i class="fas fa-user-plus"></i></span>
-                        <span>Inscription</span>
+                    <a href="/register" class="ss-btn-nav ss-btn-nav--filled">
+                        <i class="fas fa-user-plus"></i>
+                        Inscription
                     </a>
                 <% } %>
             </div>
         </div>
+
     </div>
 </nav>
 
@@ -145,14 +142,12 @@
 <script nonce="<%= cspNonce %>">
   window.currentUserId = <%= user.id %>;
 
-  // Charger le badge de notifications non lues
   async function loadNotifBadge() {
     try {
       const res = await fetch('/api/notifications/count');
       if (!res.ok) return;
       const data = await res.json();
-      const badges = document.querySelectorAll('.notif-badge');
-      badges.forEach(badge => {
+      document.querySelectorAll('.notif-badge').forEach(badge => {
         if (data.count > 0) {
           badge.textContent = data.count > 99 ? '99+' : data.count;
           badge.style.display = '';
@@ -163,14 +158,12 @@
     } catch (e) { /* silently fail */ }
   }
 
-  // Charger le badge des messages non lus
   async function loadMessageBadge() {
     try {
       const res = await fetch('/api/messages/unread-count');
       if (!res.ok) return;
       const data = await res.json();
-      const badges = document.querySelectorAll('.message-badge');
-      badges.forEach(badge => {
+      document.querySelectorAll('.message-badge').forEach(badge => {
         if (data.count > 0) {
           badge.textContent = data.count > 99 ? '99+' : data.count;
           badge.style.display = '';
@@ -181,7 +174,6 @@
     } catch (e) { /* silently fail */ }
   }
 
-  // Charger les notifications récentes dans le dropdown desktop
   async function loadNotifDropdown() {
     try {
       const res = await fetch('/api/notifications/recent');
@@ -190,53 +182,59 @@
       const list = document.getElementById('notifDropdownList');
       if (!list) return;
 
+      while (list.firstChild) list.removeChild(list.firstChild);
+
       if (data.notifications.length === 0) {
-        list.innerHTML = '<p class="notif-dropdown-empty">Aucune notification</p>';
+        const p = document.createElement('p');
+        p.className = 'notif-dropdown-empty';
+        p.textContent = 'Aucune notification';
+        list.appendChild(p);
         return;
       }
 
-      list.innerHTML = data.notifications.map(n => {
-        const iconClass = n.type_notification === 'message' ? 'fa-envelope'
-          : n.type_notification === 'review' ? 'fa-star'
-          : n.type_notification === 'follow' ? 'fa-user-plus'
-          : 'fa-bell';
-        const unreadClass = n.is_read ? '' : 'notif-dropdown-item-unread';
-        const date = new Date(n.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
-        const link = n.action_url || '/notifications';
-        return `<a href="${link}" class="notif-dropdown-item ${unreadClass}">
-          <span class="icon is-small"><i class="fa-solid ${iconClass}"></i></span>
-          <span class="notif-dropdown-item-text">${n.content}</span>
-          <span class="notif-dropdown-item-date">${date}</span>
-        </a>`;
-      }).join('');
+      const iconMap = { message: 'fa-envelope', review: 'fa-star', follow: 'fa-user-plus' };
+
+      data.notifications.forEach(n => {
+        const a = document.createElement('a');
+        a.href = n.action_url || '/notifications';
+        a.className = 'notif-dropdown-item' + (n.is_read ? '' : ' notif-dropdown-item-unread');
+
+        const iconWrap = document.createElement('span');
+        iconWrap.className = 'ss-di-icon';
+        const icon = document.createElement('i');
+        icon.className = 'fa-solid ' + (iconMap[n.type_notification] || 'fa-bell');
+        iconWrap.appendChild(icon);
+
+        const text = document.createElement('span');
+        text.className = 'notif-dropdown-item-text';
+        text.textContent = n.content;
+
+        const date = document.createElement('span');
+        date.className = 'notif-dropdown-item-date';
+        date.textContent = new Date(n.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
+
+        a.appendChild(iconWrap);
+        a.appendChild(text);
+        a.appendChild(date);
+        list.appendChild(a);
+      });
     } catch (e) { /* silently fail */ }
   }
 
-  // Toggle dropdown notifications desktop
-  const notifBell = document.getElementById('notifBellDesktop');
   const notifPanel = document.getElementById('notifDropdownDesktop');
-  if (notifBell && notifPanel) {
-    // Desktop UX:
-    // - clic sur la cloche -> page /notifications (comportement mobile)
-    // - survol -> dropdown rapide des notifications récentes
+  if (notifPanel) {
     notifPanel.addEventListener('mouseenter', () => {
       notifPanel.classList.add('is-active');
       loadNotifDropdown();
     });
-
     notifPanel.addEventListener('mouseleave', () => {
       notifPanel.classList.remove('is-active');
     });
-
-    // Fermer le dropdown en cliquant ailleurs
     document.addEventListener('click', (e) => {
-      if (!notifPanel.contains(e.target)) {
-        notifPanel.classList.remove('is-active');
-      }
+      if (!notifPanel.contains(e.target)) notifPanel.classList.remove('is-active');
     });
   }
 
-  // Tout marquer comme lu depuis le dropdown
   const markAllDropdown = document.getElementById('notifMarkAllDropdown');
   if (markAllDropdown) {
     markAllDropdown.addEventListener('click', async (e) => {
@@ -247,17 +245,14 @@
     });
   }
 
-  // Charger le badge au chargement de la page
   loadNotifBadge();
   loadMessageBadge();
 
-  // Exposer des helpers globaux utilises par socket.js/chat.js
-  window.refreshNotificationBadge = loadNotifBadge;
+  window.refreshNotificationBadge    = loadNotifBadge;
   window.refreshNotificationDropdown = loadNotifDropdown;
-  window.refreshMessageBadge = loadMessageBadge;
+  window.refreshMessageBadge         = loadMessageBadge;
 
-  // Rafraîchir le badge toutes les 30 secondes (avant Socket.IO)
-  setInterval(loadNotifBadge, 30000);
+  setInterval(loadNotifBadge,   30000);
   setInterval(loadMessageBadge, 30000);
 </script>
 <% } %>
