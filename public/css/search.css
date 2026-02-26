@@ -11,6 +11,12 @@
   --sr-cream:   #F7F2E8;
 }
 
+/* Reset fond Bulma (.has-background-light sur <html>) pour le thème sombre */
+html.has-background-light,
+body {
+  background-color: var(--sr-bg) !important;
+}
+
 /* PAGE */
 .ss-sr-page {
   background: var(--sr-bg);
