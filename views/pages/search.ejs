@@ -4,98 +4,108 @@
 <body>
 <%- include('../partials/navbar.ejs') %>
 
-<main class="search-main">
-    <section class="search-hero">
-        <div class="container">
-            <h1 class="title has-text-white search-hero-title">Recherche avancee</h1>
-            <p class="search-hero-subtitle">Filtrez les talents par nom, competences, note et localisation.</p>
-            <div class="search-hero-input-wrap">
-                <input id="searchQueryInput" class="input is-medium search-query-input" type="text" placeholder="Nom ou prenom..." value="<%= initialQuery || '' %>" autocomplete="off">
-                <div id="autocompleteDropdown" class="search-autocomplete-dropdown" hidden></div>
+<div class="ss-sr-page">
+
+  <!-- Mini-hero -->
+  <section class="ss-sr-hero">
+    <h1 class="ss-sr-title">Recherche avancée</h1>
+    <p class="ss-sr-subtitle">Filtrez les talents par nom, compétences et note.</p>
+
+    <div class="ss-sr-hero-wrap">
+      <input
+        id="searchQueryInput"
+        type="text"
+        class="ss-sr-query-input"
+        placeholder="Nom ou prénom..."
+        value="<%= initialQuery || '' %>"
+        autocomplete="off"
+        aria-label="Rechercher un talent"
+        aria-controls="autocompleteDropdown"
+        aria-autocomplete="list"
+      >
+      <button id="searchHeroBtn" class="ss-sr-hero-btn" type="button" aria-label="Lancer la recherche">
+        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+        Rechercher
+      </button>
+      <div id="autocompleteDropdown" class="ss-sr-autocomplete" hidden></div>
+    </div>
+  </section>
+
+  <!-- Body -->
+  <div class="ss-sr-body">
+    <div class="ss-sr-layout">
+
+      <!-- Sidebar -->
+      <aside class="ss-sr-sidebar">
+
+        <div class="ss-sr-sidebar-box">
+          <h2 class="ss-sr-sidebar-title">Filtres</h2>
+
+          <div class="ss-sr-field">
+            <label class="ss-sr-label" for="searchSortSelect">Tri</label>
+            <select id="searchSortSelect" class="ss-sr-select">
+              <option value="rating_desc">Note décroissante</option>
+              <option value="rating_asc">Note croissante</option>
+              <option value="newest">Plus récents</option>
+              <option value="popular">Populaires</option>
+            </select>
+          </div>
+
+          <div class="ss-sr-field">
+            <label class="ss-sr-label" for="minRatingRange">
+              Note minimum&nbsp;: <span id="minRatingValue">0.0</span>
+            </label>
+            <input
+              id="minRatingRange"
+              type="range"
+              min="0" max="5" step="0.5" value="0"
+              class="ss-sr-range"
+            >
+          </div>
+
+          <div class="ss-sr-field">
+            <label class="ss-sr-label">Compétences</label>
+            <div id="skillsFilterList" class="ss-sr-skills-list">
+              <% skills.forEach((skill) => { %>
+                <label class="ss-sr-skill-item">
+                  <input type="checkbox" value="<%= skill.id %>" class="ss-sr-checkbox">
+                  <span><%= skill.label %></span>
+                </label>
+              <% }) %>
             </div>
+          </div>
+
+          <div class="ss-sr-actions">
+            <button id="applyFiltersBtn" class="ss-sr-btn-primary" type="button">Appliquer</button>
+            <button id="resetFiltersBtn" class="ss-sr-btn-secondary" type="button">Réinitialiser</button>
+          </div>
         </div>
-    </section>
 
-    <section class="section">
-        <div class="container">
-            <div class="columns search-layout">
-                <aside class="column is-4-desktop is-12-tablet">
-                    <div class="search-sidebar-box">
-                        <h2 class="title is-5 search-sidebar-title">Filtres</h2>
-
-                        <div class="field">
-                            <label class="label search-label" for="searchCityInput">Ville</label>
-                            <div class="control">
-                                <input id="searchCityInput" class="input search-input" type="text" placeholder="Paris, Lyon...">
-                            </div>
-                        </div>
-
-                        <div class="field">
-                            <label class="label search-label" for="searchSortSelect">Tri</label>
-                            <div class="control">
-                                <div class="select is-fullwidth">
-                                    <select id="searchSortSelect">
-                                        <option value="rating_desc">Note decroissante</option>
-                                        <option value="rating_asc">Note croissante</option>
-                                        <option value="newest">Plus recents</option>
-                                        <option value="popular">Populaires</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="field">
-                            <label class="label search-label" for="minRatingRange">Note minimum: <span id="minRatingValue">0.0</span></label>
-                            <div class="control">
-                                <input id="minRatingRange" type="range" min="0" max="5" step="0.5" value="0" class="slider is-fullwidth">
-                            </div>
-                        </div>
-
-                        <div class="field">
-                            <label class="label search-label">Competences</label>
-                            <div id="skillsFilterList" class="search-skills-list">
-                                <% skills.forEach((skill) => { %>
-                                    <label class="checkbox search-skill-item">
-                                        <input type="checkbox" value="<%= skill.id %>" class="search-skill-checkbox">
-                                        <span><%= skill.label %></span>
-                                    </label>
-                                <% }) %>
-                            </div>
-                        </div>
-
-                        <div class="buttons">
-                            <button id="applyFiltersBtn" class="button search-btn-primary">Appliquer</button>
-                            <button id="resetFiltersBtn" class="button search-btn-secondary" type="button">Reinitialiser</button>
-                        </div>
-                    </div>
-
-                    <% if (user) { %>
-                    <div class="search-sidebar-box mt-4">
-                        <div class="is-flex is-justify-content-space-between is-align-items-center mb-3">
-                            <h3 class="title is-6 mb-0 search-sidebar-title">Recherches sauvegardees</h3>
-                            <button id="saveSearchBtn" class="button is-small search-btn-primary" type="button">Sauvegarder</button>
-                        </div>
-                        <div id="savedSearchesList" class="search-saved-list">
-                            <p class="search-muted-text">Chargement...</p>
-                        </div>
-                    </div>
-                    <% } %>
-                </aside>
-
-                <div class="column is-8-desktop is-12-tablet">
-                    <div class="search-results-box">
-                        <div class="is-flex is-justify-content-space-between is-align-items-center mb-4">
-                            <p id="resultsSummary" class="search-results-summary">Chargement...</p>
-                        </div>
-
-                        <div id="searchResultsGrid" class="columns is-multiline"></div>
-                        <nav id="searchPagination" class="pagination is-centered mt-5" hidden></nav>
-                    </div>
-                </div>
-            </div>
+        <% if (user) { %>
+        <div class="ss-sr-sidebar-box">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem;">
+            <h3 class="ss-sr-sidebar-title" style="margin-bottom:0">Recherches sauvegardées</h3>
+            <button id="saveSearchBtn" class="ss-sr-btn-primary" type="button">Sauvegarder</button>
+          </div>
+          <div id="savedSearchesList" class="ss-sr-saved-list">
+            <p class="ss-sr-muted">Chargement...</p>
+          </div>
         </div>
-    </section>
-</main>
+        <% } %>
+
+      </aside>
+
+      <!-- Résultats -->
+      <main class="ss-sr-main">
+        <p id="resultsSummary" class="ss-sr-summary">Chargement...</p>
+        <div id="searchResultsGrid" class="ss-sr-results-grid"></div>
+        <nav id="searchPagination" class="ss-sr-pagination" hidden></nav>
+      </main>
+
+    </div>
+  </div>
+
+</div>
 
 <script nonce="<%= cspNonce %>">
   window.SEARCH_CONFIG = {
