@@ -119,13 +119,11 @@
     transition: all 0.22s var(--ease);
 }
 
-.ss-social-img {
-    width: 20px;
-    height: 20px;
-    object-fit: contain;
-    filter: brightness(0) invert(1);
+.ss-social-fa {
+    font-size: 1rem;
+    color: var(--foot-cream);
     opacity: 0.38;
-    transition: opacity 0.22s var(--ease);
+    transition: opacity 0.22s var(--ease), color 0.22s var(--ease);
 }
 
 .ss-social-icon:hover {
@@ -134,9 +132,9 @@
     transform: translateY(-3px);
 }
 
-.ss-social-icon:hover .ss-social-img {
-    opacity: 0.85;
-    filter: brightness(0) invert(0.75) sepia(1) saturate(3) hue-rotate(10deg);
+.ss-social-icon:hover .ss-social-fa {
+    opacity: 1;
+    color: var(--foot-amber);
 }
 
 /* ─── Link columns ─── */
