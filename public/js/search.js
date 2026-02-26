@@ -13,9 +13,10 @@
   const resultsSummary = document.getElementById('resultsSummary');
   const pagination = document.getElementById('searchPagination');
   const autocompleteDropdown = document.getElementById('autocompleteDropdown');
-  const skillsCheckboxes = Array.from(document.querySelectorAll('.search-skill-checkbox'));
+  const skillsCheckboxes = Array.from(document.querySelectorAll('.ss-sr-checkbox'));
   const saveSearchBtn = document.getElementById('saveSearchBtn');
   const savedSearchesList = document.getElementById('savedSearchesList');
+  const searchHeroBtn = document.getElementById('searchHeroBtn');
 
   if (!queryInput || !resultsGrid || !resultsSummary || !pagination) return;
 
@@ -63,6 +64,13 @@
       state.min_rating = 0;
       state.page = 1;
       syncUiFromState();
+      fetchResults();
+    });
+
+    searchHeroBtn?.addEventListener('click', () => {
+      readStateFromUi();
+      state.page = 1;
+      hideAutocomplete();
       fetchResults();
     });
 
@@ -187,7 +195,7 @@
 
   async function fetchResults() {
     resultsSummary.textContent = 'Chargement des resultats...';
-    resultsGrid.innerHTML = '';
+    resultsGrid.textContent = '';
     pagination.hidden = true;
 
     const params = new URLSearchParams();
@@ -219,46 +227,83 @@
   function renderResults(data) {
     const total = Number(data.total || 0);
     const count = data.results.length;
-    resultsSummary.textContent = `${total} resultat${total > 1 ? 's' : ''} - page ${data.page}`;
+    resultsSummary.textContent = `${total} résultat${total > 1 ? 's' : ''} — page ${data.page}`;
 
     if (count === 0) {
-      resultsGrid.innerHTML = `
-        <div class="column is-12">
-          <div class="search-empty-state">
-            <p class="title is-5">Aucun resultat</p>
-            <p>Essayez d'ajuster vos filtres.</p>
-          </div>
-        </div>
-      `;
+      const emptyDiv = document.createElement('div');
+      emptyDiv.className = 'ss-sr-empty';
+      const p1 = document.createElement('p');
+      const strong = document.createElement('strong');
+      strong.textContent = 'Aucun résultat';
+      p1.appendChild(strong);
+      const p2 = document.createElement('p');
+      p2.textContent = "Essayez d'ajuster vos filtres.";
+      emptyDiv.appendChild(p1);
+      emptyDiv.appendChild(p2);
+      resultsGrid.appendChild(emptyDiv);
       return;
     }
 
     const fragment = document.createDocumentFragment();
 
     data.results.forEach((user) => {
-      const column = document.createElement('div');
-      column.className = 'column is-12-mobile is-6-tablet is-4-desktop';
+      const initials = ((user.firstname || '').charAt(0) + (user.lastname || '').charAt(0)).toUpperCase();
+      const rating = Number(user.averageRating || 0).toFixed(1);
+      const reviewCount = Number(user.reviewCount || 0);
 
-      const starsHtml = buildStars(user.averageRating || 0);
-      const skillsHtml = (user.skills || [])
-        .map((skill) => `<span class="tag search-result-skill">${escapeHtml(skill.label)}</span>`)
-        .join('');
+      const card = document.createElement('article');
+      card.className = 'ss-sr-result-card';
 
-      const initials = `${(user.firstname || '').charAt(0)}${(user.lastname || '').charAt(0)}`.toUpperCase();
+      const avatarDiv = document.createElement('div');
+      avatarDiv.className = 'ss-sr-result-avatar';
+      avatarDiv.textContent = initials;
 
-      column.innerHTML = `
-        <article class="search-result-card">
-          <div class="search-result-avatar">${escapeHtml(initials)}</div>
-          <a href="/talents/${user.id}" class="search-result-name">${escapeHtml(user.firstname)} ${escapeHtml(user.lastname)}</a>
-          <p class="search-result-city">${escapeHtml(user.city || 'Ville non renseignee')}</p>
-          <div class="search-result-rating">${starsHtml}</div>
-          <p class="search-result-rating-value">${Number(user.averageRating || 0).toFixed(1)}/5 (${Number(user.reviewCount || 0)} avis)</p>
-          <div class="search-result-skills">${skillsHtml || '<span class="search-muted-text">Aucune competence</span>'}</div>
-          <a class="button search-btn-primary is-small mt-3" href="/talents/${user.id}">Voir profil</a>
-        </article>
-      `;
+      const nameLink = document.createElement('a');
+      nameLink.href = '/talents/' + user.id;
+      nameLink.className = 'ss-sr-result-name';
+      nameLink.textContent = user.firstname + ' ' + user.lastname;
 
-      fragment.appendChild(column);
+      const cityP = document.createElement('p');
+      cityP.className = 'ss-sr-result-city';
+      cityP.textContent = user.city || 'Ville non renseignée';
+
+      const ratingDiv = document.createElement('div');
+      ratingDiv.className = 'ss-sr-result-rating';
+      ratingDiv.appendChild(buildStarElements(user.averageRating || 0));
+
+      const ratingValueP = document.createElement('p');
+      ratingValueP.className = 'ss-sr-result-rating-value';
+      ratingValueP.textContent = rating + '/5 (' + reviewCount + ' avis)';
+
+      const skillsDiv = document.createElement('div');
+      skillsDiv.className = 'ss-sr-result-skills';
+      (user.skills || []).forEach((skill) => {
+        const tag = document.createElement('span');
+        tag.className = 'ss-sr-skill-tag';
+        tag.textContent = skill.label;
+        skillsDiv.appendChild(tag);
+      });
+      if (!(user.skills || []).length) {
+        const muted = document.createElement('span');
+        muted.className = 'ss-sr-muted';
+        muted.textContent = 'Aucune compétence';
+        skillsDiv.appendChild(muted);
+      }
+
+      const btn = document.createElement('a');
+      btn.href = '/talents/' + user.id;
+      btn.className = 'ss-sr-result-btn';
+      btn.textContent = 'Voir profil';
+
+      card.appendChild(avatarDiv);
+      card.appendChild(nameLink);
+      card.appendChild(cityP);
+      card.appendChild(ratingDiv);
+      card.appendChild(ratingValueP);
+      card.appendChild(skillsDiv);
+      card.appendChild(btn);
+
+      fragment.appendChild(card);
     });
 
     resultsGrid.appendChild(fragment);
@@ -267,16 +312,16 @@
   function renderPagination(currentPage, totalPages) {
     if (!totalPages || totalPages <= 1) {
       pagination.hidden = true;
-      pagination.innerHTML = '';
+      pagination.textContent = '';
       return;
     }
 
     pagination.hidden = false;
-    pagination.innerHTML = '';
+    pagination.textContent = '';
 
     const prev = document.createElement('a');
-    prev.className = 'pagination-previous';
-    prev.textContent = 'Precedent';
+    prev.className = 'ss-sr-page-prev';
+    prev.textContent = 'Précédent';
     if (currentPage <= 1) {
       prev.disabled = true;
     } else {
@@ -289,7 +334,7 @@
     }
 
     const next = document.createElement('a');
-    next.className = 'pagination-next';
+    next.className = 'ss-sr-page-next';
     next.textContent = 'Suivant';
     if (currentPage >= totalPages) {
       next.disabled = true;
@@ -303,12 +348,12 @@
     }
 
     const list = document.createElement('ul');
-    list.className = 'pagination-list';
+    list.className = 'ss-sr-page-list';
 
     for (let page = 1; page <= totalPages; page += 1) {
       const li = document.createElement('li');
       const link = document.createElement('a');
-      link.className = `pagination-link ${page === currentPage ? 'is-current' : ''}`;
+      link.className = 'ss-sr-page-link' + (page === currentPage ? ' is-current' : '');
       link.textContent = String(page);
       link.href = '#';
       link.addEventListener('click', (event) => {
@@ -355,12 +400,12 @@
     }
 
     autocompleteDropdown.hidden = false;
-    autocompleteDropdown.innerHTML = '';
+    autocompleteDropdown.textContent = '';
 
     autocompleteItems.forEach((item, index) => {
       const option = document.createElement('button');
       option.type = 'button';
-      option.className = `search-autocomplete-item ${index === autocompleteIndex ? 'is-active' : ''}`;
+      option.className = 'ss-sr-autocomplete-item' + (index === autocompleteIndex ? ' is-active' : '');
       option.textContent = item.city ? `${item.fullname} - ${item.city}` : item.fullname;
       option.addEventListener('mousedown', (event) => {
         event.preventDefault();
@@ -372,7 +417,7 @@
 
   function hideAutocomplete() {
     autocompleteDropdown.hidden = true;
-    autocompleteDropdown.innerHTML = '';
+    autocompleteDropdown.textContent = '';
     autocompleteItems = [];
     autocompleteIndex = -1;
   }
@@ -387,54 +432,75 @@
 
   async function loadSavedSearches() {
     if (!savedSearchesList) return;
-    savedSearchesList.innerHTML = '<p class="search-muted-text">Chargement...</p>';
+    savedSearchesList.textContent = '';
+    const loadingP = document.createElement('p');
+    loadingP.className = 'ss-sr-muted';
+    loadingP.textContent = 'Chargement...';
+    savedSearchesList.appendChild(loadingP);
 
     try {
       const res = await fetch('/api/search/saved');
       if (!res.ok) {
-        savedSearchesList.innerHTML = '<p class="search-muted-text">Impossible de charger.</p>';
+        savedSearchesList.textContent = '';
+        const errP = document.createElement('p');
+        errP.className = 'ss-sr-muted';
+        errP.textContent = 'Impossible de charger.';
+        savedSearchesList.appendChild(errP);
         return;
       }
 
       const data = await res.json();
       const searches = data.searches || [];
 
+      savedSearchesList.textContent = '';
+
       if (!searches.length) {
-        savedSearchesList.innerHTML = '<p class="search-muted-text">Aucune recherche sauvegardee.</p>';
+        const emptyP = document.createElement('p');
+        emptyP.className = 'ss-sr-muted';
+        emptyP.textContent = 'Aucune recherche sauvegardée.';
+        savedSearchesList.appendChild(emptyP);
         return;
       }
 
-      savedSearchesList.innerHTML = '';
       searches.forEach((saved) => {
         const item = document.createElement('div');
-        item.className = 'search-saved-item';
-        item.innerHTML = `
-          <p class="search-saved-name">${escapeHtml(saved.name)}</p>
-          <div class="buttons are-small mt-2">
-            <button class="button search-btn-secondary saved-apply-btn" type="button">Appliquer</button>
-            <button class="button is-danger is-light saved-delete-btn" type="button">Supprimer</button>
-          </div>
-        `;
+        item.className = 'ss-sr-saved-item';
 
-        const applyBtn = item.querySelector('.saved-apply-btn');
-        const deleteBtn = item.querySelector('.saved-delete-btn');
+        const nameP = document.createElement('p');
+        nameP.className = 'ss-sr-saved-name';
+        nameP.textContent = saved.name;
+        item.appendChild(nameP);
 
-        applyBtn.addEventListener('click', () => {
-          applySavedFilters(saved.filters || {});
-        });
+        const actions = document.createElement('div');
+        actions.className = 'ss-sr-saved-actions';
 
+        const applyBtn = document.createElement('button');
+        applyBtn.type = 'button';
+        applyBtn.className = 'ss-sr-btn-secondary saved-apply-btn';
+        applyBtn.textContent = 'Appliquer';
+        applyBtn.addEventListener('click', () => { applySavedFilters(saved.filters || {}); });
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.type = 'button';
+        deleteBtn.className = 'ss-sr-btn-danger saved-delete-btn';
+        deleteBtn.textContent = 'Supprimer';
         deleteBtn.addEventListener('click', async () => {
-          const delRes = await fetch(`/api/search/saved/${saved.id}`, { method: 'DELETE' });
-          if (delRes.ok) {
-            loadSavedSearches();
-          }
+          const delRes = await fetch('/api/search/saved/' + saved.id, { method: 'DELETE' });
+          if (delRes.ok) { loadSavedSearches(); }
         });
 
+        actions.appendChild(applyBtn);
+        actions.appendChild(deleteBtn);
+        item.appendChild(actions);
         savedSearchesList.appendChild(item);
       });
     } catch (error) {
       console.error('Erreur loadSavedSearches:', error);
-      savedSearchesList.innerHTML = '<p class="search-muted-text">Impossible de charger.</p>';
+      savedSearchesList.textContent = '';
+      const errP = document.createElement('p');
+      errP.className = 'ss-sr-muted';
+      errP.textContent = 'Impossible de charger.';
+      savedSearchesList.appendChild(errP);
     }
   }
 
@@ -459,12 +525,29 @@
     window.history.replaceState({}, '', url);
   }
 
-  function buildStars(rating) {
+  function buildStarElements(rating) {
     const full = Math.floor(rating);
     const half = rating - full >= 0.5 ? 1 : 0;
     const empty = 5 - full - half;
+    const frag = document.createDocumentFragment();
 
-    return `${'<i class="fas fa-star"></i>'.repeat(full)}${half ? '<i class="fas fa-star-half-alt"></i>' : ''}${'<i class="far fa-star"></i>'.repeat(empty)}`;
+    for (let i = 0; i < full; i += 1) {
+      const icon = document.createElement('i');
+      icon.className = 'fas fa-star';
+      frag.appendChild(icon);
+    }
+    if (half) {
+      const icon = document.createElement('i');
+      icon.className = 'fas fa-star-half-alt';
+      frag.appendChild(icon);
+    }
+    for (let i = 0; i < empty; i += 1) {
+      const icon = document.createElement('i');
+      icon.className = 'far fa-star';
+      frag.appendChild(icon);
+    }
+
+    return frag;
   }
 
   function escapeHtml(value) {
