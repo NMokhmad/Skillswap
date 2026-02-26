@@ -118,7 +118,7 @@ const searchController = {
           attributes: ['id'],
           where,
           include: skills.length ? [buildSkillFilterInclude()] : [],
-          group: ['User.id'],
+          group: [sequelize.literal('"User"."id"')],
           having: sequelize.where(sequelize.literal(AVG_RATING_SQL), { [Op.gte]: minRating }),
           raw: true,
           subQuery: false,
@@ -129,7 +129,7 @@ const searchController = {
           where,
           include: skills.length ? [buildSkillFilterInclude()] : [],
           distinct: true,
-          col: 'User.id',
+          col: 'id',
         });
       }
 
@@ -141,7 +141,7 @@ const searchController = {
         ],
         where,
         include: skills.length ? [buildSkillFilterInclude()] : [],
-        group: ['User.id'],
+        group: [sequelize.literal('"User"."id"')],
         having: minRating > 0
           ? sequelize.where(sequelize.literal(AVG_RATING_SQL), { [Op.gte]: minRating })
           : undefined,
