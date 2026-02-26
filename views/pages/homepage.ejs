@@ -192,6 +192,124 @@
         </div>
     </section>
 
+    <script nonce="<%= cspNonce %>">
+(function () {
+    var input    = document.getElementById('heroSearchInput');
+    var btn      = document.getElementById('heroSearchBtn');
+    var dropdown = document.getElementById('heroSearchDropdown');
+
+    if (!input) return;
+
+    var debounceTimer = null;
+    var activeIndex   = -1;
+    var suggestions   = [];
+
+    function navigate(q) {
+        var trimmed = (typeof q === 'string' ? q : input.value).trim();
+        if (!trimmed) return;
+        window.location.href = '/search?q=' + encodeURIComponent(trimmed);
+    }
+
+    function closeDropdown() {
+        dropdown.hidden = true;
+        activeIndex = -1;
+        suggestions = [];
+    }
+
+    function buildItem(item) {
+        var el = document.createElement('button');
+        el.type = 'button';
+        el.className = 'ss-hero-search-item';
+        el.setAttribute('role', 'option');
+
+        var nameEl = document.createElement('span');
+        nameEl.className = 'ss-hero-search-name';
+        nameEl.textContent = item.fullname;
+        el.appendChild(nameEl);
+
+        if (item.city) {
+            var cityEl = document.createElement('span');
+            cityEl.className = 'ss-hero-search-city';
+            cityEl.textContent = item.city;
+            el.appendChild(cityEl);
+        }
+
+        el.addEventListener('click', function () { navigate(item.fullname); });
+        return el;
+    }
+
+    function renderSuggestions(items) {
+        suggestions = items;
+        activeIndex = -1;
+        dropdown.textContent = '';
+
+        if (!items.length) { closeDropdown(); return; }
+
+        items.forEach(function (item) {
+            dropdown.appendChild(buildItem(item));
+        });
+
+        dropdown.hidden = false;
+    }
+
+    function fetchSuggestions(q) {
+        fetch('/api/search/autocomplete?q=' + encodeURIComponent(q))
+            .then(function (r) { return r.json(); })
+            .then(function (body) {
+                var items = (body && body.suggestions) || [];
+                renderSuggestions(items);
+            })
+            .catch(function () { closeDropdown(); });
+    }
+
+    function setActive(index) {
+        var items = dropdown.querySelectorAll('.ss-hero-search-item');
+        items.forEach(function (el) { el.classList.remove('is-active'); });
+        if (index >= 0 && index < items.length) {
+            items[index].classList.add('is-active');
+            activeIndex = index;
+        } else {
+            activeIndex = -1;
+        }
+    }
+
+    input.addEventListener('input', function () {
+        clearTimeout(debounceTimer);
+        var q = input.value.trim();
+        if (q.length < 2) { closeDropdown(); return; }
+        debounceTimer = setTimeout(function () { fetchSuggestions(q); }, 250);
+    });
+
+    input.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            setActive(Math.min(activeIndex + 1, suggestions.length - 1));
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            setActive(Math.max(activeIndex - 1, -1));
+        } else if (e.key === 'Enter') {
+            e.preventDefault();
+            if (activeIndex >= 0 && suggestions[activeIndex]) {
+                navigate(suggestions[activeIndex].fullname);
+            } else {
+                navigate();
+            }
+        } else if (e.key === 'Escape') {
+            closeDropdown();
+        }
+    });
+
+    btn.addEventListener('click', function () { navigate(); });
+
+    document.addEventListener('click', function (e) {
+        var wrap = input.closest('.ss-hero-search-wrap');
+        if (wrap && !wrap.contains(e.target)) {
+            closeDropdown();
+        }
+    });
+}());
+</script>
+
     <!-- Footer -->
     <%- include('../partials/footer.ejs') %>
 </body>
