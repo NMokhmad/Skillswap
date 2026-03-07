@@ -19,6 +19,7 @@ import Talents from './pages/Talents/Talents'
 import Talent from './pages/Talents/Talent'
 import Messages from './pages/Messages/Messages'
 import Conversation from './pages/Messages/Conversation'
+import Notifications from './pages/Notifications/Notifications'
 import { useSocketStore } from './stores/socketStore'
 
 function Layout({ children }: { children: React.ReactNode }) {
@@ -60,6 +61,7 @@ export default function App() {
         <Route path="/talents/:id" element={<Layout><Talent /></Layout>} />
         <Route path="/messages" element={<ProtectedRoute><Layout><Messages /></Layout></ProtectedRoute>} />
         <Route path="/messages/:userId" element={<ProtectedRoute><Layout><Conversation /></Layout></ProtectedRoute>} />
+        <Route path="/notifications" element={<ProtectedRoute><Layout><Notifications /></Layout></ProtectedRoute>} />
 
         {/* 404 fallback */}
         <Route path="*" element={<Layout><h1>Page introuvable</h1></Layout>} />

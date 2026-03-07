@@ -37,6 +37,33 @@ const notificationController = {
     }
   },
 
+  // API JSON : toutes les notifications paginées (pour la page React)
+  async getAll(req, res) {
+    try {
+      const userId = req.user.id;
+      const page = parseInt(req.query.page) || 1;
+      const limit = 20;
+      const offset = (page - 1) * limit;
+
+      const { count, rows: notifications } = await Notification.findAndCountAll({
+        where: { user_id: userId },
+        order: [['created_at', 'DESC']],
+        limit,
+        offset,
+      });
+
+      return sendApiSuccess(res, {
+        notifications,
+        total: count,
+        totalPages: Math.ceil(count / limit),
+        page,
+      });
+    } catch (error) {
+      logger.error('get_all_notifications_failed', { error: error?.message || 'Unknown error' });
+      return sendApiError(res, { status: 500, code: 'SERVER_ERROR', message: 'Erreur serveur' });
+    }
+  },
+
   // API JSON : nombre de notifications non lues (pour le badge navbar)
   async getUnreadCount(req, res) {
     try {

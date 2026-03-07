@@ -83,6 +83,7 @@ router.post("/api/messages/:userId", verifyJWT, messageController.apiSendMessage
 
 // Notifications
 router.get("/notifications", verifyJWT, notificationController.renderNotificationsPage);
+router.get("/api/notifications", verifyJWT, notificationController.getAll);
 router.get("/api/notifications/count", verifyJWT, notificationController.getUnreadCount);
 router.get("/api/notifications/recent", verifyJWT, notificationController.getRecent);
 router.post("/api/notifications/:id/read", verifyJWT, notificationController.markAsRead);
