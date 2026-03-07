@@ -7,6 +7,7 @@ import Footer from './components/footer'
 // Pages (importées au fur et à mesure de la migration)
 import Help from './pages/Help/Help'
 import Login from './pages/Login/Login'
+import Register from './pages/Register/Register'
 // import Homepage from './pages/Homepage'    ← décommenter quand prête
 
 function Layout({ children }: { children: React.ReactNode }) {
@@ -35,6 +36,7 @@ export default function App() {
       <Routes>
         <Route path="/help" element={<Layout><Help /></Layout>} />
         <Route path="/login" element={<Layout><Login /></Layout>} />
+        <Route path="/register" element={<Layout><Register /></Layout>} />
 
         {/* Routes protégées — décommenter au fur et à mesure */}
         {/* <Route path="/messages" element={<ProtectedRoute><Layout><Messages /></Layout></ProtectedRoute>} /> */}

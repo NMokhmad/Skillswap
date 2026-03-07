@@ -30,7 +30,6 @@ router.get("/talents/:id", optionalJWT, talentController.renderTalentPage);
 router.get("/skills", optionalJWT, skillController.renderSkillsPage);
 router.get("/skills/:slug", optionalJWT, skillController.renderSkillPage);
 
-router.get("/register", authController.renderRegisterPage);
 router.post("/register", authController.register);
 
 router.post("/login", authController.login);
