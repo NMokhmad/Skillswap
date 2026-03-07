@@ -9,6 +9,7 @@ import Help from './pages/Help/Help'
 import Login from './pages/Login/Login'
 import Register from './pages/Register/Register'
 import Homepage from './pages/Homepage'
+import Search from './pages/Search/Search'
 
 function Layout({ children }: { children: React.ReactNode }) {
   const { user } = useAuthStore()
@@ -35,6 +36,7 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout><Homepage /></Layout>} />
+        <Route path="/search" element={<Layout><Search /></Layout>} />
         <Route path="/help" element={<Layout><Help /></Layout>} />
         <Route path="/login" element={<Layout><Login /></Layout>} />
         <Route path="/register" element={<Layout><Register /></Layout>} />

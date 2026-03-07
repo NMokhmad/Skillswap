@@ -42,7 +42,6 @@ router.post("/api/auth/register", authController.apiRegister);
 router.post("/api/auth/logout", authController.apiLogout);
 router.get("/api/me", optionalJWT, authController.apiMe);
 
-router.get("/search", optionalJWT, searchController.getSearchPage);
 router.get("/api/search/talents", searchController.searchTalents);
 router.get("/api/search/autocomplete", searchController.autocomplete);
 
