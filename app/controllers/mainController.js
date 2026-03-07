@@ -195,6 +195,61 @@ const mainController = {
     }
   },
 
+  async getOnboardingData(req, res) {
+    try {
+      const skills = await Skill.findAll({ attributes: ['id', 'label', 'slug', 'icon'] });
+      const user = await User.findByPk(req.user.id, { attributes: ['id', 'firstname', 'lastname', 'email'] });
+      if (!user) {
+        return res.status(404).json({ error: 'Utilisateur introuvable' });
+      }
+      return res.json({ user, skills });
+    } catch (error) {
+      logger.error('get_onboarding_data_failed', { error: error?.message || 'Unknown error' });
+      return res.status(500).json({ status: 500, code: 'SERVER_ERROR', message: 'Erreur serveur' });
+    }
+  },
+
+  async apiCompleteOnboarding(req, res) {
+    try {
+      const userId = req.user.id;
+      const { bio, skills, new_skill } = req.body;
+
+      if (bio && bio.trim()) {
+        await User.update({ bio: bio.trim() }, { where: { id: userId } });
+      }
+
+      if (req.file) {
+        await User.update({ image: req.file.filename }, { where: { id: userId } });
+      }
+
+      if (skills) {
+        const skillsArray = Array.isArray(skills) ? skills : [skills];
+        for (const skillId of skillsArray) {
+          await sequelize.models.user_has_skill.findOrCreate({
+            where: { user_id: userId, skill_id: parseInt(skillId) },
+            defaults: { user_id: userId, skill_id: parseInt(skillId) }
+          });
+        }
+      }
+
+      if (new_skill && new_skill.trim()) {
+        const slug = new_skill.trim()
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-+|-+$/g, '');
+
+        await Skill.create({ label: new_skill.trim(), slug, icon: 'fa-lightbulb' });
+      }
+
+      return res.json({ success: true });
+    } catch (error) {
+      logger.error('api_complete_onboarding_failed', { error: error?.message || 'Unknown error' });
+      return res.status(500).json({ status: 500, code: 'SERVER_ERROR', message: 'Erreur serveur' });
+    }
+  },
+
   // Route protégée par verifyJWT → req.user est garanti
   async completeOnboarding(req, res) {
     try {

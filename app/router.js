@@ -56,6 +56,9 @@ router.delete("/api/me/profil", verifyJWT, profilController.apiDeleteProfile);
 // Onboarding
 router.get("/onboarding", verifyJWT, mainController.renderOnboardingPage);
 router.post("/onboarding", verifyJWT, uploadAvatar, mainController.completeOnboarding);
+// Onboarding API JSON
+router.get("/api/onboarding/skills", verifyJWT, mainController.getOnboardingData);
+router.post("/api/onboarding", verifyJWT, uploadAvatar, mainController.apiCompleteOnboarding);
 
 // Profil
 router.get("/user/:id", verifyJWT, mainController.renderHomePage);
