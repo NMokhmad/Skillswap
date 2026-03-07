@@ -71,11 +71,15 @@ router.delete("/follow/:id", verifyJWT, followController.unfollow);
 // Avis
 router.post("/review/:userId", verifyJWT, reviewController.createReview);
 
-// Messagerie
+// Messagerie (EJS — à supprimer après migration)
 router.get("/messages", verifyJWT, messageController.renderMessagesPage);
 router.get("/messages/:userId", verifyJWT, messageController.renderConversation);
 router.post("/messages/:userId", verifyJWT, messageController.sendMessage);
+// Messagerie API JSON
+router.get("/api/messages", verifyJWT, messageController.getConversations);
 router.get("/api/messages/unread-count", verifyJWT, messageController.getUnreadCount);
+router.get("/api/messages/:userId", verifyJWT, messageController.getConversation);
+router.post("/api/messages/:userId", verifyJWT, messageController.apiSendMessage);
 
 // Notifications
 router.get("/notifications", verifyJWT, notificationController.renderNotificationsPage);

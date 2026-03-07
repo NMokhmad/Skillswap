@@ -17,6 +17,9 @@ import Skills from './pages/Skills/Skills'
 import Skill from './pages/Skills/Skill'
 import Talents from './pages/Talents/Talents'
 import Talent from './pages/Talents/Talent'
+import Messages from './pages/Messages/Messages'
+import Conversation from './pages/Messages/Conversation'
+import { useSocketStore } from './stores/socketStore'
 
 function Layout({ children }: { children: React.ReactNode }) {
   const { user } = useAuthStore()
@@ -31,13 +34,15 @@ function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   const { setUser, setLoading } = useAuthStore()
+  const { connect: connectSocket, disconnect: disconnectSocket } = useSocketStore()
 
   useEffect(() => {
     authApi.me()
-      .then(({ user }) => setUser(user))
+      .then(({ user }) => { setUser(user); connectSocket() })
       .catch(() => setUser(null))
       .finally(() => setLoading(false))
-  }, [setUser, setLoading])
+    return () => { disconnectSocket() }
+  }, [setUser, setLoading, connectSocket, disconnectSocket])
 
   return (
     <BrowserRouter>
@@ -53,9 +58,8 @@ export default function App() {
         <Route path="/skills/:slug" element={<Layout><Skill /></Layout>} />
         <Route path="/talents" element={<Layout><Talents /></Layout>} />
         <Route path="/talents/:id" element={<Layout><Talent /></Layout>} />
-
-        {/* Routes protégées — décommenter au fur et à mesure */}
-        {/* <Route path="/messages" element={<ProtectedRoute><Layout><Messages /></Layout></ProtectedRoute>} /> */}
+        <Route path="/messages" element={<ProtectedRoute><Layout><Messages /></Layout></ProtectedRoute>} />
+        <Route path="/messages/:userId" element={<ProtectedRoute><Layout><Conversation /></Layout></ProtectedRoute>} />
 
         {/* 404 fallback */}
         <Route path="*" element={<Layout><h1>Page introuvable</h1></Layout>} />
