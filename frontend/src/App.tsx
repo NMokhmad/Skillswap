@@ -13,6 +13,10 @@ import Search from './pages/Search/Search'
 import ProfilPublic from './pages/Profil/ProfilPublic'
 import MyProfil from './pages/Profil/MyProfil'
 import ProtectedRoute from './components/ProtectedRoute'
+import Skills from './pages/Skills/Skills'
+import Skill from './pages/Skills/Skill'
+import Talents from './pages/Talents/Talents'
+import Talent from './pages/Talents/Talent'
 
 function Layout({ children }: { children: React.ReactNode }) {
   const { user } = useAuthStore()
@@ -45,6 +49,10 @@ export default function App() {
         <Route path="/register" element={<Layout><Register /></Layout>} />
         <Route path="/user/:id/profil" element={<Layout><ProfilPublic /></Layout>} />
         <Route path="/mon-profil" element={<ProtectedRoute><Layout><MyProfil /></Layout></ProtectedRoute>} />
+        <Route path="/skills" element={<Layout><Skills /></Layout>} />
+        <Route path="/skills/:slug" element={<Layout><Skill /></Layout>} />
+        <Route path="/talents" element={<Layout><Talents /></Layout>} />
+        <Route path="/talents/:id" element={<Layout><Talent /></Layout>} />
 
         {/* Routes protégées — décommenter au fur et à mesure */}
         {/* <Route path="/messages" element={<ProtectedRoute><Layout><Messages /></Layout></ProtectedRoute>} /> */}

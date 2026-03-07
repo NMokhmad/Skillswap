@@ -24,11 +24,11 @@ router.get("/readyz", healthController.readiness);
 router.get("/help", mainController.renderHelpPage);
 router.get("/api/homepage", optionalJWT, mainController.getHomepage);
 
-router.get("/talents", optionalJWT, talentController.renderTalentsPage);
-router.get("/talents/:id", optionalJWT, talentController.renderTalentPage);
+router.get("/api/talents", optionalJWT, talentController.apiGetTalents);
+router.get("/api/talents/:id", optionalJWT, talentController.apiGetTalent);
 
-router.get("/skills", optionalJWT, skillController.renderSkillsPage);
-router.get("/skills/:slug", optionalJWT, skillController.renderSkillPage);
+router.get("/api/skills", skillController.apiGetSkills);
+router.get("/api/skills/:slug", skillController.apiGetSkill);
 
 router.post("/register", authController.register);
 

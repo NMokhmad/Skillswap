@@ -1,6 +1,35 @@
 import { Skill, User } from '../models/index.js';
 
 const skillController = {
+
+  async apiGetSkills(req, res) {
+    try {
+      const skills = await Skill.findAll({
+        attributes: ['id', 'label', 'slug', 'icon'],
+        include: [{ model: User, as: 'users', attributes: ['id'], through: { attributes: [] } }],
+      });
+      const totalUsers = await User.count();
+      return res.json({
+        skills: skills.map(s => ({ id: s.id, label: s.label, slug: s.slug, icon: s.icon, userCount: s.users.length })),
+        totalUsers,
+      });
+    } catch (error) {
+      return res.status(500).json({ status: 500, code: 'SERVER_ERROR', message: 'Erreur serveur' });
+    }
+  },
+
+  async apiGetSkill(req, res) {
+    try {
+      const skill = await Skill.findOne({
+        where: { slug: req.params.slug },
+        include: [{ model: User, as: 'users', attributes: ['id', 'firstname', 'lastname', 'image', 'bio'], through: { attributes: [] } }],
+      });
+      if (!skill) return res.status(404).json({ status: 404, code: 'NOT_FOUND', message: 'Compétence introuvable' });
+      return res.json({ skill: { id: skill.id, label: skill.label, slug: skill.slug, icon: skill.icon, users: skill.users } });
+    } catch (error) {
+      return res.status(500).json({ status: 500, code: 'SERVER_ERROR', message: 'Erreur serveur' });
+    }
+  },
   // Route publique avec optionalJWT → req.user peut être null
   async renderSkillsPage(req, res) {
     const title = "Skills";

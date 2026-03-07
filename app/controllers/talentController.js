@@ -3,6 +3,69 @@ import { Skill, Review } from '../models/index.js';
 import { addAverageRating } from '../helpers/rating.js';
 
 const talentController = {
+
+  async apiGetTalents(req, res) {
+    try {
+      const page = parseInt(req.query.page) || 1;
+      const limit = 12;
+      const offset = (page - 1) * limit;
+
+      const { count, rows: users } = await User.findAndCountAll({
+        attributes: ['id', 'firstname', 'lastname', 'image', 'city', 'interest'],
+        include: [
+          { model: Skill, as: 'skills', attributes: ['id', 'label', 'slug'], through: { attributes: [] } },
+          { model: Review, as: 'received_reviews', attributes: ['rate'] },
+        ],
+        distinct: true,
+        limit,
+        offset,
+        order: [['created_at', 'DESC']],
+      });
+
+      const results = users.map(u => {
+        const reviews = u.received_reviews || [];
+        const avg = reviews.length ? reviews.reduce((s, r) => s + r.rate, 0) / reviews.length : 0;
+        return { id: u.id, firstname: u.firstname, lastname: u.lastname, image: u.image, city: u.city, interest: u.interest, skills: u.skills, averageRating: Math.round(avg * 10) / 10, reviewCount: reviews.length };
+      });
+
+      return res.json({ page, limit, total: count, totalPages: Math.ceil(count / limit), results });
+    } catch (error) {
+      return res.status(500).json({ status: 500, code: 'SERVER_ERROR', message: 'Erreur serveur' });
+    }
+  },
+
+  async apiGetTalent(req, res) {
+    try {
+      const user = await User.findByPk(req.params.id, {
+        attributes: { exclude: ['password'] },
+        include: [
+          { model: Skill, as: 'skills', attributes: ['id', 'label', 'slug'], through: { attributes: [] } },
+          { model: Review, as: 'received_reviews', include: [{ model: User, as: 'reviewer', attributes: ['id', 'firstname', 'lastname', 'image'] }] },
+          { model: User, as: 'followers', attributes: ['id'] },
+        ],
+      });
+      if (!user) return res.status(404).json({ status: 404, code: 'NOT_FOUND', message: 'Utilisateur introuvable' });
+
+      const reviews = user.received_reviews || [];
+      const avg = reviews.length ? reviews.reduce((s, r) => s + r.rate, 0) / reviews.length : 0;
+      const isFollowing = req.user ? user.followers.some(f => f.id === req.user.id) : false;
+
+      return res.json({
+        talent: {
+          id: user.id, firstname: user.firstname, lastname: user.lastname,
+          bio: user.bio, city: user.city, image: user.image, interest: user.interest,
+          skills: user.skills,
+          reviews: reviews.map(r => ({ id: r.id, rate: r.rate, comment: r.comment, created_at: r.created_at, reviewer: r.reviewer })),
+          averageRating: Math.round(avg * 10) / 10,
+          reviewCount: reviews.length,
+          followerCount: user.followers.length,
+          isFollowing,
+        }
+      });
+    } catch (error) {
+      return res.status(500).json({ status: 500, code: 'SERVER_ERROR', message: 'Erreur serveur' });
+    }
+  },
   // Route publique avec optionalJWT → req.user peut être null
   async renderTalentsPage(req, res) {
     const title = "Talents";
