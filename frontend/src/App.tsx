@@ -10,6 +10,9 @@ import Login from './pages/Login/Login'
 import Register from './pages/Register/Register'
 import Homepage from './pages/Homepage'
 import Search from './pages/Search/Search'
+import ProfilPublic from './pages/Profil/ProfilPublic'
+import MyProfil from './pages/Profil/MyProfil'
+import ProtectedRoute from './components/ProtectedRoute'
 
 function Layout({ children }: { children: React.ReactNode }) {
   const { user } = useAuthStore()
@@ -40,6 +43,8 @@ export default function App() {
         <Route path="/help" element={<Layout><Help /></Layout>} />
         <Route path="/login" element={<Layout><Login /></Layout>} />
         <Route path="/register" element={<Layout><Register /></Layout>} />
+        <Route path="/user/:id/profil" element={<Layout><ProfilPublic /></Layout>} />
+        <Route path="/mon-profil" element={<ProtectedRoute><Layout><MyProfil /></Layout></ProtectedRoute>} />
 
         {/* Routes protégées — décommenter au fur et à mesure */}
         {/* <Route path="/messages" element={<ProtectedRoute><Layout><Messages /></Layout></ProtectedRoute>} /> */}

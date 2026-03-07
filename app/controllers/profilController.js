@@ -1,6 +1,8 @@
 import fs from 'fs';
 import path from 'path';
+import jwt from 'jsonwebtoken';
 import { User } from "../models/User.js";
+import { Skill, Review } from "../models/index.js";
 import { userUpdateSchema } from "../schemas/userUpdateSchema.js";
 
 const profilController = {
@@ -64,6 +66,100 @@ const profilController = {
     } catch (error) {
       console.error('Erreur lors de la mise à jour du profil :', error);
       res.status(500).json({ error: 'Erreur du serveur' });
+    }
+  },
+
+  // ── Méthodes JSON pour l'API React ──────────────────────────────────────────
+
+  getProfil: async (req, res) => {
+    const userId = parseInt(req.params.id);
+    try {
+      const user = await User.findByPk(userId, {
+        attributes: ['id', 'firstname', 'lastname', 'bio', 'city', 'image', 'interest'],
+        include: [
+          { model: Skill, as: 'skills', attributes: ['id', 'label', 'slug'], through: { attributes: [] } },
+          { model: Review, as: 'received_reviews', include: [{ model: User, as: 'reviewer', attributes: ['id', 'firstname', 'lastname', 'image'] }] },
+          { model: User, as: 'followers', attributes: ['id'] },
+        ],
+      });
+      if (!user) return res.status(404).json({ status: 404, code: 'NOT_FOUND', message: 'Utilisateur introuvable' });
+
+      const reviews = user.received_reviews || [];
+      const avgRating = reviews.length ? reviews.reduce((s, r) => s + r.rate, 0) / reviews.length : 0;
+      const isFollowing = req.user ? user.followers.some(f => f.id === req.user.id) : false;
+
+      return res.json({
+        user: {
+          id: user.id, firstname: user.firstname, lastname: user.lastname,
+          bio: user.bio, city: user.city, image: user.image, interest: user.interest,
+          skills: user.skills,
+          reviews: reviews.map(r => ({
+            id: r.id, rate: r.rate, comment: r.comment, created_at: r.created_at,
+            reviewer: r.reviewer,
+          })),
+          averageRating: Math.round(avgRating * 10) / 10,
+          reviewCount: reviews.length,
+          followerCount: user.followers.length,
+          isFollowing,
+        }
+      });
+    } catch (error) {
+      return res.status(500).json({ status: 500, code: 'SERVER_ERROR', message: 'Erreur serveur' });
+    }
+  },
+
+  getMyProfil: async (req, res) => {
+    try {
+      const user = await User.findByPk(req.user.id, {
+        attributes: { exclude: ['password'] },
+        include: [{ model: Skill, as: 'skills', attributes: ['id', 'label', 'slug'], through: { attributes: [] } }],
+      });
+      if (!user) return res.status(404).json({ status: 404, code: 'NOT_FOUND', message: 'Utilisateur introuvable' });
+      return res.json({ user });
+    } catch (error) {
+      return res.status(500).json({ status: 500, code: 'SERVER_ERROR', message: 'Erreur serveur' });
+    }
+  },
+
+  apiUpdateProfile: async (req, res) => {
+    const userId = req.user.id;
+    try {
+      const user = await User.findByPk(userId);
+      if (!user) return res.status(404).json({ status: 404, code: 'NOT_FOUND', message: 'Utilisateur introuvable' });
+
+      await userUpdateSchema.validateAsync(req.body);
+      const { firstname, lastname, email, bio } = req.body;
+      const updateData = { firstname, lastname, email };
+      if (bio !== undefined) updateData.bio = bio.trim();
+
+      if (req.file) {
+        if (user.image) fs.unlink(path.join('public', user.image), () => {});
+        updateData.image = `/uploads/avatars/${req.file.filename}`;
+      }
+
+      await user.update(updateData);
+
+      const newToken = jwt.sign(
+        { id: user.id, email: user.email, firstname: user.firstname, lastname: user.lastname },
+        process.env.JWT_SECRET,
+        { expiresIn: process.env.JWT_EXPIRES }
+      );
+      res.cookie('token', newToken, { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'Strict' });
+
+      return res.json({ user: { id: user.id, email: user.email, firstname: user.firstname, lastname: user.lastname, bio: user.bio, image: user.image } });
+    } catch (error) {
+      if (error.isJoi) return res.status(400).json({ status: 400, code: 'VALIDATION_ERROR', message: error.details[0].message });
+      return res.status(500).json({ status: 500, code: 'SERVER_ERROR', message: 'Erreur serveur' });
+    }
+  },
+
+  apiDeleteProfile: async (req, res) => {
+    try {
+      await User.destroy({ where: { id: req.user.id } });
+      res.clearCookie('token');
+      return res.json({ success: true });
+    } catch (error) {
+      return res.status(500).json({ status: 500, code: 'SERVER_ERROR', message: 'Erreur serveur' });
     }
   },
 

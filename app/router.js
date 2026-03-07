@@ -44,6 +44,10 @@ router.get("/api/me", optionalJWT, authController.apiMe);
 
 router.get("/api/search/talents", searchController.searchTalents);
 router.get("/api/search/autocomplete", searchController.autocomplete);
+router.get("/api/user/:id/profil", optionalJWT, profilController.getProfil);
+router.get("/api/me/profil", verifyJWT, profilController.getMyProfil);
+router.put("/api/me/profil", verifyJWT, uploadAvatar, profilController.apiUpdateProfile);
+router.delete("/api/me/profil", verifyJWT, profilController.apiDeleteProfile);
 
 // ============================================
 // Routes protégées (verifyJWT obligatoire)
