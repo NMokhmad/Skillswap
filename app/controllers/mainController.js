@@ -2,6 +2,7 @@ import { Op } from 'sequelize';
 import { User, Skill, Review } from '../models/index.js';
 import { sequelize } from '../database.js';
 import { addAverageRating } from '../helpers/rating.js';
+import { logger } from '../helpers/logger.js';
 
 const mainController = {
   async renderHomePage(req, res) {
@@ -45,7 +46,7 @@ const mainController = {
   renderHelpPage(req, res) {
     const title = "Aide";
     const cssFile = "help_page";
-    res.render("help_page", { title, cssFile });
+    res.json({ title, cssFile });
   },
 
   async searchPage(req, res) {
@@ -108,6 +109,44 @@ const mainController = {
     } catch (error) {
       console.error("Erreur searchPage:", error);
       res.status(500).send("Erreur serveur");
+    }
+  },
+
+  async getHomepage(req, res) {
+    try {
+      const skills = await Skill.findAll({ attributes: ['id', 'label', 'slug', 'icon'] });
+
+      const topUsers = await User.findAll({
+        attributes: {
+          include: [
+            [sequelize.fn('COALESCE', sequelize.fn('AVG', sequelize.col('received_reviews.rate')), 0), 'avg_reviews']
+          ]
+        },
+        include: [{ model: Review, as: 'received_reviews', attributes: [] }],
+        group: ['User.id'],
+        order: [[sequelize.literal('avg_reviews'), 'DESC']],
+        limit: 3,
+        subQuery: false,
+      });
+
+      topUsers.forEach(user => {
+        user.avg_reviews = Math.round(parseFloat(user.getDataValue('avg_reviews')) || 0);
+      });
+
+      return res.json({
+        skills: skills.map(s => ({ id: s.id, label: s.label, slug: s.slug, icon: s.icon })),
+        topUsers: topUsers.map(u => ({
+          id: u.id,
+          firstname: u.firstname,
+          lastname: u.lastname,
+          image: u.image,
+          interest: u.interest,
+          avg_reviews: u.getDataValue('avg_reviews'),
+        })),
+      });
+    } catch (error) {
+      logger.error('get_homepage_failed', { error: error?.message || 'Unknown error' });
+      return res.status(500).json({ status: 500, code: 'SERVER_ERROR', message: 'Erreur serveur' });
     }
   },
 

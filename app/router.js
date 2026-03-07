@@ -21,8 +21,8 @@ router.get("/readyz", healthController.readiness);
 // ============================================
 // Routes publiques (optionalJWT pour savoir si un user est connecté)
 // ============================================
-router.get("/", optionalJWT, mainController.renderHomePage);
 router.get("/help", mainController.renderHelpPage);
+router.get("/api/homepage", optionalJWT, mainController.getHomepage);
 
 router.get("/talents", optionalJWT, talentController.renderTalentsPage);
 router.get("/talents/:id", optionalJWT, talentController.renderTalentPage);

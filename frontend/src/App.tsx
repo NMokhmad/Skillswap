@@ -8,7 +8,7 @@ import Footer from './components/footer'
 import Help from './pages/Help/Help'
 import Login from './pages/Login/Login'
 import Register from './pages/Register/Register'
-// import Homepage from './pages/Homepage'    ← décommenter quand prête
+import Homepage from './pages/Homepage'
 
 function Layout({ children }: { children: React.ReactNode }) {
   const { user } = useAuthStore()
@@ -34,6 +34,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<Layout><Homepage /></Layout>} />
         <Route path="/help" element={<Layout><Help /></Layout>} />
         <Route path="/login" element={<Layout><Login /></Layout>} />
         <Route path="/register" element={<Layout><Register /></Layout>} />
