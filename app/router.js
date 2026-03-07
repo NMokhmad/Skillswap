@@ -33,7 +33,6 @@ router.get("/skills/:slug", optionalJWT, skillController.renderSkillPage);
 router.get("/register", authController.renderRegisterPage);
 router.post("/register", authController.register);
 
-router.get("/login", authController.renderloginPage);
 router.post("/login", authController.login);
 
 router.post("/logout", authController.logout);
