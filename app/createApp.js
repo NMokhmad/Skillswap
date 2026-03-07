@@ -11,7 +11,7 @@ import { userInfo } from './middlewares/userInfoCookie.js';
 import { requestId } from './middlewares/requestId.js';
 import { requestLogger } from './middlewares/requestLogger.js';
 import { captureException } from './helpers/sentry.js';
-import { isApiRequest, sendApiError } from './helpers/apiResponse.js';
+import { sendApiError } from './helpers/apiResponse.js';
 import { logger } from './helpers/logger.js';
 
 export function createApp() {
@@ -73,8 +73,6 @@ export function createApp() {
     credentials: true,
   }));
 
-  app.set('view engine', 'ejs');
-  app.set('views', './views/pages');
   app.use(express.static('./public'));
 
   app.use(userInfo);
@@ -83,17 +81,11 @@ export function createApp() {
   app.use(router);
 
   app.use((req, res) => {
-    if (isApiRequest(req)) {
-      return sendApiError(res, {
-        status: 404,
-        code: 'NOT_FOUND',
-        message: 'Endpoint not found.',
-      });
-    }
-
-    const title = 'Page not found';
-    const cssFile = '404';
-    return res.status(404).render('404', { title, cssFile });
+    return sendApiError(res, {
+      status: 404,
+      code: 'NOT_FOUND',
+      message: 'Endpoint not found.',
+    });
   });
 
   app.use((err, req, res, _next) => {
@@ -111,15 +103,11 @@ export function createApp() {
     });
     captureException(err, context);
 
-    if (isApiRequest(req)) {
-      return sendApiError(res, {
-        status: err?.status || 500,
-        code: err?.code || 'SERVER_ERROR',
-        message: err?.publicMessage || 'Erreur serveur',
-      });
-    }
-
-    return res.status(500).render('500', { title: 'Erreur serveur', cssFile: '404' });
+    return sendApiError(res, {
+      status: err?.status || 500,
+      code: err?.code || 'SERVER_ERROR',
+      message: err?.publicMessage || 'Erreur serveur',
+    });
   });
 
   return app;

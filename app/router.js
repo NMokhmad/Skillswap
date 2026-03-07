@@ -21,7 +21,6 @@ router.get("/readyz", healthController.readiness);
 // ============================================
 // Routes publiques (optionalJWT pour savoir si un user est connecté)
 // ============================================
-router.get("/help", mainController.renderHelpPage);
 router.get("/api/homepage", optionalJWT, mainController.getHomepage);
 
 router.get("/api/talents", optionalJWT, talentController.apiGetTalents);
@@ -29,12 +28,6 @@ router.get("/api/talents/:id", optionalJWT, talentController.apiGetTalent);
 
 router.get("/api/skills", skillController.apiGetSkills);
 router.get("/api/skills/:slug", skillController.apiGetSkill);
-
-router.post("/register", authController.register);
-
-router.post("/login", authController.login);
-
-router.post("/logout", authController.logout);
 
 // ── Routes API JSON (pour React frontend) ──────────────────────────────────
 router.post("/api/auth/login", authController.apiLogin);
@@ -53,19 +46,9 @@ router.delete("/api/me/profil", verifyJWT, profilController.apiDeleteProfile);
 // Routes protégées (verifyJWT obligatoire)
 // ============================================
 
-// Onboarding
-router.get("/onboarding", verifyJWT, mainController.renderOnboardingPage);
-router.post("/onboarding", verifyJWT, uploadAvatar, mainController.completeOnboarding);
 // Onboarding API JSON
 router.get("/api/onboarding/skills", verifyJWT, mainController.getOnboardingData);
 router.post("/api/onboarding", verifyJWT, uploadAvatar, mainController.apiCompleteOnboarding);
-
-// Profil
-router.get("/user/:id", verifyJWT, mainController.renderHomePage);
-router.route("/user/:id/profil")
-  .get(verifyJWT, mainController.renderProfilePage)
-  .post(verifyJWT, uploadAvatar, profilController.updateProfile)
-  .delete(verifyJWT, profilController.deleteProfile);
 
 // Follow / Unfollow
 router.post("/follow/:id", verifyJWT, followController.follow);
@@ -74,10 +57,6 @@ router.delete("/follow/:id", verifyJWT, followController.unfollow);
 // Avis
 router.post("/review/:userId", verifyJWT, reviewController.createReview);
 
-// Messagerie (EJS — à supprimer après migration)
-router.get("/messages", verifyJWT, messageController.renderMessagesPage);
-router.get("/messages/:userId", verifyJWT, messageController.renderConversation);
-router.post("/messages/:userId", verifyJWT, messageController.sendMessage);
 // Messagerie API JSON
 router.get("/api/messages", verifyJWT, messageController.getConversations);
 router.get("/api/messages/unread-count", verifyJWT, messageController.getUnreadCount);
@@ -85,7 +64,6 @@ router.get("/api/messages/:userId", verifyJWT, messageController.getConversation
 router.post("/api/messages/:userId", verifyJWT, messageController.apiSendMessage);
 
 // Notifications
-router.get("/notifications", verifyJWT, notificationController.renderNotificationsPage);
 router.get("/api/notifications", verifyJWT, notificationController.getAll);
 router.get("/api/notifications/count", verifyJWT, notificationController.getUnreadCount);
 router.get("/api/notifications/recent", verifyJWT, notificationController.getRecent);

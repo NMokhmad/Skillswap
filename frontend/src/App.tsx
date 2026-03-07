@@ -21,6 +21,7 @@ import Messages from './pages/Messages/Messages'
 import Conversation from './pages/Messages/Conversation'
 import Notifications from './pages/Notifications/Notifications'
 import Onboarding from './pages/Onboarding/Onboarding'
+import NotFound from './pages/NotFound'
 import { useSocketStore } from './stores/socketStore'
 
 function Layout({ children }: { children: React.ReactNode }) {
@@ -66,7 +67,7 @@ export default function App() {
         <Route path="/onboarding" element={<ProtectedRoute><Layout><Onboarding /></Layout></ProtectedRoute>} />
 
         {/* 404 fallback */}
-        <Route path="*" element={<Layout><h1>Page introuvable</h1></Layout>} />
+        <Route path="*" element={<Layout><NotFound /></Layout>} />
       </Routes>
     </BrowserRouter>
   )
