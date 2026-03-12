@@ -59,8 +59,8 @@ export function createApp() {
     legacyHeaders: false,
     message: 'Trop de tentatives, reessayez dans 15 minutes.',
   });
-  app.use('/login', authLimiter);
-  app.use('/register', authLimiter);
+  app.use('/api/auth/login', authLimiter);
+  app.use('/api/auth/register', authLimiter);
 
   app.use(requestId);
   app.use(methodeOverride('_method'));

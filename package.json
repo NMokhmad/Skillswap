@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "node --watch index.js",
-    "lint": "eslint index.js app/createApp.js app/database.js app/helpers/*.js app/middlewares/requestId.js app/middlewares/requestLogger.js app/middlewares/jwtVerify.js app/controllers/healthController.js app/controllers/authController.js app/controllers/messageController.js app/controllers/notificationController.js app/controllers/searchController.js app/sockets/messageHandler.js tests/jwtVerify.test.js tests/requestId.test.js tests/socketPayloadValidation.test.js tests/authLoginSecurity.test.js tests_integration/helpers/controllerHarness.js tests_integration/*.test.js",
+    "lint": "eslint index.js app/createApp.js app/database.js app/helpers/*.js app/middlewares/requestId.js app/middlewares/requestLogger.js app/middlewares/jwtVerify.js app/controllers/healthController.js app/controllers/authController.js app/controllers/messageController.js app/controllers/notificationController.js app/controllers/searchController.js app/sockets/messageHandler.js tests/jwtVerify.test.js tests/requestId.test.js tests/socketPayloadValidation.test.js tests/authLoginSecurity.test.js tests/createAppRateLimiter.test.js tests_integration/helpers/controllerHarness.js tests_integration/*.test.js",
     "db:create": "psql -U skillswap -d skillswap -f ./data/create_db.sql",
     "db:seed": "psql -U skillswap -d skillswap -f ./data/seeding_tables.sql",
     "db:seed:prod": "node scripts/seed.js",
