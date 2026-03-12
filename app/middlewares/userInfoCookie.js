@@ -16,6 +16,11 @@ export const userInfo = (req, res, next) => {
     res.locals.user = decoded;
   } catch {
     res.locals.user = null;
+    res.clearCookie('token', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'Strict',
+    });
   }
 
   next();
