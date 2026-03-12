@@ -70,7 +70,7 @@ export async function validateAndRenameAvatar(req, res, next) {
 
     if (currentExt !== correctExt) {
       const newFilename = req.file.filename.slice(0, req.file.filename.lastIndexOf('.')) + correctExt;
-      const newPath = path.join(uploadDir, newFilename);
+      const newPath = path.join(path.dirname(filePath), newFilename);
       await fs.promises.rename(filePath, newPath);
       req.file.filename = newFilename;
       req.file.path = newPath;
