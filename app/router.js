@@ -11,7 +11,7 @@ import notificationController from "./controllers/notificationController.js";
 import searchController from "./controllers/searchController.js";
 import healthController from "./controllers/healthController.js";
 import { verifyJWT, optionalJWT } from "./middlewares/jwtVerify.js";
-import { uploadAvatar } from "./middlewares/upload.js";
+import { uploadAvatar, validateAndRenameAvatar } from "./middlewares/upload.js";
 
 const router = Router();
 
@@ -39,7 +39,7 @@ router.get("/api/search/talents", searchController.searchTalents);
 router.get("/api/search/autocomplete", searchController.autocomplete);
 router.get("/api/user/:id/profil", optionalJWT, profilController.getProfil);
 router.get("/api/me/profil", verifyJWT, profilController.getMyProfil);
-router.put("/api/me/profil", verifyJWT, uploadAvatar, profilController.apiUpdateProfile);
+router.put("/api/me/profil", verifyJWT, uploadAvatar, validateAndRenameAvatar, profilController.apiUpdateProfile);
 router.delete("/api/me/profil", verifyJWT, profilController.apiDeleteProfile);
 
 // ============================================
@@ -48,7 +48,7 @@ router.delete("/api/me/profil", verifyJWT, profilController.apiDeleteProfile);
 
 // Onboarding API JSON
 router.get("/api/onboarding/skills", verifyJWT, mainController.getOnboardingData);
-router.post("/api/onboarding", verifyJWT, uploadAvatar, mainController.apiCompleteOnboarding);
+router.post("/api/onboarding", verifyJWT, uploadAvatar, validateAndRenameAvatar, mainController.apiCompleteOnboarding);
 
 // Follow / Unfollow
 router.post("/follow/:id", verifyJWT, followController.follow);

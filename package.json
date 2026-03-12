@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "node --watch index.js",
-    "lint": "eslint index.js app/createApp.js app/database.js app/helpers/*.js app/middlewares/requestId.js app/middlewares/requestLogger.js app/middlewares/jwtVerify.js app/middlewares/userInfoCookie.js app/controllers/healthController.js app/controllers/authController.js app/controllers/messageController.js app/controllers/notificationController.js app/controllers/searchController.js app/sockets/messageHandler.js tests/jwtVerify.test.js tests/requestId.test.js tests/socketPayloadValidation.test.js tests/authLoginSecurity.test.js tests/createAppRateLimiter.test.js tests/userInfoCookie.test.js tests/startupAssertions.test.js tests/messageContentLength.test.js tests/reviewContentLength.test.js tests/skillCreation.test.js tests_integration/helpers/controllerHarness.js tests_integration/*.test.js",
+    "lint": "eslint index.js app/createApp.js app/database.js app/helpers/*.js app/middlewares/requestId.js app/middlewares/requestLogger.js app/middlewares/jwtVerify.js app/middlewares/userInfoCookie.js app/controllers/healthController.js app/controllers/authController.js app/controllers/messageController.js app/controllers/notificationController.js app/controllers/searchController.js app/sockets/messageHandler.js tests/jwtVerify.test.js tests/requestId.test.js tests/socketPayloadValidation.test.js tests/authLoginSecurity.test.js tests/createAppRateLimiter.test.js tests/userInfoCookie.test.js tests/startupAssertions.test.js tests/messageContentLength.test.js tests/reviewContentLength.test.js tests/skillCreation.test.js tests_integration/helpers/controllerHarness.js tests_integration/*.test.js app/middlewares/upload.js tests/uploadValidation.test.js",
     "db:create": "psql -U skillswap -d skillswap -f ./data/create_db.sql",
     "db:seed": "psql -U skillswap -d skillswap -f ./data/seeding_tables.sql",
     "db:seed:prod": "node scripts/seed.js",
@@ -51,6 +51,7 @@
     "express": "^4.21.2",
     "express-rate-limit": "^8.2.1",
     "express-session": "^1.18.1",
+    "file-type": "^21.3.1",
     "helmet": "^8.0.0",
     "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
