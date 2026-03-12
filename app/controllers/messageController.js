@@ -295,6 +295,10 @@ const messageController = {
         return sendApiError(res, { status: 400, code: 'BAD_REQUEST', message: 'Le message ne peut pas être vide' });
       }
 
+      if (content.trim().length > 3000) {
+        return sendApiError(res, { status: 400, code: 'CONTENT_TOO_LONG', message: 'Le message ne peut pas dépasser 3000 caractères' });
+      }
+
       const receiver = await User.findByPk(receiverId);
       if (!receiver) {
         return sendApiError(res, { status: 404, code: 'NOT_FOUND', message: 'Utilisateur introuvable' });
