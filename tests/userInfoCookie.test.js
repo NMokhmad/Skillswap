@@ -50,6 +50,7 @@ describe('userInfoCookie', () => {
 
     expect(res.locals.user).toEqual(payload);
     expect(next).toHaveBeenCalled();
+    expect(res.clearedCookies).toHaveLength(0);
   });
 
   test('clears token cookie with correct options when JWT is invalid', () => {
@@ -67,6 +68,7 @@ describe('userInfoCookie', () => {
     expect(res.clearedCookieOptions).toMatchObject({
       httpOnly: true,
       sameSite: 'Strict',
+      secure: false,
     });
     expect(next).toHaveBeenCalled();
   });
