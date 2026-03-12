@@ -23,6 +23,11 @@ const reviewController = {
         return res.status(400).json({ error: 'La note doit être entre 1 et 5' });
       }
 
+      const trimmedContent = typeof content === 'string' ? content.trim() : '';
+      if (trimmedContent.length > 500) {
+        return res.status(400).json({ error: 'Le commentaire ne peut pas dépasser 500 caractères' });
+      }
+
       const reviewed = await User.findByPk(reviewedId);
       if (!reviewed) {
         return res.status(404).json({ error: 'Utilisateur introuvable' });
@@ -38,13 +43,13 @@ const reviewController = {
       });
 
       if (existing) {
-        await existing.update({ rate: parsedRate, content: content || '' });
+        await existing.update({ rate: parsedRate, content: trimmedContent });
         return res.redirect(`/talents/${reviewedId}`);
       }
 
       const review = await Review.create({
         rate: parsedRate,
-        content: content || '',
+        content: trimmedContent,
         reviewer_id: reviewerId,
         reviewed_id: reviewedId,
         skill_id: parseInt(skill_id)

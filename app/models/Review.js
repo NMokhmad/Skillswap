@@ -16,6 +16,9 @@ Review.init(
     content:{
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        len: [0, 500],
+      },
     },
     skill_id:{
       type: DataTypes.INTEGER,
