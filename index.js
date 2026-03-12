@@ -9,7 +9,9 @@ import { registerMessageHandlers } from './app/sockets/messageHandler.js';
 import { createApp } from './app/createApp.js';
 import { initSentry, captureException } from './app/helpers/sentry.js';
 import { logger } from './app/helpers/logger.js';
+import { assertEnvVars } from './app/helpers/startupChecks.js';
 
+assertEnvVars();
 await initSentry();
 const app = createApp();
 
