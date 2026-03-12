@@ -4,6 +4,8 @@ import { sequelize } from '../database.js';
 import { addAverageRating } from '../helpers/rating.js';
 import { logger } from '../helpers/logger.js';
 
+const normalizeImage = (image) => image ? image.replace(/^\/uploads\/avatars\//, '') : null;
+
 const mainController = {
   async renderHomePage(req, res) {
     const title = "Accueil";
@@ -139,7 +141,7 @@ const mainController = {
           id: u.id,
           firstname: u.firstname,
           lastname: u.lastname,
-          image: u.image,
+          image: normalizeImage(u.image),
           interest: u.interest,
           avg_reviews: u.getDataValue('avg_reviews'),
         })),
@@ -233,14 +235,26 @@ const mainController = {
       }
 
       if (new_skill && new_skill.trim()) {
-        const slug = new_skill.trim()
+        const trimmedSkill = new_skill.trim();
+
+        if (trimmedSkill.length > 50) {
+          return res.status(400).json({ status: 400, code: 'VALIDATION_ERROR', message: 'Le nom de la compétence ne peut pas dépasser 50 caractères' });
+        }
+        if (!/^[\p{L}0-9 .'-]+$/u.test(trimmedSkill)) {
+          return res.status(400).json({ status: 400, code: 'VALIDATION_ERROR', message: 'Le nom de la compétence contient des caractères invalides' });
+        }
+
+        const slug = trimmedSkill
           .toLowerCase()
           .normalize('NFD')
           .replace(/[\u0300-\u036f]/g, '')
           .replace(/[^a-z0-9]+/g, '-')
           .replace(/^-+|-+$/g, '');
 
-        await Skill.create({ label: new_skill.trim(), slug, icon: 'fa-lightbulb' });
+        await Skill.findOrCreate({
+          where: { slug },
+          defaults: { label: trimmedSkill, slug, icon: 'fa-lightbulb' },
+        });
       }
 
       return res.json({ success: true });
@@ -283,17 +297,22 @@ const mainController = {
 
       // Créer une nouvelle compétence si proposée
       if (new_skill && new_skill.trim()) {
-        const slug = new_skill.trim()
+        const trimmedSkill = new_skill.trim();
+
+        if (trimmedSkill.length > 50 || !/^[\p{L}0-9 .'-]+$/u.test(trimmedSkill)) {
+          return res.status(400).send('Nom de compétence invalide');
+        }
+
+        const slug = trimmedSkill
           .toLowerCase()
           .normalize('NFD')
           .replace(/[\u0300-\u036f]/g, '')
           .replace(/[^a-z0-9]+/g, '-')
           .replace(/^-+|-+$/g, '');
 
-        await Skill.create({
-          label: new_skill.trim(),
-          slug: slug,
-          icon: 'fa-lightbulb'
+        await Skill.findOrCreate({
+          where: { slug },
+          defaults: { label: trimmedSkill, slug, icon: 'fa-lightbulb' },
         });
       }
 
