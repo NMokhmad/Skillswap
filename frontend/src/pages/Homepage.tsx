@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { homepageApi } from '../api/homepage'
+import './Homepage.css'
 
 export default function Homepage() {
   const navigate = useNavigate()

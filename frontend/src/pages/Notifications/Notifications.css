@@ -1,0 +1,264 @@
+/* ===== Page Notifications — Noir Académique ===== */
+:root {
+  --notif-bg:       #0C1E1C;
+  --notif-card:     rgba(14, 34, 32, 0.72);
+  --notif-border:   rgba(212, 146, 42, 0.18);
+  --notif-border-h: rgba(212, 146, 42, 0.35);
+  --notif-amber:    #D4922A;
+  --notif-amber-h:  #E8A63C;
+  --notif-cream:    #F7F2E8;
+  --notif-muted:    rgba(247, 242, 232, 0.65);
+  --notif-dim:      rgba(247, 242, 232, 0.40);
+}
+
+/* ── Main ── */
+.ss-notif-main {
+  background-color: var(--notif-bg);
+  min-height: 100vh;
+  padding: 2.5rem 1.5rem 4rem;
+}
+
+.ss-notif-container {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+/* ── Header ── */
+.ss-notif-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.ss-notif-title-wrap { flex: 1; }
+
+.ss-notif-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 600;
+  font-style: italic;
+  color: var(--notif-amber);
+  margin: 0 0 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.ss-notif-subtitle {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  color: var(--notif-muted);
+  margin: 0;
+}
+
+.ss-notif-mark-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1rem;
+  background: transparent;
+  border: 1px solid var(--notif-amber);
+  color: var(--notif-amber);
+  border-radius: 8px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.ss-notif-mark-all:hover {
+  background: var(--notif-amber);
+  color: #0C1E1C;
+}
+
+/* ── Empty state ── */
+.ss-notif-empty {
+  background: var(--notif-card);
+  border: 1px solid var(--notif-border);
+  border-radius: 14px;
+  backdrop-filter: blur(16px) saturate(1.4);
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.ss-notif-empty-icon {
+  font-size: 4rem;
+  color: var(--notif-amber);
+  opacity: 0.3;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.ss-notif-empty-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem;
+  color: var(--notif-cream);
+  margin: 0 0 0.5rem;
+}
+
+.ss-notif-empty-text {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  color: var(--notif-muted);
+  margin: 0;
+}
+
+/* ── Item ── */
+.ss-notif-item {
+  background: var(--notif-card);
+  border: 1px solid var(--notif-border);
+  border-radius: 14px;
+  backdrop-filter: blur(16px) saturate(1.4);
+  padding: 1rem 1.25rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.ss-notif-item:hover {
+  transform: translateX(4px);
+  border-color: var(--notif-border-h);
+}
+
+.ss-notif-item--unread {
+  border-color: var(--notif-border-h);
+  box-shadow: inset 3px 0 0 var(--notif-amber);
+}
+
+/* ── Icône par type (uniforme amber) ── */
+.ss-notif-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(212, 146, 42, 0.15);
+  border: 1px solid rgba(212, 146, 42, 0.30);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--notif-amber);
+  flex-shrink: 0;
+  font-size: 1rem;
+}
+
+/* ── Contenu ── */
+.ss-notif-content { flex: 1; min-width: 0; }
+
+.ss-notif-text {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  color: var(--notif-cream);
+  line-height: 1.4;
+  margin: 0 0 0.2rem;
+}
+
+.ss-notif-time {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.75rem;
+  color: var(--notif-dim);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin: 0;
+}
+
+/* ── Actions ── */
+.ss-notif-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+.ss-notif-read-btn,
+.ss-notif-view-btn,
+.ss-notif-delete-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  transition: background 0.2s ease, color 0.2s ease;
+  text-decoration: none;
+}
+
+.ss-notif-read-btn {
+  background: transparent;
+  border: 1px solid var(--notif-amber);
+  color: var(--notif-amber);
+}
+
+.ss-notif-read-btn:hover {
+  background: var(--notif-amber);
+  color: #0C1E1C;
+}
+
+.ss-notif-view-btn {
+  background: var(--notif-amber);
+  color: #0C1E1C;
+}
+
+.ss-notif-view-btn:hover { background: var(--notif-amber-h); }
+
+.ss-notif-delete-btn {
+  background: transparent;
+  color: var(--notif-dim);
+}
+
+.ss-notif-delete-btn:hover {
+  background: rgba(220, 80, 80, 0.55);
+  color: var(--notif-cream);
+}
+
+/* ── Pagination ── */
+.ss-notif-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 2rem 0 0;
+  flex-wrap: wrap;
+}
+
+.ss-notif-page-link {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.85rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: 8px;
+  border: 1px solid rgba(212, 146, 42, 0.30);
+  color: var(--notif-amber);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.ss-notif-page-link:hover,
+.ss-notif-page-link--active {
+  background: var(--notif-amber);
+  border-color: var(--notif-amber);
+  color: #0C1E1C;
+}
+
+.ss-notif-page-link[disabled] {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .ss-notif-main { padding: 1.5rem 1rem 3rem; }
+  .ss-notif-actions { flex-direction: column; gap: 0.3rem; }
+}
+
+@media (max-width: 480px) {
+  .ss-notif-icon-box { width: 36px; height: 36px; }
+  .ss-notif-text { font-size: 0.85rem; }
+}

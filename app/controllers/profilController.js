@@ -1,8 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 import jwt from 'jsonwebtoken';
-import { User } from "../models/User.js";
-import { Skill, Review } from "../models/index.js";
+import { User, Skill, Review } from "../models/index.js";
+
+const normalizeImage = (image) => image ? image.replace(/^\/uploads\/avatars\//, '') : null;
 import { userUpdateSchema } from "../schemas/userUpdateSchema.js";
 
 const profilController = {
@@ -91,11 +92,11 @@ const profilController = {
       return res.json({
         user: {
           id: user.id, firstname: user.firstname, lastname: user.lastname,
-          bio: user.bio, city: user.city, image: user.image, interest: user.interest,
+          bio: user.bio, city: user.city, image: normalizeImage(user.image), interest: user.interest,
           skills: user.skills,
           reviews: reviews.map(r => ({
             id: r.id, rate: r.rate, comment: r.comment, created_at: r.created_at,
-            reviewer: r.reviewer,
+            reviewer: { ...r.reviewer.toJSON(), image: normalizeImage(r.reviewer?.image) },
           })),
           averageRating: Math.round(avgRating * 10) / 10,
           reviewCount: reviews.length,
@@ -115,7 +116,9 @@ const profilController = {
         include: [{ model: Skill, as: 'skills', attributes: ['id', 'label', 'slug'], through: { attributes: [] } }],
       });
       if (!user) return res.status(404).json({ status: 404, code: 'NOT_FOUND', message: 'Utilisateur introuvable' });
-      return res.json({ user });
+      const userData = user.toJSON();
+      userData.image = normalizeImage(userData.image);
+      return res.json({ user: userData });
     } catch (error) {
       return res.status(500).json({ status: 500, code: 'SERVER_ERROR', message: 'Erreur serveur' });
     }
@@ -133,8 +136,8 @@ const profilController = {
       if (bio !== undefined) updateData.bio = bio.trim();
 
       if (req.file) {
-        if (user.image) fs.unlink(path.join('public', user.image), () => {});
-        updateData.image = `/uploads/avatars/${req.file.filename}`;
+        if (user.image) fs.unlink(path.join('public', 'uploads', 'avatars', normalizeImage(user.image)), () => {});
+        updateData.image = req.file.filename;
       }
 
       await user.update(updateData);
@@ -146,7 +149,7 @@ const profilController = {
       );
       res.cookie('token', newToken, { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'Strict' });
 
-      return res.json({ user: { id: user.id, email: user.email, firstname: user.firstname, lastname: user.lastname, bio: user.bio, image: user.image } });
+      return res.json({ user: { id: user.id, email: user.email, firstname: user.firstname, lastname: user.lastname, bio: user.bio, image: normalizeImage(user.image) } });
     } catch (error) {
       if (error.isJoi) return res.status(400).json({ status: 400, code: 'VALIDATION_ERROR', message: error.details[0].message });
       return res.status(500).json({ status: 500, code: 'SERVER_ERROR', message: 'Erreur serveur' });

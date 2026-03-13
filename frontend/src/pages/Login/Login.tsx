@@ -1,3 +1,4 @@
+import './Login.css'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { authApi } from '../../api/auth'
@@ -34,29 +35,66 @@ export default function Login() {
   }
 
   return (
-    <main>
-      <h1>Connexion</h1>
-      <form onSubmit={handleSubmit}>
-        {error && <p className="error">{error}</p>}
-        <div>
-          <label htmlFor="email">Email</label>
-          <input
-            id="email" type="email" value={email} required
-            onChange={(e) => setEmail(e.target.value)}
-          />
+    <div className="ss-login-page">
+      <div className="ss-login-card">
+        <div className="ss-login-header">
+          <h1 className="ss-login-title">
+            <em>Skill</em><strong>Swap</strong>
+          </h1>
+          <p className="ss-login-subtitle">Connectez-vous à votre compte</p>
         </div>
-        <div>
-          <label htmlFor="password">Mot de passe</label>
-          <input
-            id="password" type="password" value={password} required
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? 'Connexion…' : 'Se connecter'}
-        </button>
-      </form>
-      <p>Pas encore de compte ? <Link to="/register">S'inscrire</Link></p>
-    </main>
+        <hr className="ss-login-divider" />
+
+        {error && (
+          <div className="ss-login-error">
+            <i className="fa-solid fa-circle-exclamation"></i>
+            {error}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit}>
+          <div className="ss-login-field">
+            <label htmlFor="email" className="ss-login-label">Email</label>
+            <div className="ss-login-input-wrap">
+              <i className="fa-solid fa-envelope"></i>
+              <input
+                id="email"
+                type="email"
+                className="ss-login-input"
+                placeholder="votre@email.fr"
+                value={email}
+                required
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div className="ss-login-field">
+            <label htmlFor="password" className="ss-login-label">Mot de passe</label>
+            <div className="ss-login-input-wrap">
+              <i className="fa-solid fa-lock"></i>
+              <input
+                id="password"
+                type="password"
+                className="ss-login-input"
+                placeholder="••••••••"
+                value={password}
+                required
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <button type="submit" className="ss-login-btn" disabled={isSubmitting}>
+            <i className="fa-solid fa-right-to-bracket"></i>
+            {isSubmitting ? 'Connexion…' : 'Se connecter'}
+          </button>
+        </form>
+
+        <p className="ss-login-register-link">
+          Pas encore de compte ? <Link to="/register">S'inscrire</Link>
+        </p>
+      </div>
+    </div>
   )
 }

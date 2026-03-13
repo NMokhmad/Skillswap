@@ -1,3 +1,4 @@
+import './Search.css'
 import { useState, useEffect } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
@@ -30,7 +31,7 @@ export default function Search() {
   }, [filters, setSearchParams])
 
   function handleChange(field: keyof SearchFilters, value: string | number) {
-    setFilters(prev => ({ ...prev, [field]: value, page: 1 }))
+    setFilters((prev) => ({ ...prev, [field]: value, page: 1 }))
   }
 
   const results = data?.results ?? []
@@ -38,130 +39,175 @@ export default function Search() {
   const total = data?.total ?? 0
 
   return (
-    <main style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
-      <h1>Recherche de talents</h1>
+    <>
+      <header className="ss-sr-header">
+        <h1 className="ss-sr-title"><em>Recherche</em> de talents</h1>
+        <p className="ss-sr-subtitle">Trouvez le talent qui correspond à vos besoins</p>
+      </header>
 
-      {/* Filtres */}
-      <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
-        <input
-          type="text"
-          placeholder="Nom du talent…"
-          value={filters.q}
-          onChange={e => handleChange('q', e.target.value)}
-          style={{ padding: '0.5rem', minWidth: '200px' }}
-        />
-        <input
-          type="text"
-          placeholder="Ville…"
-          value={filters.city}
-          onChange={e => handleChange('city', e.target.value)}
-          style={{ padding: '0.5rem', minWidth: '160px' }}
-        />
-        <select
-          value={filters.sort}
-          onChange={e => handleChange('sort', e.target.value)}
-          style={{ padding: '0.5rem' }}
-        >
-          <option value="rating_desc">Mieux notés</option>
-          <option value="rating_asc">Moins bien notés</option>
-          <option value="newest">Plus récents</option>
-          <option value="popular">Populaires</option>
-        </select>
-        <select
-          value={filters.min_rating ?? 0}
-          onChange={e => handleChange('min_rating', Number(e.target.value))}
-          style={{ padding: '0.5rem' }}
-        >
-          <option value={0}>Toutes les notes</option>
-          <option value={1}>≥ 1 étoile</option>
-          <option value={2}>≥ 2 étoiles</option>
-          <option value={3}>≥ 3 étoiles</option>
-          <option value={4}>≥ 4 étoiles</option>
-        </select>
-      </div>
+      <main className="ss-sr-main">
+        <div className="ss-sr-container">
 
-      {/* Résultats */}
-      {isLoading ? (
-        <p>Chargement…</p>
-      ) : (
-        <>
-          <p style={{ marginBottom: '1rem', color: '#666' }}>
-            {total} résultat{total !== 1 ? 's' : ''}
-          </p>
+          {/* ── Filtres ── */}
+          <div className="ss-sr-filters">
+            <div className="ss-sr-filter-group">
+              <label className="ss-sr-filter-label">Nom du talent</label>
+              <div className="ss-sr-input-wrap">
+                <i className="fa-solid fa-user"></i>
+                <input
+                  type="text"
+                  className="ss-sr-input"
+                  placeholder="Rechercher un talent…"
+                  value={filters.q}
+                  onChange={(e) => handleChange('q', e.target.value)}
+                />
+              </div>
+            </div>
 
-          {results.length === 0 ? (
-            <p>Aucun talent trouvé.</p>
+            <div className="ss-sr-filter-group">
+              <label className="ss-sr-filter-label">Ville</label>
+              <div className="ss-sr-input-wrap">
+                <i className="fa-solid fa-map-marker-alt"></i>
+                <input
+                  type="text"
+                  className="ss-sr-input"
+                  placeholder="Paris, Lyon…"
+                  value={filters.city}
+                  onChange={(e) => handleChange('city', e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="ss-sr-filter-group">
+              <label className="ss-sr-filter-label">Trier par</label>
+              <select
+                className="ss-sr-select"
+                value={filters.sort}
+                onChange={(e) => handleChange('sort', e.target.value)}
+              >
+                <option value="rating_desc">Mieux notés</option>
+                <option value="rating_asc">Moins bien notés</option>
+                <option value="newest">Plus récents</option>
+                <option value="popular">Populaires</option>
+              </select>
+            </div>
+
+            <div className="ss-sr-filter-group">
+              <label className="ss-sr-filter-label">Note minimale</label>
+              <select
+                className="ss-sr-select"
+                value={filters.min_rating ?? 0}
+                onChange={(e) => handleChange('min_rating', Number(e.target.value))}
+              >
+                <option value={0}>Toutes les notes</option>
+                <option value={1}>≥ 1 étoile</option>
+                <option value={2}>≥ 2 étoiles</option>
+                <option value={3}>≥ 3 étoiles</option>
+                <option value={4}>≥ 4 étoiles</option>
+              </select>
+            </div>
+          </div>
+
+          {/* ── Résultats ── */}
+          {isLoading ? (
+            <p style={{ textAlign: 'center', color: 'rgba(247,242,232,0.6)' }}>Chargement…</p>
           ) : (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.5rem' }}>
-              {results.map(user => (
-                <article key={user.id} style={{ border: '1px solid #e2e8f0', borderRadius: '8px', padding: '1rem' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
-                    {user.image ? (
-                      <img
-                        src={`/uploads/avatars/${user.image}`}
-                        alt={user.firstname}
-                        style={{ width: 48, height: 48, borderRadius: '50%', objectFit: 'cover' }}
-                      />
-                    ) : (
-                      <div style={{ width: 48, height: 48, borderRadius: '50%', background: '#e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <i className="fas fa-user" style={{ color: '#94a3b8' }}></i>
+            <>
+              <div className="ss-sr-results-header">
+                <p className="ss-sr-results-count">
+                  <strong>{total}</strong> résultat{total !== 1 ? 's' : ''}
+                </p>
+                <div className="ss-sr-results-sep"></div>
+              </div>
+
+              {results.length === 0 ? (
+                <div className="ss-sr-empty">
+                  <i className="fa-solid fa-user-slash ss-sr-empty-icon"></i>
+                  <p className="ss-sr-empty-title">Aucun talent trouvé</p>
+                  <p className="ss-sr-empty-text">Essayez de modifier vos filtres de recherche.</p>
+                </div>
+              ) : (
+                <div className="ss-sr-grid">
+                  {results.map((user) => (
+                    <article key={user.id} className="ss-sr-card">
+                      <div className="ss-sr-avatar">
+                        {user.image ? (
+                          <img src={`/uploads/avatars/${user.image}`} alt={user.firstname} />
+                        ) : (
+                          user.firstname[0]
+                        )}
                       </div>
-                    )}
-                    <div>
-                      <h3 style={{ margin: 0, fontSize: '1rem' }}>
-                        <Link to={`/talents/${user.id}`}>{user.firstname} {user.lastname}</Link>
-                      </h3>
-                      {user.city && <p style={{ margin: 0, fontSize: '0.85rem', color: '#64748b' }}><i className="fas fa-map-marker-alt"></i> {user.city}</p>}
-                    </div>
-                  </div>
 
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', marginBottom: '0.5rem' }}>
-                    {Array.from({ length: 5 }, (_, i) => (
-                      <i key={i} className={`fas fa-star`} style={{ color: i < Math.round(user.averageRating) ? '#f59e0b' : '#e2e8f0', fontSize: '0.8rem' }}></i>
-                    ))}
-                    <span style={{ fontSize: '0.8rem', color: '#64748b', marginLeft: '0.25rem' }}>
-                      {user.averageRating > 0 ? `${user.averageRating.toFixed(1)}/5` : 'Pas de note'} ({user.reviewCount})
-                    </span>
-                  </div>
+                      <Link to={`/talents/${user.id}`} className="ss-sr-name">
+                        {user.firstname} {user.lastname}
+                      </Link>
 
-                  {user.skills.length > 0 && (
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.25rem', marginBottom: '0.75rem' }}>
-                      {user.skills.slice(0, 4).map(s => (
-                        <span key={s.id} style={{ fontSize: '0.75rem', background: '#f1f5f9', padding: '0.2rem 0.5rem', borderRadius: '4px' }}>{s.label}</span>
-                      ))}
-                    </div>
-                  )}
+                      {user.city && (
+                        <p className="ss-sr-city">
+                          <i className="fas fa-map-marker-alt"></i>
+                          {user.city}
+                        </p>
+                      )}
 
-                  <Link to={`/talents/${user.id}`} style={{ fontSize: '0.85rem', color: '#6366f1', fontWeight: 500 }}>
-                    Voir le profil →
-                  </Link>
-                </article>
-              ))}
-            </div>
+                      <div className="ss-sr-stars">
+                        <div className="ss-sr-stars-row">
+                          {Array.from({ length: 5 }, (_, i) => (
+                            <i key={i} className={`fas fa-star${i < Math.round(user.averageRating) ? ' filled' : ''}`}></i>
+                          ))}
+                        </div>
+                        <span className="ss-sr-rating">
+                          {user.averageRating > 0 ? `${user.averageRating.toFixed(1)}/5` : 'Pas de note'} ({user.reviewCount})
+                        </span>
+                      </div>
+
+                      {user.skills.length > 0 && (
+                        <div className="ss-sr-skills">
+                          {user.skills.slice(0, 4).map((s) => (
+                            <span key={s.id} className="ss-sr-pill">{s.label}</span>
+                          ))}
+                        </div>
+                      )}
+
+                      <Link to={`/talents/${user.id}`} className="ss-sr-card-btn">
+                        <i className="fas fa-eye"></i>
+                        Voir le profil
+                      </Link>
+                    </article>
+                  ))}
+                </div>
+              )}
+
+              {totalPages > 1 && (
+                <div className="ss-sr-pagination">
+                  <button
+                    className="ss-sr-page-link"
+                    onClick={() => setFilters((p) => ({ ...p, page: Math.max(1, (p.page ?? 1) - 1) }))}
+                    disabled={filters.page === 1}
+                  >
+                    <i className="fas fa-chevron-left"></i>
+                  </button>
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
+                    <button
+                      key={p}
+                      className={`ss-sr-page-link${p === filters.page ? ' is-current' : ''}`}
+                      onClick={() => setFilters((prev) => ({ ...prev, page: p }))}
+                    >
+                      {p}
+                    </button>
+                  ))}
+                  <button
+                    className="ss-sr-page-link"
+                    onClick={() => setFilters((p) => ({ ...p, page: Math.min(totalPages, (p.page ?? 1) + 1) }))}
+                    disabled={filters.page === totalPages}
+                  >
+                    <i className="fas fa-chevron-right"></i>
+                  </button>
+                </div>
+              )}
+            </>
           )}
-
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center', marginTop: '2rem' }}>
-              <button
-                onClick={() => setFilters(p => ({ ...p, page: Math.max(1, (p.page ?? 1) - 1) }))}
-                disabled={filters.page === 1}
-              >
-                ← Précédent
-              </button>
-              <span style={{ padding: '0.5rem 1rem' }}>
-                Page {filters.page} / {totalPages}
-              </span>
-              <button
-                onClick={() => setFilters(p => ({ ...p, page: Math.min(totalPages, (p.page ?? 1) + 1) }))}
-                disabled={filters.page === totalPages}
-              >
-                Suivant →
-              </button>
-            </div>
-          )}
-        </>
-      )}
-    </main>
+        </div>
+      </main>
+    </>
   )
 }

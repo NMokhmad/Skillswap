@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import './navbar.css'
 
 // ── Types ──────────────────────────────────────────────────────────────────
 // On définit la forme des objets qu'on manipule (TypeScript)

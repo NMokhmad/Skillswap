@@ -1,5 +1,7 @@
 import { Skill, User } from '../models/index.js';
 
+const normalizeImage = (image) => image ? image.replace(/^\/uploads\/avatars\//, '') : null;
+
 const skillController = {
 
   async apiGetSkills(req, res) {
@@ -25,7 +27,12 @@ const skillController = {
         include: [{ model: User, as: 'users', attributes: ['id', 'firstname', 'lastname', 'image', 'bio'], through: { attributes: [] } }],
       });
       if (!skill) return res.status(404).json({ status: 404, code: 'NOT_FOUND', message: 'Compétence introuvable' });
-      return res.json({ skill: { id: skill.id, label: skill.label, slug: skill.slug, icon: skill.icon, users: skill.users } });
+      return res.json({
+        skill: {
+          id: skill.id, label: skill.label, slug: skill.slug, icon: skill.icon,
+          users: skill.users.map(u => ({ ...u.toJSON(), image: normalizeImage(u.image) })),
+        }
+      });
     } catch (error) {
       return res.status(500).json({ status: 500, code: 'SERVER_ERROR', message: 'Erreur serveur' });
     }

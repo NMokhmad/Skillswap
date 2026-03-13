@@ -1,6 +1,7 @@
-import { User } from '../models/User.js';
-import { Skill, Review } from '../models/index.js';
+import { User, Skill, Review } from '../models/index.js';
 import { addAverageRating } from '../helpers/rating.js';
+
+const normalizeImage = (image) => image ? image.replace(/^\/uploads\/avatars\//, '') : null;
 
 const talentController = {
 
@@ -19,13 +20,13 @@ const talentController = {
         distinct: true,
         limit,
         offset,
-        order: [['created_at', 'DESC']],
+        order: [['id', 'DESC']],
       });
 
       const results = users.map(u => {
         const reviews = u.received_reviews || [];
         const avg = reviews.length ? reviews.reduce((s, r) => s + r.rate, 0) / reviews.length : 0;
-        return { id: u.id, firstname: u.firstname, lastname: u.lastname, image: u.image, city: u.city, interest: u.interest, skills: u.skills, averageRating: Math.round(avg * 10) / 10, reviewCount: reviews.length };
+        return { id: u.id, firstname: u.firstname, lastname: u.lastname, image: normalizeImage(u.image), city: u.city, interest: u.interest, skills: u.skills, averageRating: Math.round(avg * 10) / 10, reviewCount: reviews.length };
       });
 
       return res.json({ page, limit, total: count, totalPages: Math.ceil(count / limit), results });
@@ -53,9 +54,9 @@ const talentController = {
       return res.json({
         talent: {
           id: user.id, firstname: user.firstname, lastname: user.lastname,
-          bio: user.bio, city: user.city, image: user.image, interest: user.interest,
+          bio: user.bio, city: user.city, image: normalizeImage(user.image), interest: user.interest,
           skills: user.skills,
-          reviews: reviews.map(r => ({ id: r.id, rate: r.rate, comment: r.comment, created_at: r.created_at, reviewer: r.reviewer })),
+          reviews: reviews.map(r => ({ id: r.id, rate: r.rate, comment: r.comment, created_at: r.created_at, reviewer: { ...r.reviewer.toJSON(), image: normalizeImage(r.reviewer?.image) } })),
           averageRating: Math.round(avg * 10) / 10,
           reviewCount: reviews.length,
           followerCount: user.followers.length,

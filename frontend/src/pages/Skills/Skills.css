@@ -1,0 +1,274 @@
+/* ===== Page Skills — Noir Académique ===== */
+:root {
+  --sk-bg:      #0C1E1C;
+  --sk-card:    rgba(14, 34, 32, 0.72);
+  --sk-border:  rgba(212, 146, 42, 0.18);
+  --sk-amber:   #D4922A;
+  --sk-amber-h: #E8A63C;
+  --sk-cream:   #F7F2E8;
+}
+
+.ss-sk-page {
+  background-color: var(--sk-bg);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Header ── */
+.ss-sk-header {
+  background: rgba(14, 34, 32, 0.60);
+  border-bottom: 1px solid rgba(212, 146, 42, 0.15);
+  padding: 4rem 1.5rem;
+  text-align: center;
+}
+
+.ss-sk-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 600;
+  font-style: italic;
+  color: var(--sk-amber);
+  margin: 0 0 0.5rem;
+}
+
+.ss-sk-title em { font-style: normal; }
+
+.ss-sk-subtitle {
+  font-family: 'Outfit', sans-serif;
+  color: rgba(247, 242, 232, 0.65);
+  font-size: 1rem;
+  margin: 0 0 2rem;
+}
+
+.ss-sk-stats {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.ss-sk-stat-box {
+  background: var(--sk-card);
+  border: 1px solid var(--sk-border);
+  border-radius: 12px;
+  padding: 0.75rem 1.75rem;
+  backdrop-filter: blur(10px);
+  text-align: center;
+}
+
+.ss-sk-stat-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--sk-amber);
+  display: block;
+}
+
+.ss-sk-stat-label {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.78rem;
+  color: rgba(247, 242, 232, 0.55);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ── Body ── */
+.ss-sk-body {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ── Search ── */
+.ss-sk-search-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(14, 34, 32, 0.60);
+  border: 1px solid rgba(212, 146, 42, 0.20);
+  border-radius: 10px;
+  padding: 0.65rem 1rem;
+  margin-bottom: 2rem;
+}
+
+.ss-sk-search-wrap i {
+  color: var(--sk-amber);
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.ss-sk-search {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  color: var(--sk-cream);
+}
+
+.ss-sk-search::placeholder {
+  color: rgba(247, 242, 232, 0.40);
+  font-style: italic;
+}
+
+/* ── Grid ── */
+.ss-sk-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+/* ── Card link ── */
+.ss-sk-card-link {
+  text-decoration: none;
+  display: block;
+}
+
+/* ── Card ── */
+.ss-sk-card {
+  background: var(--sk-card);
+  border: 1px solid var(--sk-border);
+  border-radius: 14px;
+  backdrop-filter: blur(16px) saturate(1.4);
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  text-align: center;
+  position: relative;
+  min-height: 200px;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.ss-sk-card-link:hover .ss-sk-card {
+  transform: translateY(-6px);
+  border-color: rgba(212, 146, 42, 0.40);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+}
+
+/* ── Badge ── */
+.ss-sk-badge {
+  position: absolute;
+  top: 0.85rem;
+  right: 0.85rem;
+  background: rgba(212, 146, 42, 0.15);
+  border: 1px solid rgba(212, 146, 42, 0.30);
+  border-radius: 20px;
+  padding: 0.2rem 0.6rem;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.72rem;
+  color: var(--sk-amber);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+/* ── Icon wrap ── */
+.ss-sk-icon-wrap {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(212, 146, 42, 0.15);
+  border: 1px solid rgba(212, 146, 42, 0.30);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: var(--sk-amber);
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+.ss-sk-card-link:hover .ss-sk-icon-wrap {
+  background: var(--sk-amber);
+  color: #0C1E1C;
+}
+
+/* ── Label ── */
+.ss-sk-label {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--sk-cream);
+  margin: 0;
+}
+
+/* ── CTA hover ── */
+.ss-sk-cta {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.8rem;
+  color: var(--sk-amber);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.ss-sk-card-link:hover .ss-sk-cta {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Bottom CTA ── */
+.ss-sk-bottom-cta {
+  max-width: 500px;
+  margin: 3rem auto 0;
+  text-align: center;
+  border: 2px dashed rgba(212, 146, 42, 0.30);
+  border-radius: 14px;
+  padding: 2.5rem 2rem;
+}
+
+.ss-sk-bottom-cta-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  font-style: italic;
+  color: var(--sk-amber);
+  margin: 0 0 0.75rem;
+}
+
+.ss-sk-bottom-cta-text {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.88rem;
+  color: rgba(247, 242, 232, 0.60);
+  margin: 0 0 1.5rem;
+}
+
+.ss-sk-bottom-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.5rem;
+  background: var(--sk-amber);
+  color: #0C1E1C;
+  border-radius: 8px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.ss-sk-bottom-cta-btn:hover {
+  background: var(--sk-amber-h);
+  transform: translateY(-2px);
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .ss-sk-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .ss-sk-grid { grid-template-columns: 1fr; }
+  .ss-sk-body { padding: 1.5rem 1rem 3rem; }
+}
+
+@media (max-width: 480px) {
+  .ss-sk-header { padding: 2.5rem 1rem; }
+  .ss-sk-title { font-size: 1.6rem; }
+}

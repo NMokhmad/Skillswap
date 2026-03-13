@@ -1,0 +1,381 @@
+/* ===== Page Recherche — Noir Académique ===== */
+:root {
+  --sr-bg:      #0C1E1C;
+  --sr-card:    rgba(14, 34, 32, 0.72);
+  --sr-border:  rgba(212, 146, 42, 0.18);
+  --sr-border-h:rgba(212, 146, 42, 0.35);
+  --sr-amber:   #D4922A;
+  --sr-amber-h: #E8A63C;
+  --sr-cream:   #F7F2E8;
+  --sr-muted:   rgba(247, 242, 232, 0.65);
+  --sr-dim:     rgba(247, 242, 232, 0.40);
+  --ease:       cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Header ── */
+.ss-sr-header {
+  background: rgba(14, 34, 32, 0.60);
+  border-bottom: 1px solid rgba(212, 146, 42, 0.15);
+  padding: 3.5rem 1.5rem 2.5rem;
+  text-align: center;
+}
+
+.ss-sr-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 600;
+  font-style: italic;
+  color: var(--sr-amber);
+  margin: 0 0 0.5rem;
+}
+
+.ss-sr-title em { font-style: normal; }
+
+.ss-sr-subtitle {
+  font-family: 'Outfit', sans-serif;
+  color: var(--sr-muted);
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* ── Main ── */
+.ss-sr-main {
+  background-color: var(--sr-bg);
+  min-height: 100vh;
+  padding: 2.5rem 1.5rem 4rem;
+}
+
+.ss-sr-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ── Filtres ── */
+.ss-sr-filters {
+  background: var(--sr-card);
+  border: 1px solid var(--sr-border);
+  border-radius: 14px;
+  backdrop-filter: blur(16px) saturate(1.4);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 1rem;
+  align-items: end;
+}
+
+.ss-sr-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.ss-sr-filter-label {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(212, 146, 42, 0.75);
+}
+
+.ss-sr-input-wrap {
+  position: relative;
+}
+
+.ss-sr-input-wrap i {
+  position: absolute;
+  left: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.78rem;
+  color: rgba(247, 242, 232, 0.25);
+  pointer-events: none;
+  transition: color 0.18s var(--ease);
+}
+
+.ss-sr-input-wrap:focus-within i { color: rgba(212, 146, 42, 0.55); }
+
+.ss-sr-input,
+.ss-sr-select {
+  width: 100%;
+  background: rgba(247, 242, 232, 0.04);
+  border: 1px solid rgba(247, 242, 232, 0.10);
+  border-radius: 8px;
+  color: var(--sr-cream);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.88rem;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.18s var(--ease), box-shadow 0.18s var(--ease);
+}
+
+.ss-sr-input {
+  padding: 0.7rem 0.9rem 0.7rem 2.4rem;
+}
+
+.ss-sr-select {
+  padding: 0.7rem 0.9rem;
+  appearance: none;
+  cursor: pointer;
+}
+
+.ss-sr-input::placeholder { color: rgba(247, 242, 232, 0.22); }
+
+.ss-sr-input:focus,
+.ss-sr-select:focus {
+  border-color: rgba(212, 146, 42, 0.50);
+  box-shadow: 0 0 0 3px rgba(212, 146, 42, 0.10);
+}
+
+.ss-sr-select option { background: #0C1E1C; }
+
+/* ── Compteur résultats ── */
+.ss-sr-results-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.ss-sr-results-count {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.88rem;
+  color: var(--sr-muted);
+  margin: 0;
+}
+
+.ss-sr-results-count strong {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--sr-amber);
+}
+
+.ss-sr-results-sep {
+  flex: 1;
+  height: 1px;
+  background: rgba(212, 146, 42, 0.15);
+}
+
+/* ── Grille ── */
+.ss-sr-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+/* ── Carte ── */
+.ss-sr-card {
+  background: var(--sr-card);
+  border: 1px solid var(--sr-border);
+  border-radius: 14px;
+  backdrop-filter: blur(16px) saturate(1.4);
+  padding: 1.5rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.75rem;
+  transition: transform 0.25s var(--ease), border-color 0.25s var(--ease), box-shadow 0.25s var(--ease);
+}
+
+.ss-sr-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--sr-border-h);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+}
+
+/* ── Avatar ── */
+.ss-sr-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(212, 146, 42, 0.15);
+  border: 2px solid rgba(212, 146, 42, 0.30);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--sr-cream);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.ss-sr-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ── Nom ── */
+.ss-sr-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--sr-cream);
+  text-decoration: none;
+  transition: color 0.2s var(--ease);
+}
+
+.ss-sr-name:hover { color: var(--sr-amber); }
+
+/* ── Ville ── */
+.ss-sr-city {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.8rem;
+  color: var(--sr-dim);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin: 0;
+}
+
+.ss-sr-city i { color: var(--sr-amber); font-size: 0.7rem; }
+
+/* ── Étoiles ── */
+.ss-sr-stars {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.ss-sr-stars-row i {
+  font-size: 0.85rem;
+  color: rgba(247, 242, 232, 0.15);
+}
+
+.ss-sr-stars-row i.filled { color: var(--sr-amber); }
+
+.ss-sr-rating {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.72rem;
+  color: var(--sr-dim);
+}
+
+/* ── Skills pills ── */
+.ss-sr-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  justify-content: center;
+}
+
+.ss-sr-pill {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.72rem;
+  color: var(--sr-muted);
+  border: 1px solid rgba(212, 146, 42, 0.25);
+  border-radius: 20px;
+  padding: 0.2rem 0.65rem;
+  white-space: nowrap;
+}
+
+/* ── Bouton voir profil ── */
+.ss-sr-card-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1.1rem;
+  background: var(--sr-amber);
+  color: #0C1E1C;
+  border-radius: 8px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 0.18s var(--ease), transform 0.18s var(--ease);
+  margin-top: auto;
+}
+
+.ss-sr-card-btn:hover {
+  background: var(--sr-amber-h);
+  transform: translateY(-1px);
+}
+
+/* ── État vide ── */
+.ss-sr-empty {
+  background: var(--sr-card);
+  border: 1px dashed rgba(212, 146, 42, 0.25);
+  border-radius: 14px;
+  padding: 4rem 2rem;
+  text-align: center;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.ss-sr-empty-icon {
+  font-size: 4rem;
+  color: var(--sr-amber);
+  opacity: 0.25;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.ss-sr-empty-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem;
+  color: var(--sr-cream);
+  margin: 0 0 0.5rem;
+}
+
+.ss-sr-empty-text {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  color: var(--sr-muted);
+  margin: 0;
+}
+
+/* ── Pagination ── */
+.ss-sr-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.ss-sr-page-link {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.85rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: 8px;
+  border: 1px solid rgba(212, 146, 42, 0.30);
+  background: transparent;
+  color: var(--sr-amber);
+  cursor: pointer;
+  transition: all 0.2s var(--ease);
+}
+
+.ss-sr-page-link:hover,
+.ss-sr-page-link.is-current {
+  background: var(--sr-amber);
+  border-color: var(--sr-amber);
+  color: #0C1E1C;
+}
+
+.ss-sr-page-link:disabled {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .ss-sr-filters { grid-template-columns: 1fr 1fr; }
+  .ss-sr-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .ss-sr-filters { grid-template-columns: 1fr; }
+  .ss-sr-grid { grid-template-columns: 1fr; }
+  .ss-sr-main { padding: 1.5rem 1rem 3rem; }
+}
+
+@media (max-width: 480px) {
+  .ss-sr-header { padding: 2.5rem 1rem; }
+  .ss-sr-title { font-size: 1.6rem; }
+}

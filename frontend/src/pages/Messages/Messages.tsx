@@ -1,3 +1,4 @@
+import './Messages.css'
 import { Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { messagesApi } from '../../api/messages'

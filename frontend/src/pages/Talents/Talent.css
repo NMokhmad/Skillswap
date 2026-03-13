@@ -1,0 +1,487 @@
+/* ===== Page Talent Profil — Noir Académique ===== */
+:root {
+  --tp-bg:       #0C1E1C;
+  --tp-card:     rgba(14, 34, 32, 0.72);
+  --tp-border:   rgba(212, 146, 42, 0.18);
+  --tp-border-h: rgba(212, 146, 42, 0.35);
+  --tp-amber:    #D4922A;
+  --tp-amber-h:  #E8A63C;
+  --tp-cream:    #F7F2E8;
+  --tp-muted:    rgba(247, 242, 232, 0.65);
+  --tp-dim:      rgba(247, 242, 232, 0.40);
+}
+
+/* ── Main ── */
+.ss-tp-main {
+  background-color: var(--tp-bg);
+  min-height: 100vh;
+  padding: 2.5rem 1.5rem 4rem;
+}
+
+.ss-tp-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* ── Layout 2 colonnes ── */
+.ss-tp-grid {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+/* ── Carte glass (patron commun) ── */
+.ss-tp-card {
+  background: var(--tp-card);
+  border: 1px solid var(--tp-border);
+  border-radius: 14px;
+  backdrop-filter: blur(16px) saturate(1.4);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+/* ── Header profil ── */
+.ss-tp-header {
+  text-align: center;
+  padding: 2rem 1.5rem;
+}
+
+.ss-tp-verified {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--tp-amber);
+  color: #0C1E1C;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.3rem 0.85rem;
+  border-radius: 20px;
+  margin-bottom: 1.25rem;
+}
+
+.ss-tp-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: rgba(212, 146, 42, 0.20);
+  border: 2px solid rgba(212, 146, 42, 0.30);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  font-family: 'Outfit', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--tp-cream);
+  overflow: hidden;
+}
+
+.ss-tp-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ss-tp-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 600;
+  color: var(--tp-cream);
+  margin: 0 0 0.75rem;
+}
+
+.ss-tp-stars-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  margin-bottom: 0.3rem;
+}
+
+.ss-tp-stars-row i { color: rgba(247, 242, 232, 0.20); }
+.ss-tp-stars-row i.filled { color: var(--tp-amber); }
+
+.ss-tp-rating {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.8rem;
+  color: var(--tp-muted);
+  display: block;
+  margin-bottom: 1.25rem;
+}
+
+/* ── Boutons d'action ── */
+.ss-tp-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.ss-tp-btn-follow,
+.ss-tp-btn-message {
+  flex: 1;
+  max-width: 180px;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  text-decoration: none;
+  transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+}
+
+.ss-tp-btn-follow {
+  background: transparent;
+  border: 1px solid var(--tp-amber);
+  color: var(--tp-amber);
+}
+
+.ss-tp-btn-follow:hover,
+.ss-tp-btn-follow.is-following {
+  background: var(--tp-amber);
+  color: #0C1E1C;
+}
+
+.ss-tp-btn-message {
+  background: var(--tp-amber);
+  border: 1px solid var(--tp-amber);
+  color: #0C1E1C;
+}
+
+.ss-tp-btn-message:hover {
+  background: var(--tp-amber-h);
+  border-color: var(--tp-amber-h);
+  transform: translateY(-1px);
+}
+
+/* ── Titre de section ── */
+.ss-tp-section-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--tp-cream);
+  margin: 0 0 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.ss-tp-section-title i { color: var(--tp-amber); }
+
+/* ── Séparateur ── */
+.ss-tp-divider {
+  border: none;
+  border-top: 1px solid rgba(212, 146, 42, 0.15);
+  margin: 0 0 1rem;
+}
+
+/* ── Bio ── */
+.ss-tp-bio {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+  color: var(--tp-muted);
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ── Skills pills ── */
+.ss-tp-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.ss-tp-pill {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.78rem;
+  color: rgba(247, 242, 232, 0.75);
+  border: 1px solid rgba(212, 146, 42, 0.30);
+  border-radius: 20px;
+  padding: 0.3rem 0.85rem;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.ss-tp-pill:hover {
+  background: var(--tp-amber);
+  color: #0C1E1C;
+  border-color: var(--tp-amber);
+}
+
+/* ── Contact ── */
+.ss-tp-contact {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  color: var(--tp-amber);
+}
+
+/* ── Section Avis ── */
+.ss-tp-reviews-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.ss-tp-btn-add-review {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1rem;
+  background: var(--tp-amber);
+  color: #0C1E1C;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.ss-tp-btn-add-review:hover { background: var(--tp-amber-h); }
+
+/* ── Formulaire avis ── */
+.ss-tp-review-form { margin-bottom: 1.5rem; }
+
+.ss-tp-form-label {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--tp-muted);
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+.ss-tp-review-stars {
+  display: flex;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.ss-tp-review-star {
+  font-size: 1.6rem;
+  color: rgba(247, 242, 232, 0.20);
+  cursor: pointer;
+  transition: color 0.15s ease, transform 0.15s ease;
+}
+
+.ss-tp-review-star:hover { transform: scale(1.2); }
+
+.ss-tp-select,
+.ss-tp-textarea {
+  width: 100%;
+  background: rgba(14, 34, 32, 0.50);
+  border: 1px solid rgba(212, 146, 42, 0.20);
+  border-radius: 8px;
+  color: var(--tp-cream);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  padding: 0.65rem 0.9rem;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.2s ease;
+  appearance: none;
+}
+
+.ss-tp-select:focus,
+.ss-tp-textarea:focus { border-color: rgba(212, 146, 42, 0.55); }
+
+.ss-tp-select option { background: #0C1E1C; }
+.ss-tp-textarea { resize: vertical; min-height: 90px; }
+.ss-tp-field { margin-bottom: 1rem; }
+
+.ss-tp-btn-submit {
+  width: 100%;
+  padding: 0.75rem;
+  background: var(--tp-amber);
+  color: #0C1E1C;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.ss-tp-btn-submit:hover { background: var(--tp-amber-h); }
+
+/* ── Carte avis ── */
+.ss-tp-review-card {
+  background: rgba(14, 34, 32, 0.50);
+  border: 1px solid rgba(212, 146, 42, 0.15);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.ss-tp-review-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+}
+
+.ss-tp-reviewer {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.ss-tp-reviewer-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(212, 146, 42, 0.20);
+  border: 1px solid rgba(212, 146, 42, 0.30);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--tp-cream);
+  flex-shrink: 0;
+}
+
+.ss-tp-reviewer-name {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--tp-cream);
+  text-decoration: none;
+}
+
+.ss-tp-reviewer-name:hover { color: var(--tp-amber); }
+
+.ss-tp-review-date {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.75rem;
+  color: var(--tp-dim);
+  margin: 0;
+}
+
+.ss-tp-review-stars-display i { color: rgba(247, 242, 232, 0.20); font-size: 0.85rem; }
+.ss-tp-review-stars-display i.filled { color: var(--tp-amber); }
+
+.ss-tp-review-content {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  color: var(--tp-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.ss-tp-no-reviews {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  color: var(--tp-dim);
+  text-align: center;
+  padding: 2rem;
+}
+
+/* ── Sidebar ── */
+.ss-tp-sidebar { position: sticky; top: 1.5rem; }
+
+.ss-tp-sidebar-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--tp-cream);
+  margin: 0 0 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.ss-tp-sidebar-title i { color: var(--tp-amber); }
+
+.ss-tp-stat-box {
+  background: rgba(14, 34, 32, 0.50);
+  border: 1px solid rgba(212, 146, 42, 0.15);
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ss-tp-stat-label {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.88rem;
+  color: var(--tp-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ss-tp-stat-label i { color: var(--tp-amber); }
+
+.ss-tp-stat-value {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--tp-amber);
+}
+
+/* ── Badge membre ── */
+.ss-tp-member-badge {
+  text-align: center;
+  padding: 1.5rem;
+  margin-top: 0;
+}
+
+.ss-tp-member-icon {
+  font-size: 2.5rem;
+  color: var(--tp-amber);
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.ss-tp-member-label {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--tp-cream);
+  margin: 0 0 0.25rem;
+}
+
+.ss-tp-member-date {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.82rem;
+  color: var(--tp-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  margin: 0;
+}
+
+.ss-tp-member-date i { color: var(--tp-amber); }
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .ss-tp-grid { grid-template-columns: 1fr; }
+  .ss-tp-sidebar { position: static; }
+}
+
+@media (max-width: 600px) {
+  .ss-tp-main { padding: 1.5rem 1rem 3rem; }
+  .ss-tp-actions { flex-direction: column; align-items: stretch; }
+  .ss-tp-btn-follow, .ss-tp-btn-message { max-width: 100%; }
+}

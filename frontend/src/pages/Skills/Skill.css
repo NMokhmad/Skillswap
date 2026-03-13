@@ -1,0 +1,284 @@
+/* ===== Page Compétence Détail — Noir Académique ===== */
+:root {
+  --sp-bg:       #0C1E1C;
+  --sp-card:     rgba(14, 34, 32, 0.72);
+  --sp-border:   rgba(212, 146, 42, 0.18);
+  --sp-border-h: rgba(212, 146, 42, 0.35);
+  --sp-amber:    #D4922A;
+  --sp-amber-h:  #E8A63C;
+  --sp-cream:    #F7F2E8;
+  --sp-muted:    rgba(247, 242, 232, 0.65);
+  --sp-dim:      rgba(247, 242, 232, 0.40);
+}
+
+.ss-sp-page {
+  background-color: var(--sp-bg);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Main ── */
+.ss-sp-main {
+  flex: 1;
+  padding: 2.5rem 1.5rem 4rem;
+}
+
+.ss-sp-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ── Header compétence ── */
+.ss-sp-header {
+  background: var(--sp-card);
+  border: 1px solid var(--sp-border);
+  border-radius: 14px;
+  backdrop-filter: blur(16px) saturate(1.4);
+  padding: 3rem 2rem;
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.ss-sp-icon-wrap {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(212, 146, 42, 0.15);
+  border: 1px solid rgba(212, 146, 42, 0.30);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: var(--sp-amber);
+  margin: 0 auto 1.25rem;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+.ss-sp-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 600;
+  font-style: italic;
+  color: var(--sp-amber);
+  margin: 0 0 1rem;
+}
+
+.ss-sp-counter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(14, 34, 32, 0.50);
+  border: 1px solid rgba(212, 146, 42, 0.20);
+  border-radius: 20px;
+  padding: 0.4rem 1.25rem;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  color: var(--sp-muted);
+  margin-bottom: 1rem;
+}
+
+.ss-sp-counter i { color: var(--sp-amber); }
+
+.ss-sp-tags {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.ss-sp-tag {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border: 1px solid rgba(212, 146, 42, 0.30);
+  border-radius: 20px;
+  padding: 0.3rem 0.85rem;
+  color: var(--sp-amber);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+/* ── Section talents ── */
+.ss-sp-section-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--sp-cream);
+  margin: 0 0 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.ss-sp-section-title i { color: var(--sp-amber); }
+
+/* ── Grille talents ── */
+.ss-sp-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 2.5rem;
+}
+
+/* ── Carte talent ── */
+.ss-sp-card-link { text-decoration: none; display: block; }
+
+.ss-sp-card {
+  background: var(--sp-card);
+  border: 1px solid var(--sp-border);
+  border-radius: 14px;
+  backdrop-filter: blur(16px) saturate(1.4);
+  padding: 1.5rem 1rem;
+  text-align: center;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.ss-sp-card-link:hover .ss-sp-card {
+  transform: translateY(-6px);
+  border-color: var(--sp-border-h);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+}
+
+.ss-sp-card-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(212, 146, 42, 0.20);
+  border: 2px solid rgba(212, 146, 42, 0.30);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 0.75rem;
+  font-size: 1.5rem;
+  color: var(--sp-amber);
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+.ss-sp-card-link:hover .ss-sp-card-avatar {
+  background: var(--sp-amber);
+  color: #0C1E1C;
+}
+
+.ss-sp-card-name {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--sp-cream);
+  margin: 0;
+  transition: color 0.2s ease;
+}
+
+.ss-sp-card-link:hover .ss-sp-card-name { color: var(--sp-amber); }
+
+/* ── Empty state ── */
+.ss-sp-empty {
+  background: var(--sp-card);
+  border: 1px dashed rgba(212, 146, 42, 0.30);
+  border-radius: 14px;
+  backdrop-filter: blur(16px) saturate(1.4);
+  padding: 3rem 2rem;
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 2.5rem;
+}
+
+.ss-sp-empty-icon {
+  font-size: 5rem;
+  color: var(--sp-amber);
+  opacity: 0.25;
+  display: block;
+  margin-bottom: 1.25rem;
+}
+
+.ss-sp-empty-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--sp-cream);
+  margin: 0 0 0.75rem;
+}
+
+.ss-sp-empty-text {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  color: var(--sp-muted);
+  margin: 0 0 1.5rem;
+}
+
+/* ── Suggestions ── */
+.ss-sp-suggestions {
+  background: rgba(14, 34, 32, 0.50);
+  border: 1px solid rgba(212, 146, 42, 0.15);
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  text-align: left;
+  max-width: 400px;
+  margin: 0 auto 1.5rem;
+}
+
+.ss-sp-suggestions-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--sp-cream);
+  margin: 0 0 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ss-sp-suggestions-title i { color: var(--sp-amber); }
+
+.ss-sp-suggestion-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.ss-sp-suggestion-list li {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.85rem;
+  color: var(--sp-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.ss-sp-suggestion-list li i { color: var(--sp-amber); }
+
+/* ── Bouton retour ── */
+.ss-sp-back-wrap { text-align: center; margin-top: 2rem; }
+
+.ss-sp-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  background: transparent;
+  border: 1px solid var(--sp-amber);
+  color: var(--sp-amber);
+  border-radius: 8px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.ss-sp-back-btn:hover {
+  background: var(--sp-amber);
+  color: #0C1E1C;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) { .ss-sp-grid { grid-template-columns: repeat(2, 1fr); } }
+
+@media (max-width: 600px) {
+  .ss-sp-grid { grid-template-columns: 1fr; }
+  .ss-sp-main { padding: 1.5rem 1rem 3rem; }
+}
+
+@media (max-width: 480px) { .ss-sp-header { padding: 2rem 1rem; } }

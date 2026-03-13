@@ -1,3 +1,4 @@
+import './Onboarding.css'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
@@ -11,6 +12,7 @@ export default function Onboarding() {
   const [bio, setBio] = useState('')
   const [avatar, setAvatar] = useState<File | null>(null)
   const [selectedSkills, setSelectedSkills] = useState<number[]>([])
+  const [skillSearch, setSkillSearch] = useState('')
   const [newSkill, setNewSkill] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
@@ -21,8 +23,8 @@ export default function Onboarding() {
   })
 
   function toggleSkill(id: number) {
-    setSelectedSkills(prev =>
-      prev.includes(id) ? prev.filter(s => s !== id) : [...prev, id]
+    setSelectedSkills((prev) =>
+      prev.includes(id) ? prev.filter((s) => s !== id) : [...prev, id]
     )
   }
 
@@ -34,7 +36,7 @@ export default function Onboarding() {
       const formData = new FormData()
       if (bio.trim()) formData.append('bio', bio.trim())
       if (avatar) formData.append('avatar', avatar)
-      selectedSkills.forEach(id => formData.append('skills', String(id)))
+      selectedSkills.forEach((id) => formData.append('skills', String(id)))
       if (newSkill.trim()) formData.append('new_skill', newSkill.trim())
 
       const res = await fetch('/api/onboarding', {
@@ -51,94 +53,165 @@ export default function Onboarding() {
     }
   }
 
-  if (isLoading) return <main style={{ padding: '2rem' }}><p>Chargement…</p></main>
+  if (isLoading) {
+    return (
+      <div className="ss-ob-page">
+        <div className="ss-ob-card">
+          <p style={{ textAlign: 'center', color: 'rgba(247,242,232,0.6)' }}>Chargement…</p>
+        </div>
+      </div>
+    )
+  }
 
   const skills = data?.skills ?? []
+  const filteredSkills = skillSearch.trim()
+    ? skills.filter((s) => s.label.toLowerCase().includes(skillSearch.toLowerCase()))
+    : skills
 
   return (
-    <main style={{ padding: '2rem', maxWidth: '700px', margin: '0 auto' }}>
-      <h1>Bienvenue{data?.user.firstname ? `, ${data.user.firstname}` : ''} !</h1>
-      <p style={{ color: '#64748b', marginBottom: '2rem' }}>Complétez votre profil pour commencer à échanger des compétences.</p>
-
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-        {/* Avatar */}
-        <div>
-          <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.5rem' }}>Photo de profil</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={e => setAvatar(e.target.files?.[0] ?? null)}
-            style={{ fontSize: '0.9rem' }}
-          />
-          {avatar && (
-            <img
-              src={URL.createObjectURL(avatar)}
-              alt="Aperçu"
-              style={{ width: 80, height: 80, borderRadius: '50%', objectFit: 'cover', marginTop: '0.75rem', display: 'block' }}
-            />
-          )}
+    <div className="ss-ob-page">
+      <div className="ss-ob-card">
+        <div className="ss-ob-header">
+          <h1 className="ss-ob-title">
+            Bienvenue{data?.user.firstname ? `, ` : ''}<em>{data?.user.firstname ?? ''}</em>
+          </h1>
+          <p className="ss-ob-subtitle">Complétez votre profil pour commencer à échanger des compétences.</p>
         </div>
 
-        {/* Bio */}
-        <div>
-          <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.5rem' }}>À propos de vous</label>
-          <textarea
-            value={bio}
-            onChange={e => setBio(e.target.value)}
-            placeholder="Parlez de vous, de vos passions, de ce que vous souhaitez apprendre ou enseigner…"
-            rows={4}
-            style={{ width: '100%', padding: '0.75rem', border: '1px solid #e2e8f0', borderRadius: '8px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box' }}
-          />
-        </div>
-
-        {/* Compétences */}
-        <div>
-          <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.75rem' }}>Vos compétences</label>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1rem' }}>
-            {skills.map(s => (
-              <button
-                key={s.id}
-                type="button"
-                onClick={() => toggleSkill(s.id)}
-                style={{
-                  padding: '0.4rem 0.9rem',
-                  border: '1px solid',
-                  borderColor: selectedSkills.includes(s.id) ? '#6366f1' : '#e2e8f0',
-                  borderRadius: '9999px',
-                  background: selectedSkills.includes(s.id) ? '#6366f1' : 'white',
-                  color: selectedSkills.includes(s.id) ? 'white' : '#334155',
-                  cursor: 'pointer',
-                  fontSize: '0.85rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.4rem',
-                }}
-              >
-                <i className={`fa-solid ${s.icon}`}></i>
-                {s.label}
-              </button>
-            ))}
+        <form onSubmit={handleSubmit}>
+          {/* ── Photo de profil ── */}
+          <div className="ss-ob-section">
+            <div className="ss-ob-section-header">
+              <p className="ss-ob-section-title">
+                <i className="fa-solid fa-camera"></i>
+                Photo de profil
+              </p>
+              <span className="ss-ob-badge ss-ob-badge--optional">Optionnel</span>
+            </div>
+            <div className="ss-ob-avatar-wrap">
+              <label className="ss-ob-avatar-zone" htmlFor="avatar-input">
+                {avatar ? (
+                  <img
+                    src={URL.createObjectURL(avatar)}
+                    className="ss-ob-avatar-img"
+                    style={{ display: 'block' }}
+                    alt="Aperçu"
+                  />
+                ) : (
+                  <i className="fa-solid fa-camera ss-ob-avatar-icon"></i>
+                )}
+                <input
+                  id="avatar-input"
+                  type="file"
+                  accept="image/*"
+                  style={{ display: 'none' }}
+                  onChange={(e) => setAvatar(e.target.files?.[0] ?? null)}
+                />
+              </label>
+              <span className="ss-ob-avatar-hint">Cliquez pour ajouter une photo</span>
+              {avatar && <span className="ss-ob-avatar-filename">{avatar.name}</span>}
+            </div>
           </div>
 
-          <input
-            type="text"
-            value={newSkill}
-            onChange={e => setNewSkill(e.target.value)}
-            placeholder="Proposer une nouvelle compétence…"
-            style={{ width: '100%', padding: '0.6rem 1rem', border: '1px solid #e2e8f0', borderRadius: '8px', fontSize: '0.9rem', boxSizing: 'border-box' }}
-          />
-        </div>
+          <hr className="ss-ob-sep" />
 
-        {error && <p style={{ color: '#ef4444', margin: 0 }}>{error}</p>}
+          {/* ── Bio ── */}
+          <div className="ss-ob-section">
+            <div className="ss-ob-section-header">
+              <p className="ss-ob-section-title">
+                <i className="fa-solid fa-pen"></i>
+                À propos de vous
+              </p>
+              <span className="ss-ob-badge ss-ob-badge--optional">Optionnel</span>
+            </div>
+            <div className="ss-ob-textarea-wrap">
+              <textarea
+                className="ss-ob-textarea"
+                value={bio}
+                onChange={(e) => setBio(e.target.value)}
+                placeholder="Parlez de vous, de vos passions, de ce que vous souhaitez apprendre ou enseigner…"
+                rows={4}
+                maxLength={500}
+              />
+              <span className="ss-ob-bio-count">{bio.length}/500</span>
+            </div>
+          </div>
 
-        <button
-          type="submit"
-          disabled={submitting}
-          style={{ padding: '0.75rem', background: '#6366f1', color: 'white', border: 'none', borderRadius: '8px', fontSize: '1rem', fontWeight: 600, cursor: 'pointer' }}
-        >
-          {submitting ? 'Enregistrement…' : 'Commencer →'}
-        </button>
-      </form>
-    </main>
+          <hr className="ss-ob-sep" />
+
+          {/* ── Compétences ── */}
+          <div className="ss-ob-section">
+            <div className="ss-ob-section-header">
+              <p className="ss-ob-section-title">
+                <i className="fa-solid fa-star"></i>
+                Vos compétences
+              </p>
+              <span className="ss-ob-badge ss-ob-badge--required">Recommandé</span>
+            </div>
+
+            <div className="ss-ob-search-wrap">
+              <i className="fa-solid fa-magnifying-glass"></i>
+              <input
+                type="text"
+                className="ss-ob-search"
+                placeholder="Rechercher une compétence…"
+                value={skillSearch}
+                onChange={(e) => setSkillSearch(e.target.value)}
+              />
+            </div>
+
+            <div className="ss-ob-skills-grid">
+              {filteredSkills.map((s) => (
+                <label key={s.id} className="ss-ob-pill">
+                  <input
+                    type="checkbox"
+                    checked={selectedSkills.includes(s.id)}
+                    onChange={() => toggleSkill(s.id)}
+                  />
+                  <i className={`fa-solid ${s.icon}`}></i>
+                  {s.label}
+                  <i className="fa-solid fa-check ss-ob-pill-check"></i>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <hr className="ss-ob-sep" />
+
+          {/* ── Nouvelle compétence ── */}
+          <div className="ss-ob-section">
+            <div className="ss-ob-section-header">
+              <p className="ss-ob-section-title">
+                <i className="fa-solid fa-plus"></i>
+                Proposer une compétence
+              </p>
+              <span className="ss-ob-badge ss-ob-badge--optional">Optionnel</span>
+            </div>
+            <div className="ss-ob-input-wrap">
+              <i className="fa-solid fa-lightbulb"></i>
+              <input
+                type="text"
+                className="ss-ob-input"
+                value={newSkill}
+                onChange={(e) => setNewSkill(e.target.value)}
+                placeholder="Ex : Calligraphie, Permaculture…"
+              />
+            </div>
+            <p className="ss-ob-input-hint">Cette compétence sera soumise à validation.</p>
+          </div>
+
+          {error && (
+            <p style={{ color: 'rgba(220,80,80,0.85)', fontSize: '0.88rem', margin: '1rem 0 0' }}>{error}</p>
+          )}
+
+          <div className="ss-ob-actions">
+            <button type="submit" className="ss-ob-btn" disabled={submitting}>
+              <i className="fa-solid fa-rocket"></i>
+              {submitting ? 'Enregistrement…' : 'Commencer'}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   )
 }

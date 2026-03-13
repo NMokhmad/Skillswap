@@ -1,3 +1,4 @@
+import './ProfilPublic.css'
 import { Link, useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { profilApi } from '../../api/profil'
@@ -17,81 +18,128 @@ export default function ProfilPublic() {
   const { user } = data
 
   return (
-    <main style={{ padding: '2rem', maxWidth: '900px', margin: '0 auto' }}>
-      {/* Header profil */}
-      <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start', marginBottom: '2rem' }}>
-        {user.image ? (
-          <img src={`/uploads/avatars/${user.image}`} alt={user.firstname} style={{ width: 96, height: 96, borderRadius: '50%', objectFit: 'cover' }} />
-        ) : (
-          <div style={{ width: 96, height: 96, borderRadius: '50%', background: '#e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <i className="fas fa-user" style={{ fontSize: '2rem', color: '#94a3b8' }}></i>
-          </div>
-        )}
-        <div>
-          <h1 style={{ margin: '0 0 0.25rem' }}>{user.firstname} {user.lastname}</h1>
-          {user.interest && <p style={{ margin: '0 0 0.25rem', color: '#64748b' }}><i className="fas fa-briefcase"></i> {user.interest}</p>}
-          {user.city && <p style={{ margin: 0, color: '#64748b' }}><i className="fas fa-map-marker-alt"></i> {user.city}</p>}
-          <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem', fontSize: '0.85rem', color: '#64748b' }}>
-            <span><strong>{user.followerCount}</strong> abonnés</span>
-            <span><strong>{user.reviewCount}</strong> avis</span>
-            {user.averageRating > 0 && (
-              <span>
-                {Array.from({ length: 5 }, (_, i) => (
-                  <i key={i} className="fas fa-star" style={{ color: i < Math.round(user.averageRating) ? '#f59e0b' : '#e2e8f0', fontSize: '0.8rem' }}></i>
-                ))}
-                {' '}{user.averageRating.toFixed(1)}/5
-              </span>
+    <div className="ss-pp-page">
+
+      {/* ── Header ── */}
+      <header className="ss-pp-header">
+        <div className="ss-pp-header-inner">
+
+          {/* Avatar */}
+          <div className="ss-pp-avatar">
+            {user.image ? (
+              <img src={`/uploads/avatars/${user.image}`} alt={user.firstname} />
+            ) : (
+              <i className="fas fa-user ss-pp-avatar-placeholder"></i>
             )}
           </div>
-          <div style={{ marginTop: '0.75rem', display: 'flex', gap: '0.75rem' }}>
-            <Link to={`/messages/${user.id}`} className="ss-btn ss-btn--primary" style={{ fontSize: '0.85rem', padding: '0.4rem 1rem' }}>
-              <i className="fas fa-envelope"></i> Envoyer un message
-            </Link>
-          </div>
-        </div>
-      </div>
 
-      {user.bio && (
-        <section style={{ marginBottom: '1.5rem' }}>
-          <h2 style={{ fontSize: '1rem', marginBottom: '0.5rem' }}>À propos</h2>
-          <p style={{ color: '#374151', lineHeight: 1.6 }}>{user.bio}</p>
-        </section>
-      )}
+          {/* Nom */}
+          <h1 className="ss-pp-name">{user.firstname} {user.lastname}</h1>
 
-      {user.skills.length > 0 && (
-        <section style={{ marginBottom: '1.5rem' }}>
-          <h2 style={{ fontSize: '1rem', marginBottom: '0.75rem' }}>Compétences</h2>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-            {user.skills.map(s => (
-              <Link key={s.id} to={`/skills/${s.slug}`} style={{ background: '#f1f5f9', padding: '0.3rem 0.75rem', borderRadius: '9999px', fontSize: '0.85rem', color: '#334155', textDecoration: 'none' }}>
-                {s.label}
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
+          {/* Ville + intérêt */}
+          {(user.interest || user.city) && (
+            <div className="ss-pp-meta">
+              {user.interest && (
+                <span className="ss-pp-meta-item">
+                  <i className="fas fa-briefcase"></i>
+                  {user.interest}
+                </span>
+              )}
+              {user.city && (
+                <span className="ss-pp-meta-item">
+                  <i className="fas fa-map-marker-alt"></i>
+                  {user.city}
+                </span>
+              )}
+            </div>
+          )}
 
-      {user.reviews.length > 0 && (
-        <section>
-          <h2 style={{ fontSize: '1rem', marginBottom: '0.75rem' }}>Avis ({user.reviewCount})</h2>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            {user.reviews.map(r => (
-              <div key={r.id} style={{ border: '1px solid #e2e8f0', borderRadius: '8px', padding: '1rem' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
-                  <strong>{r.reviewer.firstname} {r.reviewer.lastname}</strong>
-                  <span style={{ color: '#94a3b8', fontSize: '0.8rem' }}>{new Date(r.created_at).toLocaleDateString('fr-FR')}</span>
-                  <div style={{ marginLeft: 'auto' }}>
+          {/* Stats */}
+          <div className="ss-pp-stats">
+            <div className="ss-pp-stat-box">
+              <span className="ss-pp-stat-num">{user.followerCount}</span>
+              <span className="ss-pp-stat-label">Abonnés</span>
+            </div>
+            <div className="ss-pp-stat-box">
+              <span className="ss-pp-stat-num">{user.reviewCount}</span>
+              <span className="ss-pp-stat-label">Avis</span>
+            </div>
+            {user.averageRating > 0 && (
+              <div className="ss-pp-stat-box">
+                <span className="ss-pp-stat-num">{user.averageRating.toFixed(1)}</span>
+                <span className="ss-pp-stat-label">
+                  <span className="ss-pp-stars">
                     {Array.from({ length: 5 }, (_, i) => (
-                      <i key={i} className="fas fa-star" style={{ color: i < r.rate ? '#f59e0b' : '#e2e8f0', fontSize: '0.8rem' }}></i>
+                      <i key={i} className={`fas fa-star${i < Math.round(user.averageRating) ? ' filled' : ''}`}></i>
                     ))}
-                  </div>
-                </div>
-                {r.comment && <p style={{ margin: 0, color: '#374151' }}>{r.comment}</p>}
+                  </span>
+                </span>
               </div>
-            ))}
+            )}
           </div>
-        </section>
-      )}
-    </main>
+
+          {/* Bouton message */}
+          <Link to={`/messages/${user.id}`} className="ss-pp-btn">
+            <i className="fas fa-envelope"></i>
+            Envoyer un message
+          </Link>
+
+        </div>
+      </header>
+
+      {/* ── Body ── */}
+      <div className="ss-pp-body">
+
+        {/* Bio */}
+        {user.bio && (
+          <section className="ss-pp-section">
+            <h2 className="ss-pp-section-title">À propos</h2>
+            <p className="ss-pp-bio-text">{user.bio}</p>
+          </section>
+        )}
+
+        {/* Compétences */}
+        {user.skills.length > 0 && (
+          <section className="ss-pp-section">
+            <h2 className="ss-pp-section-title">Compétences</h2>
+            <div className="ss-pp-pills">
+              {user.skills.map(s => (
+                <Link key={s.id} to={`/skills/${s.slug}`} className="ss-pp-pill">
+                  {s.label}
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Avis */}
+        {user.reviews.length > 0 && (
+          <section className="ss-pp-section">
+            <h2 className="ss-pp-section-title">Avis ({user.reviewCount})</h2>
+            <div className="ss-pp-reviews-list">
+              {user.reviews.map(r => (
+                <div key={r.id} className="ss-pp-review-card">
+                  <div className="ss-pp-review-header">
+                    <span className="ss-pp-reviewer-name">
+                      {r.reviewer.firstname} {r.reviewer.lastname}
+                    </span>
+                    <span className="ss-pp-review-date">
+                      {new Date(r.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
+                    </span>
+                    <span className="ss-pp-review-stars">
+                      {Array.from({ length: 5 }, (_, i) => (
+                        <i key={i} className={`fas fa-star${i < r.rate ? ' filled' : ''}`}></i>
+                      ))}
+                    </span>
+                  </div>
+                  {r.comment && <p className="ss-pp-review-text">{r.comment}</p>}
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+      </div>
+    </div>
   )
 }
